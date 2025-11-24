@@ -3,7 +3,8 @@ import {
     Container, Typography, Box, Button, Grid, Card, CardContent,
     IconButton, Chip, Dialog, DialogTitle, DialogContent, DialogActions,
     TextField, MenuItem, FormControl, InputLabel, Select, Tabs, Tab,
-    Alert, CircularProgress, Tooltip, Paper
+    Alert, CircularProgress, Tooltip, Paper, Table, TableBody, TableCell,
+    TableContainer, TableHead, TableRow
 } from '@mui/material';
 import {
     Add as AddIcon,
@@ -16,7 +17,8 @@ import {
     DateRange as YearIcon,
     ArrowBackIos as PrevIcon,
     ArrowForwardIos as NextIcon,
-    Today as TodayIcon
+    Today as TodayIcon,
+    History as HistoryIcon
 } from '@mui/icons-material';
 import {
     format, addDays, startOfMonth, endOfMonth, startOfWeek, endOfWeek,
@@ -25,10 +27,13 @@ import {
     addYears, subYears, getDate, isAfter, isBefore
 } from 'date-fns';
 import BillsService from '../services/BillsService';
+import TransactionService from '../services/TransactionService';
 
 const BillsPage = () => {
     const [bills, setBills] = useState([]);
+    const [paymentHistory, setPaymentHistory] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [historyLoading, setHistoryLoading] = useState(false);
     const [tabValue, setTabValue] = useState(0);
     const [viewDate, setViewDate] = useState(new Date()); // For calendar navigation
     const [openDialog, setOpenDialog] = useState(false);
@@ -45,6 +50,16 @@ const BillsPage = () => {
 
     useEffect(() => {
         fetchBills();
+        fetchPaymentHistory();
+
+        // Auto-refresh every 10 seconds to catch bills created from transactions
+        const interval = setInterval(() => {
+            fetchBills();
+            // Optionally refresh history too, but maybe less frequent?
+            // fetchPaymentHistory(); 
+        }, 10000);
+
+        return () => clearInterval(interval);
     }, []);
 
     const fetchBills = async () => {
@@ -56,6 +71,30 @@ const BillsPage = () => {
             console.error("Failed to fetch bills", error);
         } finally {
             setLoading(false);
+        }
+    };
+
+    const fetchPaymentHistory = async () => {
+        try {
+            setHistoryLoading(true);
+            // Fetch more items to ensure we find recent bill payments
+            const response = await TransactionService.getAll({ size: 100 });
+
+            // Handle paginated response (response.data.content) or flat array
+            const transactions = response.data.content || (Array.isArray(response.data) ? response.data : []);
+
+            // Filter for bill payments (description contains "Bill Payment" or category is Bills & EMI)
+            const history = transactions.filter(t =>
+                (t.description && t.description.toLowerCase().includes('bill payment')) ||
+                (t.categoryName && t.categoryName.toLowerCase().includes('bill'))
+            ).sort((a, b) => new Date(b.transactionDate) - new Date(a.transactionDate));
+
+            setPaymentHistory(history);
+        } catch (error) {
+            console.error("Failed to fetch payment history", error);
+            setPaymentHistory([]);
+        } finally {
+            setHistoryLoading(false);
         }
     };
 
@@ -123,9 +162,11 @@ const BillsPage = () => {
     const handleMarkAsPaid = async (id) => {
         try {
             await BillsService.markAsPaid(id);
-            fetchBills();
+            // Reload page to show fresh data
+            window.location.reload();
         } catch (error) {
             console.error("Failed to mark bill as paid", error);
+            alert("Failed to mark bill as paid. Please try again.");
         }
     };
 
@@ -249,7 +290,8 @@ const BillsPage = () => {
             {/* Tabs */}
             <Paper sx={{ mb: 3 }}>
                 <Tabs value={tabValue} onChange={(e, v) => setTabValue(v)} sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                    <Tab icon={<ListIcon />} label="List View" iconPosition="start" />
+                    <Tab icon={<ListIcon />} label="Upcoming Bills" iconPosition="start" />
+                    <Tab icon={<HistoryIcon />} label="Payment History" iconPosition="start" />
                     <Tab icon={<CalendarIcon />} label="Calendar View" iconPosition="start" />
                     <Tab icon={<YearIcon />} label="Year View" iconPosition="start" />
                 </Tabs>
@@ -321,8 +363,56 @@ const BillsPage = () => {
                         </Grid>
                     )}
 
-                    {/* Calendar View */}
+                    {/* Payment History View */}
                     {tabValue === 1 && (
+                        <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+                            {historyLoading ? (
+                                <Box display="flex" justifyContent="center" p={4}>
+                                    <CircularProgress size={30} />
+                                </Box>
+                            ) : paymentHistory.length === 0 ? (
+                                <Box textAlign="center" py={6}>
+                                    <Typography variant="body1" color="text.secondary">No payment history found</Typography>
+                                </Box>
+                            ) : (
+                                <TableContainer sx={{ maxHeight: 440 }}>
+                                    <Table stickyHeader aria-label="sticky table">
+                                        <TableHead>
+                                            <TableRow>
+                                                <TableCell>Date</TableCell>
+                                                <TableCell>Description</TableCell>
+                                                <TableCell>Category</TableCell>
+                                                <TableCell align="right">Amount</TableCell>
+                                            </TableRow>
+                                        </TableHead>
+                                        <TableBody>
+                                            {paymentHistory.map((row) => (
+                                                <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
+                                                    <TableCell>
+                                                        {format(parseISO(row.transactionDate), 'MMM dd, yyyy')}
+                                                    </TableCell>
+                                                    <TableCell>{row.description}</TableCell>
+                                                    <TableCell>
+                                                        <Chip
+                                                            label={row.categoryName || 'Uncategorized'}
+                                                            size="small"
+                                                            sx={{ bgcolor: row.categoryColor || 'grey.300', color: 'white' }}
+                                                        />
+                                                    </TableCell>
+                                                    <TableCell align="right" sx={{ color: 'error.main', fontWeight: 'bold' }}>
+                                                        -₹{row.amount.toFixed(2)}
+                                                    </TableCell>
+                                                </TableRow>
+                                            ))}
+                                        </TableBody>
+                                    </Table>
+                                </TableContainer>
+                            )}
+                        </Paper>
+                    )}
+
+                    {/* Calendar View */}
+                    {tabValue === 2 && (
                         <Paper sx={{ p: 2 }}>
                             {/* Calendar Navigation */}
                             <Box display="flex" justifyContent="space-between" alignItems="center" mb={2} px={2}>
@@ -404,7 +494,7 @@ const BillsPage = () => {
                     )}
 
                     {/* Year View */}
-                    {tabValue === 2 && (
+                    {tabValue === 3 && (
                         <Paper sx={{ p: 3 }}>
                             {/* Year Navigation */}
                             <Box display="flex" justifyContent="center" alignItems="center" mb={4}>

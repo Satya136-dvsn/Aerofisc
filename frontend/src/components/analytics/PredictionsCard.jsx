@@ -60,7 +60,7 @@ const PredictionsCard = ({ predictions, loading }) => {
     };
 
     return (
-        <TableContainer>
+        <TableContainer component={Box} sx={{ backgroundColor: 'background.paper', borderRadius: 1 }}>
             <Table size="small">
                 <TableHead>
                     <TableRow>

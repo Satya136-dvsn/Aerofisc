@@ -11,9 +11,9 @@ import java.util.Optional;
 @Repository
 public interface BillRepository extends JpaRepository<Bill, Long> {
 
-    List<Bill> findByUserIdOrderByNextDueDateAsc(Long userId);
-
     List<Bill> findByUserIdAndStatus(Long userId, Bill.BillStatus status);
+
+    List<Bill> findByUserIdOrderByNextDueDateAsc(Long userId);
 
     List<Bill> findByUserIdAndNextDueDateBetween(Long userId, LocalDate start, LocalDate end);
 

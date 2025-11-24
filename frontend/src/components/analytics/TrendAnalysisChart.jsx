@@ -1,7 +1,7 @@
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 import { Box, Typography, Skeleton, useTheme } from '@mui/material';
 
-const TrendAnalysisChart = ({ data, loading }) => {
+const TrendAnalysisChart = ({ data, loading, disableAnimation = false }) => {
     const theme = useTheme();
 
     if (loading) {
@@ -71,6 +71,7 @@ const TrendAnalysisChart = ({ data, loading }) => {
                     fillOpacity={1}
                     fill="url(#colorIncome)"
                     strokeWidth={2}
+                    isAnimationActive={!disableAnimation}
                 />
                 <Area
                     type="monotone"
@@ -80,6 +81,7 @@ const TrendAnalysisChart = ({ data, loading }) => {
                     fillOpacity={1}
                     fill="url(#colorExpenses)"
                     strokeWidth={2}
+                    isAnimationActive={!disableAnimation}
                 />
             </AreaChart>
         </ResponsiveContainer>

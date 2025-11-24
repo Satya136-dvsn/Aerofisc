@@ -7,5 +7,4 @@ import java.util.Map;
 public class ExportRequest {
     private String format;
     private String timeRange;
-    private Map<String, String> images; // Key: Chart ID/Name, Value: Base64 Image String
 }

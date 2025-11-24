@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import html2canvas from 'html2canvas';
 import { useNavigate } from 'react-router-dom';
 import { Container, Grid, Typography, Box, Fade, Paper, ToggleButton, ToggleButtonGroup } from '@mui/material';
@@ -16,11 +16,13 @@ import { AutoAwesome } from '@mui/icons-material';
 
 const Analytics = () => {
     const navigate = useNavigate();
+    const analyticsRef = useRef(null);
     const [timeRange, setTimeRange] = useState('6m');
     const [loading, setLoading] = useState(true);
     const [trends, setTrends] = useState([]);
     const [categories, setCategories] = useState([]);
     const [predictions, setPredictions] = useState([]);
+    const [isExporting, setIsExporting] = useState(false);
 
     useEffect(() => {
         loadAnalyticsData();
@@ -65,30 +67,7 @@ const Analytics = () => {
     const handleExport = async (format) => {
         try {
             setLoading(true);
-            const images = {};
-
-            // Capture Trend Analysis Chart
-            const trendNode = document.getElementById('analytics-trend-chart');
-            if (trendNode) {
-                const canvas = await html2canvas(trendNode);
-                images['Trend Analysis'] = canvas.toDataURL('image/png');
-            }
-
-            // Capture Category Breakdown Chart
-            const categoryNode = document.getElementById('analytics-category-chart');
-            if (categoryNode) {
-                const canvas = await html2canvas(categoryNode);
-                images['Category Breakdown'] = canvas.toDataURL('image/png');
-            }
-
-            // Capture Predictions Chart
-            const predictionNode = document.getElementById('analytics-prediction-chart');
-            if (predictionNode) {
-                const canvas = await html2canvas(predictionNode);
-                images['AI Predictions'] = canvas.toDataURL('image/png');
-            }
-
-            await exportService.exportAnalyticsWithImages(timeRange.toUpperCase(), format, images);
+            await exportService.exportAnalytics(timeRange, format);
         } catch (err) {
             console.error('Export failed:', err);
         } finally {
@@ -97,7 +76,7 @@ const Analytics = () => {
     };
 
     return (
-        <Container maxWidth="xl" sx={{ pb: 4 }}>
+        <Container maxWidth="xl" sx={{ pb: 4 }} ref={analyticsRef}>
             <Fade in timeout={300}>
                 <Box mb={4} display="flex" justifyContent="space-between" alignItems="center">
                     <Box>
@@ -139,7 +118,11 @@ const Analytics = () => {
                                 headerAction={<ShowChart color="primary" />}
                             >
                                 <Box id="analytics-trend-chart">
-                                    <TrendAnalysisChart data={trends} loading={loading} />
+                                    <TrendAnalysisChart
+                                        data={trends}
+                                        loading={loading && !isExporting}
+                                        disableAnimation={isExporting}
+                                    />
                                 </Box>
                             </ProfessionalCard>
                         </Box>
@@ -158,8 +141,10 @@ const Analytics = () => {
                                 <Box id="analytics-category-chart">
                                     <CategoryBreakdownChart
                                         data={categories}
-                                        loading={loading}
+                                        loading={loading && !isExporting}
                                         onCategoryClick={handleCategoryClick}
+                                        disableAnimation={isExporting}
+                                        isExporting={isExporting}
                                     />
                                 </Box>
                             </ProfessionalCard>
@@ -192,7 +177,11 @@ const Analytics = () => {
                                 headerAction={<AutoAwesome color="warning" />}
                             >
                                 <Box id="analytics-prediction-chart">
-                                    <PredictionsCard predictions={predictions} loading={loading} />
+                                    <PredictionsCard
+                                        predictions={predictions}
+                                        loading={loading && !isExporting}
+                                        isExporting={isExporting}
+                                    />
                                 </Box>
                             </ProfessionalCard>
                         </Box>

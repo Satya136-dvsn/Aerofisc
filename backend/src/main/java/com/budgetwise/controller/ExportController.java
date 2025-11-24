@@ -200,38 +200,14 @@ public class ExportController {
                 .body(data);
     }
 
+    // Keep POST endpoints for backward compatibility but ignore images
     @PostMapping("/dashboard")
     public ResponseEntity<byte[]> exportDashboardWithImages(
             @AuthenticationPrincipal UserPrincipal userPrincipal,
             @RequestBody com.budgetwise.dto.ExportRequest request) throws java.io.IOException {
 
-        byte[] data;
-        String filename;
-        MediaType mediaType;
-
-        switch (request.getFormat().toLowerCase()) {
-            case "excel":
-                data = exportService.exportDashboardExcel(userPrincipal.getId(), request.getImages());
-                filename = "dashboard.xlsx";
-                mediaType = MediaType
-                        .parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-                break;
-            case "pdf":
-                data = exportService.exportDashboardPDF(userPrincipal.getId(), request.getImages());
-                filename = "dashboard.pdf";
-                mediaType = MediaType.APPLICATION_PDF;
-                break;
-            default:
-                throw new IllegalArgumentException("Dashboard export only supports Excel and PDF formats");
-        }
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(mediaType);
-        headers.setContentDispositionFormData("attachment", filename);
-
-        return ResponseEntity.ok()
-                .headers(headers)
-                .body(data);
+        // Redirect to standard export logic
+        return exportDashboard(userPrincipal, request.getFormat());
     }
 
     @PostMapping("/analytics")
@@ -239,33 +215,8 @@ public class ExportController {
             @AuthenticationPrincipal UserPrincipal userPrincipal,
             @RequestBody com.budgetwise.dto.ExportRequest request) throws java.io.IOException {
 
-        byte[] data;
-        String filename;
-        MediaType mediaType;
+        // Redirect to standard export logic
         String timeRange = request.getTimeRange() != null ? request.getTimeRange() : "3M";
-
-        switch (request.getFormat().toLowerCase()) {
-            case "excel":
-                data = exportService.exportAnalyticsExcel(userPrincipal.getId(), timeRange, request.getImages());
-                filename = "analytics_" + timeRange + ".xlsx";
-                mediaType = MediaType
-                        .parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-                break;
-            case "pdf":
-                data = exportService.exportAnalyticsPDF(userPrincipal.getId(), timeRange, request.getImages());
-                filename = "analytics_" + timeRange + ".pdf";
-                mediaType = MediaType.APPLICATION_PDF;
-                break;
-            default:
-                throw new IllegalArgumentException("Analytics export only supports Excel and PDF formats");
-        }
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(mediaType);
-        headers.setContentDispositionFormData("attachment", filename);
-
-        return ResponseEntity.ok()
-                .headers(headers)
-                .body(data);
+        return exportAnalytics(userPrincipal, timeRange, request.getFormat());
     }
 }

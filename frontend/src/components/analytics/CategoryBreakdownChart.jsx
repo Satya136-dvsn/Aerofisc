@@ -2,7 +2,7 @@ import { ResponsiveContainer, PieChart, Pie, Cell, Tooltip, Legend } from 'recha
 import { Box, Typography, Skeleton, useTheme } from '@mui/material';
 import { getCategoryColor } from '../../utils/categoryColors';
 
-const CategoryBreakdownChart = ({ data, loading, onCategoryClick }) => {
+const CategoryBreakdownChart = ({ data, loading, onCategoryClick, disableAnimation = false }) => {
     const theme = useTheme();
 
     if (loading) {
@@ -39,7 +39,7 @@ const CategoryBreakdownChart = ({ data, loading, onCategoryClick }) => {
     };
 
     return (
-        <Box height={300} position="relative">
+        <Box height={300} position="relative" sx={{ backgroundColor: 'background.paper', borderRadius: 1 }}>
             <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                     <Pie
@@ -55,6 +55,7 @@ const CategoryBreakdownChart = ({ data, loading, onCategoryClick }) => {
                         paddingAngle={2}
                         onClick={(data) => onCategoryClick && onCategoryClick(data)}
                         style={{ cursor: 'pointer' }}
+                        isAnimationActive={!disableAnimation}
                     >
                         {data.map((entry, index) => (
                             <Cell
@@ -79,7 +80,7 @@ const CategoryBreakdownChart = ({ data, loading, onCategoryClick }) => {
                         layout="vertical"
                         verticalAlign="middle"
                         align="right"
-                        wrapperStyle={{ fontSize: '12px' }}
+                        wrapperStyle={{ fontSize: '12px', color: theme.palette.text.primary }}
                     />
                 </PieChart>
             </ResponsiveContainer>

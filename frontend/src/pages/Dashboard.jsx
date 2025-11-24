@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import html2canvas from 'html2canvas';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -18,12 +18,14 @@ import { getCategoryColor } from '../utils/categoryColors';
 
 const Dashboard = () => {
   const navigate = useNavigate();
+  const dashboardRef = useRef(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [summary, setSummary] = useState(null);
   const [monthlyTrends, setMonthlyTrends] = useState([]);
   const [categoryBreakdown, setCategoryBreakdown] = useState([]);
   const [recentTransactions, setRecentTransactions] = useState([]);
+  const [isExporting, setIsExporting] = useState(false);
 
   useEffect(() => { loadDashboardData(); }, []);
 
@@ -53,23 +55,7 @@ const Dashboard = () => {
   const handleExport = async (format) => {
     try {
       setLoading(true);
-      const images = {};
-
-      // Capture Monthly Trends Chart
-      const trendsNode = document.getElementById('monthly-trends-chart');
-      if (trendsNode) {
-        const canvas = await html2canvas(trendsNode);
-        images['Monthly Trends'] = canvas.toDataURL('image/png');
-      }
-
-      // Capture Category Breakdown Chart
-      const categoryNode = document.getElementById('category-breakdown-chart');
-      if (categoryNode) {
-        const canvas = await html2canvas(categoryNode);
-        images['Category Breakdown'] = canvas.toDataURL('image/png');
-      }
-
-      await exportService.exportDashboardWithImages(format, images);
+      await exportService.exportDashboard(format);
     } catch (err) {
       console.error('Export failed:', err);
       setError('Failed to export dashboard');
@@ -78,7 +64,7 @@ const Dashboard = () => {
     }
   };
 
-  if (loading) {
+  if (loading && !isExporting) {
     return (
       <Container maxWidth="xl" sx={{ pb: 4 }}>
         <Skeleton variant="text" width={200} height={50} sx={{ mb: 3 }} />
@@ -94,7 +80,7 @@ const Dashboard = () => {
   }
 
   return (
-    <Container maxWidth="xl" sx={{ pb: 4 }}>
+    <Container maxWidth="xl" sx={{ pb: 4 }} ref={dashboardRef}>
       <Fade in timeout={300}>
         <Box mb={4} display="flex" justifyContent="space-between" alignItems="center">
           <Box>
@@ -157,8 +143,8 @@ const Dashboard = () => {
                         <YAxis stroke="#888" style={{ fontSize: '0.875rem' }} />
                         <Tooltip formatter={(value) => formatCurrency(value)} contentStyle={{ backgroundColor: '#1e1e1e', border: '1px solid #333', borderRadius: 8 }} />
                         <Legend />
-                        <Line type="monotone" dataKey="income" name="Income" stroke="#4CAF50" strokeWidth={3} dot={{ fill: '#4CAF50', r: 4 }} activeDot={{ r: 6 }} />
-                        <Line type="monotone" dataKey="expenses" name="Expenses" stroke="#F44336" strokeWidth={3} dot={{ fill: '#F44336', r: 4 }} activeDot={{ r: 6 }} />
+                        <Line type="monotone" dataKey="income" name="Income" stroke="#4CAF50" strokeWidth={3} dot={{ fill: '#4CAF50', r: 4 }} activeDot={{ r: 6 }} isAnimationActive={!isExporting} />
+                        <Line type="monotone" dataKey="expenses" name="Expenses" stroke="#F44336" strokeWidth={3} dot={{ fill: '#F44336', r: 4 }} activeDot={{ r: 6 }} isAnimationActive={!isExporting} />
                       </LineChart>
                     </ResponsiveContainer>
                   </Box>
@@ -190,6 +176,7 @@ const Dashboard = () => {
                           cy="50%"
                           outerRadius={100}
                           paddingAngle={2}
+                          isAnimationActive={!isExporting}
                         >
                           {categoryBreakdown.map((entry, index) => (
                             <Cell
