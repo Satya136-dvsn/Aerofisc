@@ -5,30 +5,7 @@ const bankingService = {
         return new Promise((resolve) => {
             setTimeout(() => {
                 resolve({
-                    data: [
-                        {
-                            id: 1,
-                            bankName: 'HDFC Bank',
-                            bankLogo: '🏦',
-                            accountType: 'Savings',
-                            accountNumber: '****1234',
-                            balance: 125000,
-                            currency: 'INR',
-                            lastSync: new Date(Date.now() - 3600000).toISOString(),
-                            status: 'Connected',
-                        },
-                        {
-                            id: 2,
-                            bankName: 'ICICI Bank',
-                            bankLogo: '🏦',
-                            accountType: 'Current',
-                            accountNumber: '****5678',
-                            balance: 87500,
-                            currency: 'INR',
-                            lastSync: new Date(Date.now() - 7200000).toISOString(),
-                            status: 'Connected',
-                        },
-                    ],
+                    data: [], // No mock accounts
                 });
             }, 500);
         });
@@ -36,23 +13,10 @@ const bankingService = {
 
     // Connect a new bank account (mock OAuth flow)
     connectBank: async (bankData) => {
-        return new Promise((resolve) => {
+        return new Promise((resolve, reject) => {
             setTimeout(() => {
-                resolve({
-                    data: {
-                        id: Date.now(),
-                        bankName: bankData.bankName,
-                        bankLogo: '🏦',
-                        accountType: bankData.accountType,
-                        accountNumber: `****${Math.floor(1000 + Math.random() * 9000)}`,
-                        balance: 0,
-                        currency: 'INR',
-                        lastSync: new Date().toISOString(),
-                        status: 'Connected',
-                    },
-                    message: 'Bank account connected successfully',
-                });
-            }, 1500);
+                reject(new Error('Real-time banking integration is currently unavailable. Please check back later.'));
+            }, 1000);
         });
     },
 

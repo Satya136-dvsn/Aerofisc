@@ -28,6 +28,7 @@ import {
 } from 'date-fns';
 import BillsService from '../services/BillsService';
 import TransactionService from '../services/TransactionService';
+import categoryService from '../services/categoryService';
 
 const BillsPage = () => {
     const [bills, setBills] = useState([]);
@@ -47,20 +48,28 @@ const BillsPage = () => {
         autoReminder: true,
         notes: ''
     });
+    const [categories, setCategories] = useState([]);
 
     useEffect(() => {
         fetchBills();
         fetchPaymentHistory();
+        fetchCategories();
 
-        // Auto-refresh every 10 seconds to catch bills created from transactions
         const interval = setInterval(() => {
             fetchBills();
-            // Optionally refresh history too, but maybe less frequent?
-            // fetchPaymentHistory(); 
         }, 10000);
 
         return () => clearInterval(interval);
     }, []);
+
+    const fetchCategories = async () => {
+        try {
+            const response = await categoryService.getAll();
+            setCategories(response.data);
+        } catch (error) {
+            console.error("Failed to fetch categories", error);
+        }
+    };
 
     const fetchBills = async () => {
         try {
@@ -77,13 +86,9 @@ const BillsPage = () => {
     const fetchPaymentHistory = async () => {
         try {
             setHistoryLoading(true);
-            // Fetch more items to ensure we find recent bill payments
             const response = await TransactionService.getAll({ size: 100 });
-
-            // Handle paginated response (response.data.content) or flat array
             const transactions = response.data.content || (Array.isArray(response.data) ? response.data : []);
 
-            // Filter for bill payments (description contains "Bill Payment" or category is Bills & EMI)
             const history = transactions.filter(t =>
                 (t.description && t.description.toLowerCase().includes('bill payment')) ||
                 (t.categoryName && t.categoryName.toLowerCase().includes('bill'))

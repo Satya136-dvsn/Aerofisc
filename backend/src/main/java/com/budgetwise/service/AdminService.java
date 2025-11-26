@@ -142,4 +142,75 @@ public class AdminService {
         // 4. Delete User
         userRepository.deleteById(userId);
     }
+
+    public java.util.Map<String, Object> getUserCompleteProfile(Long userId) {
+        if (!userRepository.existsById(userId)) {
+            throw new RuntimeException("User not found");
+        }
+
+        java.util.Map<String, Object> profile = new java.util.HashMap<>();
+
+        // User basic info (without password)
+        com.budgetwise.entity.User user = userRepository.findById(userId).orElseThrow();
+        java.util.Map<String, Object> userInfo = new java.util.HashMap<>();
+        userInfo.put("id", user.getId());
+        userInfo.put("username", user.getUsername());
+        userInfo.put("email", user.getEmail());
+        userInfo.put("role", user.getRole().toString());
+        userInfo.put("isActive", user.getIsActive());
+        userInfo.put("createdAt", user.getCreatedAt());
+        profile.put("user", userInfo);
+
+        // User profile
+        com.budgetwise.entity.UserProfile userProfile = userProfileRepository.findByUserId(userId).orElse(null);
+        if (userProfile != null) {
+            java.util.Map<String, Object> profileInfo = new java.util.HashMap<>();
+            profileInfo.put("monthlyIncome", userProfile.getMonthlyIncome());
+            profileInfo.put("savingsTarget", userProfile.getSavingsTarget());
+            profile.put("profile", profileInfo);
+        }
+
+        // Financial summary
+        java.util.List<com.budgetwise.entity.Transaction> allTransactions = transactionRepository
+                .findByUserIdOrderByCreatedAtDesc(userId);
+
+        BigDecimal totalIncome = allTransactions.stream()
+                .filter(t -> t.getType() == com.budgetwise.entity.Transaction.TransactionType.INCOME)
+                .map(com.budgetwise.entity.Transaction::getAmount)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        BigDecimal totalExpenses = allTransactions.stream()
+                .filter(t -> t.getType() == com.budgetwise.entity.Transaction.TransactionType.EXPENSE)
+                .map(com.budgetwise.entity.Transaction::getAmount)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        java.util.Map<String, BigDecimal> financialSummary = new java.util.HashMap<>();
+        financialSummary.put("totalIncome", totalIncome);
+        financialSummary.put("totalExpenses", totalExpenses);
+        financialSummary.put("netBalance", totalIncome.subtract(totalExpenses));
+        profile.put("financialSummary", financialSummary);
+
+        // Counts only (avoid complex entity serialization)
+        profile.put("budgetCount", budgetRepository.findByUserId(userId).size());
+        profile.put("savingsGoalCount", savingsGoalRepository.findByUserId(userId).size());
+        profile.put("totalTransactions", allTransactions.size());
+        profile.put("billCount", billRepository.findByUserIdOrderByNextDueDateAsc(userId).size());
+        profile.put("investmentCount", investmentRepository.findByUserIdOrderByPurchaseDateDesc(userId).size());
+
+        // Recent transactions (just 5, simple mapping)
+        java.util.List<java.util.Map<String, Object>> recentTxns = new java.util.ArrayList<>();
+        for (int i = 0; i < Math.min(5, allTransactions.size()); i++) {
+            com.budgetwise.entity.Transaction txn = allTransactions.get(i);
+            java.util.Map<String, Object> txnMap = new java.util.HashMap<>();
+            txnMap.put("id", txn.getId());
+            txnMap.put("amount", txn.getAmount());
+            txnMap.put("type", txn.getType().toString());
+            txnMap.put("description", txn.getDescription());
+            txnMap.put("date", txn.getTransactionDate());
+            recentTxns.add(txnMap);
+        }
+        profile.put("recentTransactions", recentTxns);
+
+        return profile;
+    }
 }

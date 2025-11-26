@@ -1,0 +1,9 @@
+target/
+.mvn/
+*.iml
+.idea/
+*.log
+*.class
+.DS_Store
+.env
+application-secrets.properties

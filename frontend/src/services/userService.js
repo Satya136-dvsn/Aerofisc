@@ -27,6 +27,19 @@ const userService = {
                 'Content-Type': 'multipart/form-data',
             },
         });
+    },
+
+    // GDPR Features
+    exportData: async () => {
+        return api.get('/gdpr/export', {
+            responseType: 'blob'
+        });
+    },
+
+    deleteAccount: async (password) => {
+        return api.delete('/gdpr/account', {
+            data: { password }
+        });
     }
 };
 

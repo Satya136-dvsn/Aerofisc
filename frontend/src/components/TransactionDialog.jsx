@@ -324,7 +324,7 @@ const TransactionDialog = ({ open, transaction, onClose }) => {
                         {receiptFile.name}
                       </Typography>
                     </Box>
-                    <IconButton size="small" onClick={handleRemoveReceipt}>
+                    <IconButton size="small" onClick={handleRemoveReceipt} aria-label="Remove receipt">
                       <CloseIcon />
                     </IconButton>
                   </Box>

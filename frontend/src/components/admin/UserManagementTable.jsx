@@ -15,9 +15,9 @@ import {
     Box,
     Avatar
 } from '@mui/material';
-import { MoreVert, CheckCircle, Block, Delete } from '@mui/icons-material';
+import { MoreVert, CheckCircle, Block, Delete, Visibility } from '@mui/icons-material';
 
-const UserManagementTable = ({ users, onUpdateStatus, onDeleteUser }) => {
+const UserManagementTable = ({ users, onUpdateStatus, onDeleteUser, onViewTransactions }) => {
     const [anchorEl, setAnchorEl] = useState(null);
     const [selectedUser, setSelectedUser] = useState(null);
 
@@ -116,6 +116,14 @@ const UserManagementTable = ({ users, onUpdateStatus, onDeleteUser }) => {
                 open={Boolean(anchorEl)}
                 onClose={handleMenuClose}
             >
+                <MenuItem onClick={() => {
+                    if (selectedUser && onViewTransactions) {
+                        onViewTransactions(selectedUser.id, selectedUser.name);
+                    }
+                    handleMenuClose();
+                }}>
+                    <Visibility fontSize="small" sx={{ mr: 1, color: 'info.main' }} /> View Profile
+                </MenuItem>
                 <MenuItem onClick={() => handleStatusChange('Active')}>
                     <CheckCircle fontSize="small" sx={{ mr: 1, color: 'success.main' }} /> Activate
                 </MenuItem>

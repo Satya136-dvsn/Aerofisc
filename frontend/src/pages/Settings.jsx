@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { Container, Grid, Typography, Box, Fade, Tabs, Tab, Paper } from '@mui/material';
-import { Person, Security, Notifications, Tune } from '@mui/icons-material';
+import { Person, Security, Notifications, Tune, ManageAccounts } from '@mui/icons-material';
 import ProfileSettings from '../components/settings/ProfileSettings';
 import SecuritySettings from '../components/settings/SecuritySettings';
 import NotificationSettings from '../components/settings/NotificationSettings';
 import AppSettings from '../components/settings/AppSettings';
+import AccountSettings from '../components/settings/AccountSettings';
 
 const Settings = () => {
     const [activeTab, setActiveTab] = useState(0);
@@ -41,6 +42,7 @@ const Settings = () => {
                             <Tab icon={<Security />} iconPosition="start" label="Security" sx={{ justifyContent: 'flex-start', minHeight: 60 }} />
                             <Tab icon={<Notifications />} iconPosition="start" label="Notifications" sx={{ justifyContent: 'flex-start', minHeight: 60 }} />
                             <Tab icon={<Tune />} iconPosition="start" label="Preferences" sx={{ justifyContent: 'flex-start', minHeight: 60 }} />
+                            <Tab icon={<ManageAccounts />} iconPosition="start" label="Account" sx={{ justifyContent: 'flex-start', minHeight: 60 }} />
                         </Tabs>
                     </Paper>
                 </Grid>
@@ -52,6 +54,7 @@ const Settings = () => {
                             {activeTab === 1 && <SecuritySettings />}
                             {activeTab === 2 && <NotificationSettings />}
                             {activeTab === 3 && <AppSettings />}
+                            {activeTab === 4 && <AccountSettings />}
                         </Box>
                     </Fade>
                 </Grid>

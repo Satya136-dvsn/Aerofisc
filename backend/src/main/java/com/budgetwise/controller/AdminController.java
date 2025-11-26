@@ -105,4 +105,21 @@ public class AdminController {
 
                 return ResponseEntity.ok().build();
         }
+
+        @GetMapping("/users/{id}/profile")
+        public ResponseEntity<java.util.Map<String, Object>> getUserProfile(
+                        @PathVariable Long id,
+                        @AuthenticationPrincipal UserPrincipal userPrincipal) {
+                java.util.Map<String, Object> profile = adminService.getUserCompleteProfile(id);
+
+                adminService.logAdminAction(
+                                userPrincipal.getId(),
+                                "USER_PROFILE_VIEW",
+                                id,
+                                "UserProfile",
+                                "Viewed complete user profile",
+                                "127.0.0.1");
+
+                return ResponseEntity.ok(profile);
+        }
 }

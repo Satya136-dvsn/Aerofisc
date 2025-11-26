@@ -10,53 +10,53 @@ import java.time.Duration;
 
 @Configuration
 public class ExternalApiConfig {
-    
-    @Value("${openai.api.key}")
-    private String openaiApiKey;
-    
-    @Value("${openai.api.url}")
-    private String openaiApiUrl;
-    
+
+    @Value("${gemini.api.key}")
+    private String geminiApiKey;
+
+    @Value("${gemini.api.url}")
+    private String geminiApiUrl;
+
     @Value("${alphavantage.api.key}")
     private String alphaVantageApiKey;
-    
+
     @Value("${alphavantage.api.url}")
     private String alphaVantageApiUrl;
-    
+
     @Value("${dropbox.api.key}")
     private String dropboxApiKey;
-    
+
     @Bean
     public RestTemplate restTemplate() {
         return new RestTemplate();
     }
-    
+
     @Bean
     public OkHttpClient okHttpClient() {
         return new OkHttpClient.Builder()
-            .connectTimeout(Duration.ofSeconds(30))
-            .readTimeout(Duration.ofSeconds(30))
-            .writeTimeout(Duration.ofSeconds(30))
-            .build();
+                .connectTimeout(Duration.ofSeconds(30))
+                .readTimeout(Duration.ofSeconds(30))
+                .writeTimeout(Duration.ofSeconds(30))
+                .build();
     }
-    
+
     // Getters for API keys and URLs
     public String getOpenaiApiKey() {
-        return openaiApiKey;
+        return geminiApiKey;
     }
-    
+
     public String getOpenaiApiUrl() {
-        return openaiApiUrl;
+        return geminiApiUrl;
     }
-    
+
     public String getAlphaVantageApiKey() {
         return alphaVantageApiKey;
     }
-    
+
     public String getAlphaVantageApiUrl() {
         return alphaVantageApiUrl;
     }
-    
+
     public String getDropboxApiKey() {
         return dropboxApiKey;
     }

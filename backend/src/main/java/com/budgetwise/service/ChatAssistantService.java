@@ -22,13 +22,16 @@ public class ChatAssistantService {
     private final BudgetRepository budgetRepository;
     private final SavingsGoalRepository savingsGoalRepository;
     private final UserProfileRepository userProfileRepository;
+    private final AIService aiService;
 
     public ChatAssistantService(TransactionRepository transactionRepository, BudgetRepository budgetRepository,
-            SavingsGoalRepository savingsGoalRepository, UserProfileRepository userProfileRepository) {
+            SavingsGoalRepository savingsGoalRepository, UserProfileRepository userProfileRepository,
+            AIService aiService) {
         this.transactionRepository = transactionRepository;
         this.budgetRepository = budgetRepository;
         this.savingsGoalRepository = savingsGoalRepository;
         this.userProfileRepository = userProfileRepository;
+        this.aiService = aiService;
     }
 
     public ChatResponseDto chat(String message, String conversationId, Long userId) {
@@ -82,8 +85,7 @@ public class ChatAssistantService {
     }
 
     private String generateResponse(String message, Long userId, String context) {
-        // Simple rule-based responses (in production, integrate with OpenAI API)
-
+        // Simple rule-based responses
         if (message.contains("spending") || message.contains("expense")) {
             return generateSpendingResponse(userId);
         } else if (message.contains("saving") || message.contains("save")) {
@@ -101,9 +103,10 @@ public class ChatAssistantService {
                     "• Detecting unusual transactions\n\n" +
                     "Try asking: 'How is my spending?' or 'Am I saving enough?'";
         } else {
-            return "I'm your financial assistant! " + context + "\n\n" +
-                    "Ask me about your spending, savings, budgets, or goals. " +
-                    "For example: 'How much did I spend this month?' or 'Am I on track with my savings?'";
+            // Fallback to Gemini AI for general financial advice or complex queries
+            String prompt = "Context: " + context + "\nUser Question: " + message +
+                    "\nProvide a helpful, friendly, and concise financial response.";
+            return aiService.getFinancialAdvice(prompt);
         }
     }
 

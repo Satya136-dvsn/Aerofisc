@@ -54,6 +54,14 @@ const adminService = {
         const enabled = status === 'Active' || status === true;
         return adminService.toggleUserStatus(userId, enabled);
     },
+
+    getUserTransactions: async (userId, page = 0, size = 20) => {
+        return api.get(`/admin/users/${userId}/transactions?page=${page}&size=${size}`);
+    },
+
+    getUserProfile: async (userId) => {
+        return api.get(`/admin/users/${userId}/profile`);
+    },
 };
 
 export default adminService;

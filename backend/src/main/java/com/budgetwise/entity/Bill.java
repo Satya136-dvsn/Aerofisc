@@ -9,7 +9,10 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "bills")
+@Table(name = "bills", indexes = {
+        @Index(name = "idx_user_duedate", columnList = "user_id, next_due_date"),
+        @Index(name = "idx_status", columnList = "status")
+})
 public class Bill {
 
     @Id

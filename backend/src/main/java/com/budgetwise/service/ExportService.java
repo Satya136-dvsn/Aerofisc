@@ -21,16 +21,33 @@ public class ExportService {
     private final PdfReportGenerator pdfReportGenerator;
     private final ExcelReportGenerator excelReportGenerator;
     private final PredictionService predictionService;
+    private final com.fasterxml.jackson.databind.ObjectMapper objectMapper;
 
     public ExportService(TransactionRepository transactionRepository, BudgetRepository budgetRepository,
             SavingsGoalRepository savingsGoalRepository, PdfReportGenerator pdfReportGenerator,
-            ExcelReportGenerator excelReportGenerator, PredictionService predictionService) {
+            ExcelReportGenerator excelReportGenerator, PredictionService predictionService,
+            com.fasterxml.jackson.databind.ObjectMapper objectMapper) {
         this.transactionRepository = transactionRepository;
         this.budgetRepository = budgetRepository;
         this.savingsGoalRepository = savingsGoalRepository;
         this.pdfReportGenerator = pdfReportGenerator;
         this.excelReportGenerator = excelReportGenerator;
         this.predictionService = predictionService;
+        this.objectMapper = objectMapper;
+    }
+
+    // ========== JSON EXPORTS (GDPR) ==========
+
+    public byte[] exportAllDataJSON(Long userId) throws IOException {
+        java.util.Map<String, Object> allData = new java.util.HashMap<>();
+
+        allData.put("transactions", transactionRepository.findByUserIdOrderByCreatedAtDesc(userId));
+        allData.put("budgets", budgetRepository.findByUserId(userId));
+        allData.put("savingsGoals", savingsGoalRepository.findByUserId(userId));
+        allData.put("exportDate", java.time.LocalDateTime.now().toString());
+        allData.put("userId", userId);
+
+        return objectMapper.writerWithDefaultPrettyPrinter().writeValueAsBytes(allData);
     }
 
     // ========== PDF EXPORTS ==========

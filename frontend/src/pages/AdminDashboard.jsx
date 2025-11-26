@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Container, Box, Typography, Fade, Snackbar, Alert, CircularProgress } from '@mui/material';
 import SystemStatsWidget from '../components/admin/SystemStatsWidget';
 import UserManagementTable from '../components/admin/UserManagementTable';
+import UserProfileDialog from '../components/admin/UserProfileDialog';
 import adminService from '../services/adminService';
 
 const AdminDashboard = () => {
@@ -9,6 +10,7 @@ const AdminDashboard = () => {
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
     const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
+    const [profileDialog, setProfileDialog] = useState({ open: false, userId: null, userName: '' });
 
     useEffect(() => {
         fetchDashboardData();
@@ -80,6 +82,14 @@ const AdminDashboard = () => {
         setSnackbar({ ...snackbar, open: false });
     };
 
+    const handleViewTransactions = (userId, userName) => {
+        setProfileDialog({ open: true, userId, userName });
+    };
+
+    const handleCloseProfileDialog = () => {
+        setProfileDialog({ open: false, userId: null, userName: '' });
+    };
+
     if (loading) {
         return (
             <Box display="flex" justifyContent="center" alignItems="center" minHeight="60vh">
@@ -109,6 +119,14 @@ const AdminDashboard = () => {
                 users={users}
                 onUpdateStatus={handleUpdateUserStatus}
                 onDeleteUser={handleDeleteUser}
+                onViewTransactions={handleViewTransactions}
+            />
+
+            <UserProfileDialog
+                open={profileDialog.open}
+                onClose={handleCloseProfileDialog}
+                userId={profileDialog.userId}
+                userName={profileDialog.userName}
             />
 
             <Snackbar open={snackbar.open} autoHideDuration={6000} onClose={handleCloseSnackbar}>

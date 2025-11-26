@@ -13,7 +13,9 @@ const ProfileSettings = () => {
         email: '',
         phone: '',
         bio: '',
-        avatar: ''
+        avatar: '',
+        monthlyIncome: '',
+        savingsTarget: ''
     });
 
     // Load profile data on mount
@@ -28,7 +30,9 @@ const ProfileSettings = () => {
                         email: user?.email || '', // Get email from AuthContext user
                         phone: response.data.phone || '',
                         bio: response.data.bio || '',
-                        avatar: response.data.avatar || ''
+                        avatar: response.data.avatar || '',
+                        monthlyIncome: response.data.monthlyIncome || '',
+                        savingsTarget: response.data.savingsTarget || ''
                     });
                 }
             } catch (error) {
@@ -174,6 +178,30 @@ const ProfileSettings = () => {
                                     value={formData.bio}
                                     onChange={handleChange}
                                     placeholder="Tell us a little about yourself..."
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    fullWidth
+                                    label="Monthly Income"
+                                    name="monthlyIncome"
+                                    type="number"
+                                    value={formData.monthlyIncome}
+                                    onChange={handleChange}
+                                    placeholder="Enter your monthly income"
+                                    inputProps={{ min: 0, step: 0.01 }}
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    fullWidth
+                                    label="Savings Target"
+                                    name="savingsTarget"
+                                    type="number"
+                                    value={formData.savingsTarget}
+                                    onChange={handleChange}
+                                    placeholder="Enter your savings target"
+                                    inputProps={{ min: 0, step: 0.01 }}
                                 />
                             </Grid>
                             <Grid item xs={12} display="flex" justifyContent="flex-end">

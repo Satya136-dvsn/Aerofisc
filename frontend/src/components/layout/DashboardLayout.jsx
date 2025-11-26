@@ -184,7 +184,7 @@ const DashboardLayout = () => {
           />
         )}
         {!isMobile && (
-          <IconButton onClick={handleDrawerToggle} size="small">
+          <IconButton onClick={handleDrawerToggle} size="small" aria-label={sidebarOpen ? "Collapse sidebar" : "Expand sidebar"}>
             <ChevronLeftIcon
               sx={{
                 transform: sidebarOpen ? 'rotate(0deg)' : 'rotate(180deg)',
@@ -309,6 +309,7 @@ const DashboardLayout = () => {
             edge="start"
             onClick={handleDrawerToggle}
             sx={{ mr: 2, display: { sm: isMobile ? 'block' : 'none' } }}
+            aria-label="Open navigation menu"
           >
             <MenuIcon />
           </IconButton>
@@ -319,7 +320,12 @@ const DashboardLayout = () => {
 
           {/* Notification Bell */}
           <Tooltip title="Notifications">
-            <IconButton color="inherit" sx={{ mr: 1 }} onClick={(e) => setNotificationAnchorEl(e.currentTarget)}>
+            <IconButton
+              color="inherit"
+              sx={{ mr: 1 }}
+              onClick={(e) => setNotificationAnchorEl(e.currentTarget)}
+              aria-label="Show notifications"
+            >
               <Badge badgeContent={3} color="error">
                 <NotificationsIcon />
               </Badge>
@@ -388,7 +394,7 @@ const DashboardLayout = () => {
 
           {/* User Profile Menu */}
           <Tooltip title="Account">
-            <IconButton onClick={handleProfileMenuOpen} sx={{ p: 0 }}>
+            <IconButton onClick={handleProfileMenuOpen} sx={{ p: 0 }} aria-label="Account settings">
               <Avatar
                 src={userAvatar}
                 sx={{

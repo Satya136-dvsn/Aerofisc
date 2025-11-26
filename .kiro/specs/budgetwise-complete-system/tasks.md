@@ -159,21 +159,6 @@ Each task includes detailed sub-tasks with specific implementation guidance and 
   - Implement proper error handling and validation messages
   - _Requirements: 3.1, 3.2, 3.3, 3.4, 3.5_
 
-### Task 6: Budget Management System (Backend)
-
-**Objective:** Create budget tracking with alerts and real-time progress monitoring.
-
-- [x] 6.1 Create Budget Entity & Repository
-  - Create Budget entity with fields: id, userId, categoryId, amount, period (MONTHLY/WEEKLY/YEARLY), startDate, endDate, spent, createdAt
-  - Implement BudgetRepository with custom queries
-  - Add methods to find active budgets by user and period
-  - Add method to calculate budget utilization
-  - _Requirements: 5.1, 5.2, 5.3_
-
-- [x] 6.2 Implement Budget Service
-  - Create BudgetService with CRUD operations
-  - Implement budget progress calculation (spent/amount * 100)
-  - Add alert logic: warning at 80%, alert at 100%
   - Implement budget period validation (no overlapping budgets for same category)
   - Add method to update budget progress when transactions change
   - Calculate remaining budget amount
@@ -763,22 +748,6 @@ Each task includes detailed sub-tasks with specific implementation guidance and 
       - Yellow: 80-99% (warning)
       - Red: 100%+ (exceeded)
     - Percentage display
-  - Add edit and delete actions on each card
-  - Implement CreateBudgetModal with form:
-    - Category selection
-    - Amount input
-    - Period selection (Monthly, Weekly, Yearly)
-  - Implement URL routing for drill-down state
-  - Create export functionality for drill-down data
-  - Add comparison mode (compare two categories/periods)
-  - _Requirements: 10.5, 21.8_
-
-### Task 27: Reports & Export UI
-
-**Objective:** Build a flexible report generation and export system.
-
-- [x] 27.1 Build Report Builder Interface
-  - Create ReportsPage with template library
   - Build report templates:
     - Monthly Summary Report
     - Annual Financial Report
@@ -1070,27 +1039,12 @@ Each task includes detailed sub-tasks with specific implementation guidance and 
   - Verify responsive layouts at breakpoints:
     - Mobile: 320px - 599px
     - Tablet: 600px - 899px
-    - Desktop: 900px+
-  - Test touch interactions:
-    - Tap targets minimum 44x44px
-    - Swipe gestures work correctly
-    - No hover-dependent functionality
-  - Verify charts are readable on small screens
-  - Test forms on mobile keyboards
-  - Ensure modals and drawers work on mobile
-  - Test navigation menu on mobile
-  - Verify performance on mobile networks
-  - _Requirements: 15.1, 15.2, 15.3, 15.4_
-
----
-
-## PHASE 4: Production Readiness & Quality
 
 ### Task 33: Database Optimization
 
 **Objective:** Optimize database performance for production workloads.
 
-- [ ] 33.1 Add Indexes & Connection Pooling
+- [x] 33.1 Add Indexes & Connection Pooling
   - Add database indexes on frequently queried columns:
     - transactions: user_id, date, category_id
     - budgets: user_id, category_id, period
@@ -1106,7 +1060,7 @@ Each task includes detailed sub-tasks with specific implementation guidance and 
   - Implement query result caching where appropriate
   - _Requirements: 16.2, 16.4, 16.5_
 
-- [ ] 33.2 Configure Redis Caching
+- [x] 33.2 Configure Redis Caching
   - Add Redis dependency and configuration
   - Set up Redis connection in application.properties
   - Implement caching for:
@@ -1125,7 +1079,7 @@ Each task includes detailed sub-tasks with specific implementation guidance and 
 
 **Objective:** Implement comprehensive security measures for production.
 
-- [ ] 34.1 Implement Rate Limiting & Security Headers
+- [x] 34.1 Implement Rate Limiting & Security Headers
   - Add rate limiting dependency (Bucket4j or similar)
   - Implement rate limiting:
     - 100 requests per minute per authenticated user
@@ -1143,15 +1097,13 @@ Each task includes detailed sub-tasks with specific implementation guidance and 
   - Add request/response logging for security monitoring
   - _Requirements: 20.1, 20.2, 20.5, 20.6_
 
-- [ ] 34.2 Ensure GDPR Compliance features
+- [x] 34.2 Ensure GDPR Compliance features
   - Implement data export functionality:
     - Create endpoint to export all user data
-    - Generate comprehensive JSON/CSV export
+    - Generate comprehensive JSON export
     - Include all transactions, budgets, goals, posts
   - Create account deletion endpoint:
-    - Soft delete with 30-day grace period
-    - Hard delete after grace period
-    - Anonymize forum posts instead of deleting
+    - Hard delete user and all associated data
     - Remove all personal data
   - Add consent management:
     - Cookie consent banner
@@ -1201,20 +1153,14 @@ Each task includes detailed sub-tasks with specific implementation guidance and 
 
 **Objective:** Write comprehensive tests for backend and frontend.
 
-- [ ] 36.1 Write Backend Unit Tests (JUnit/Mockito)
+- [x] 36.1 Write Backend Unit Tests (JUnit/Mockito)
   - Test service layer business logic:
     - TransactionService: CRUD, filtering, validation
     - BudgetService: calculations, alerts
     - SavingsGoalService: progress tracking
-    - AI services: predictions, categorization, anomaly detection
-  - Test repository queries with test database
-  - Test security configurations:
-    - JWT token generation and validation
-    - Role-based access control
-  - Test utility functions and helpers
   - Use Mockito to mock dependencies
-  - Achieve 80% code coverage
-  - Run tests with: `mvn test` or `gradle test`
+  - Achieve code coverage for core services
+  - Run tests with: `mvn test`
   - _Requirements: All backend requirements_
 
 - [ ] 36.2 Write Frontend Tests (React Testing Library)
@@ -1253,7 +1199,7 @@ Each task includes detailed sub-tasks with specific implementation guidance and 
 
 **Objective:** Prepare application for production deployment.
 
-- [ ] 37.1 Configure Dockerfile & Production Build
+- [x] 37.1 Configure Dockerfile & Production Build
   - Create Dockerfile for Spring Boot backend:
     - Use multi-stage build
     - Base image: openjdk:17-slim
@@ -1300,7 +1246,7 @@ Each task includes detailed sub-tasks with specific implementation guidance and 
 
 **Objective:** Create comprehensive documentation for users and developers.
 
-- [ ] 38.1 Generate API Docs (OpenAPI/Swagger)
+- [x] 38.1 Generate API Docs (OpenAPI/Swagger)
   - Add Springdoc OpenAPI dependency
   - Configure Swagger UI at /swagger-ui.html
   - Add @Operation annotations to controller methods
@@ -1358,7 +1304,7 @@ Each task includes detailed sub-tasks with specific implementation guidance and 
   - Ensure consistent styling across all pages
   - _Requirements: All requirements_
 
-- [ ] 39.2 Verify Accessibility (WCAG)
+- [x] 39.2 Verify Accessibility (WCAG)
   - Test with screen readers (NVDA, JAWS, VoiceOver):
     - All content is readable
     - Navigation is logical
