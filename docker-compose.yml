@@ -50,6 +50,7 @@ services:
       DATABASE_USERNAME: ${MYSQL_USER:-budgetwise_user}
       DATABASE_PASSWORD: ${MYSQL_PASSWORD:-budgetwise_pass}
       JWT_SECRET: ${JWT_SECRET:-budgetwise-production-secret-key-please-change-this-in-production}
+      GEMINI_API_KEY: ${GEMINI_API_KEY}
       CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost,http://localhost:3000}
     ports:
       - "8080:8080"
