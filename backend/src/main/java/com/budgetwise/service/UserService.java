@@ -22,6 +22,15 @@ public class UserService {
                 .orElseThrow(() -> new RuntimeException("User not found with email: " + email));
     }
 
+    public User getUserByEmail(String email) {
+        return findByEmail(email);
+    }
+
+    public User getUserById(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found with ID: " + id));
+    }
+
     @Transactional
     public void deleteUserAccount(Long userId, String password) {
         User user = userRepository.findById(userId)

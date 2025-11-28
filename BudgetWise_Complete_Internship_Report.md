@@ -1,4 +1,4 @@
-# BudgetWise Tracker - Comprehensive Internship Report
+# BudgetWise Tracker: Comprehensive Internship Report
 
 ## AI-Driven Personal Finance Management System
 

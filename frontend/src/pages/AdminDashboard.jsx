@@ -1,20 +1,64 @@
 import { useState, useEffect } from 'react';
-import { Container, Box, Typography, Fade, Snackbar, Alert, CircularProgress } from '@mui/material';
+import { Container, Box, Typography, Fade, Snackbar, Alert, CircularProgress, Button } from '@mui/material';
 import SystemStatsWidget from '../components/admin/SystemStatsWidget';
 import UserManagementTable from '../components/admin/UserManagementTable';
 import UserProfileDialog from '../components/admin/UserProfileDialog';
+import UserProfileDialog from '../components/admin/UserProfileDialog';
 import adminService from '../services/adminService';
+import userService from '../services/userService';
+import { CloudUpload, AddLink, CheckCircle } from '@mui/icons-material';
+import { Paper } from '@mui/material';
 
 const AdminDashboard = () => {
     const [stats, setStats] = useState(null);
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
     const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
+    const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
     const [profileDialog, setProfileDialog] = useState({ open: false, userId: null, userName: '' });
+    const [isDriveConnected, setIsDriveConnected] = useState(false);
+    const [driveLoading, setDriveLoading] = useState(false);
+    const [backupLoading, setBackupLoading] = useState(false);
 
     useEffect(() => {
         fetchDashboardData();
+        checkDriveStatus();
     }, []);
+
+    const checkDriveStatus = async () => {
+        try {
+            setDriveLoading(true);
+            const response = await userService.checkGoogleDriveStatus();
+            setIsDriveConnected(response.data.isConnected);
+        } catch (error) {
+            console.error("Failed to check Drive status", error);
+        } finally {
+            setDriveLoading(false);
+        }
+    };
+
+    const handleConnectDrive = async () => {
+        try {
+            const response = await userService.getGoogleDriveAuthUrl();
+            window.location.href = response.data.url;
+        } catch (error) {
+            console.error("Failed to get auth URL", error);
+            setSnackbar({ open: true, message: 'Failed to initiate Google Drive connection', severity: 'error' });
+        }
+    };
+
+    const handleBackupToDrive = async () => {
+        try {
+            setBackupLoading(true);
+            const response = await userService.backupToGoogleDrive();
+            setSnackbar({ open: true, message: response.data.message || "Backup uploaded successfully!", severity: 'success' });
+        } catch (error) {
+            console.error("Backup failed", error);
+            setSnackbar({ open: true, message: "Backup failed: " + (error.response?.data?.error || error.message), severity: 'error' });
+        } finally {
+            setBackupLoading(false);
+        }
+    };
 
     const fetchDashboardData = async () => {
         try {
@@ -113,6 +157,32 @@ const AdminDashboard = () => {
 
             <Box mb={4}>
                 <SystemStatsWidget stats={stats} />
+            </Box>
+
+            <Box mb={4}>
+                <Paper sx={{ p: 3, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                    <Box>
+                        <Typography variant="h6" gutterBottom>
+                            System Backup
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary">
+                            {isDriveConnected
+                                ? <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><CheckCircle color="success" fontSize="small" /> Connected to Google Drive</span>
+                                : "Connect Google Drive to enable cloud backups"}
+                        </Typography>
+                    </Box>
+                    <Box>
+                        <Button
+                            variant="contained"
+                            color={isDriveConnected ? "success" : "primary"}
+                            startIcon={backupLoading || driveLoading ? <CircularProgress size={20} color="inherit" /> : (isDriveConnected ? <CloudUpload /> : <AddLink />)}
+                            onClick={isDriveConnected ? handleBackupToDrive : handleConnectDrive}
+                            disabled={backupLoading || driveLoading}
+                        >
+                            {driveLoading ? 'Checking...' : (isDriveConnected ? (backupLoading ? 'Backing up...' : 'Backup Now') : 'Connect Drive')}
+                        </Button>
+                    </Box>
+                </Paper>
             </Box>
 
             <UserManagementTable

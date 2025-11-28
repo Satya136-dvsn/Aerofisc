@@ -167,6 +167,108 @@ const UserProfileDialog = ({ open, onClose, userId, userName }) => {
                     </Card>
                 )}
 
+                {/* Financial Health & Tax */}
+                <Grid container spacing={2} sx={{ mb: 3 }}>
+                    <Grid item xs={12} md={6}>
+                        <Card elevation={0} sx={{ border: '1px solid', borderColor: 'divider', height: '100%' }}>
+                            <CardContent>
+                                <Typography variant="subtitle1" fontWeight="bold" gutterBottom>
+                                    Financial Health
+                                </Typography>
+                                <Divider sx={{ my: 1 }} />
+                                {profileData.financialHealth ? (
+                                    <Box textAlign="center" py={2}>
+                                        <Typography variant="h3" fontWeight="bold" color={
+                                            profileData.financialHealth.healthScore >= 80 ? 'success.main' :
+                                                profileData.financialHealth.healthScore >= 60 ? 'primary.main' :
+                                                    profileData.financialHealth.healthScore >= 40 ? 'warning.main' : 'error.main'
+                                        }>
+                                            {profileData.financialHealth.healthScore}
+                                        </Typography>
+                                        <Typography variant="body2" color="text.secondary">
+                                            Score ({profileData.financialHealth.healthRating})
+                                        </Typography>
+                                    </Box>
+                                ) : (
+                                    <Typography variant="body2" color="text.secondary" textAlign="center">
+                                        No health data available
+                                    </Typography>
+                                )}
+                            </CardContent>
+                        </Card>
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                        <Card elevation={0} sx={{ border: '1px solid', borderColor: 'divider', height: '100%' }}>
+                            <CardContent>
+                                <Typography variant="subtitle1" fontWeight="bold" gutterBottom>
+                                    Tax Estimate
+                                </Typography>
+                                <Divider sx={{ my: 1 }} />
+                                {profileData.taxEstimate ? (
+                                    <List dense>
+                                        <ListItem>
+                                            <ListItemText primary="Taxable Income" />
+                                            <Typography variant="body2" fontWeight="bold">
+                                                {formatCurrency(profileData.taxEstimate.taxableIncome)}
+                                            </Typography>
+                                        </ListItem>
+                                        <ListItem>
+                                            <ListItemText primary="Estimated Tax" />
+                                            <Typography variant="body2" fontWeight="bold" color="error.main">
+                                                {formatCurrency(profileData.taxEstimate.estimatedTax)}
+                                            </Typography>
+                                        </ListItem>
+                                        <ListItem>
+                                            <ListItemText primary="Effective Rate" />
+                                            <Typography variant="body2" fontWeight="bold">
+                                                {profileData.taxEstimate.effectiveRate}%
+                                            </Typography>
+                                        </ListItem>
+                                    </List>
+                                ) : (
+                                    <Typography variant="body2" color="text.secondary" textAlign="center">
+                                        No tax data available
+                                    </Typography>
+                                )}
+                            </CardContent>
+                        </Card>
+                    </Grid>
+                </Grid>
+
+                {/* Debts Summary */}
+                <Card elevation={0} sx={{ mb: 3, border: '1px solid', borderColor: 'divider' }}>
+                    <CardContent>
+                        <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>
+                            <Typography variant="subtitle1" fontWeight="bold">
+                                Debt Overview
+                            </Typography>
+                            <Typography variant="subtitle2" color="error.main" fontWeight="bold">
+                                Total: {formatCurrency(profileData.totalDebt)}
+                            </Typography>
+                        </Box>
+                        <Divider sx={{ my: 1 }} />
+                        {profileData.debts && profileData.debts.length > 0 ? (
+                            <List dense>
+                                {profileData.debts.map((debt) => (
+                                    <ListItem key={debt.id}>
+                                        <ListItemText
+                                            primary={debt.name}
+                                            secondary={`${debt.interestRate}% Interest`}
+                                        />
+                                        <Typography variant="body2" fontWeight="bold" color="error.main">
+                                            {formatCurrency(debt.currentBalance)}
+                                        </Typography>
+                                    </ListItem>
+                                ))}
+                            </List>
+                        ) : (
+                            <Typography variant="body2" color="text.secondary" textAlign="center">
+                                No active debts
+                            </Typography>
+                        )}
+                    </CardContent>
+                </Card>
+
                 {/* Activity Summary */}
                 <Card elevation={0} sx={{ mb: 3, border: '1px solid', borderColor: 'divider' }}>
                     <CardContent>

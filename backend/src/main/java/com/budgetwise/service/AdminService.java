@@ -12,6 +12,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
+import com.budgetwise.service.TaxService;
+import com.budgetwise.service.FinancialHealthService;
+import com.budgetwise.dto.TaxEstimateDto;
+import com.budgetwise.dto.FinancialHealthDto;
 
 @Service
 public class AdminService {
@@ -29,13 +33,17 @@ public class AdminService {
     private final LikeRepository likeRepository;
     private final ScheduledReportRepository scheduledReportRepository;
     private final UserProfileRepository userProfileRepository;
+    private final DebtRepository debtRepository;
+    private final TaxService taxService;
+    private final FinancialHealthService financialHealthService;
 
     public AdminService(UserRepository userRepository, TransactionRepository transactionRepository,
             CategoryRepository categoryRepository, AuditLogRepository auditLogRepository,
             BudgetRepository budgetRepository, SavingsGoalRepository savingsGoalRepository,
             BillRepository billRepository, InvestmentRepository investmentRepository, PostRepository postRepository,
             CommentRepository commentRepository, LikeRepository likeRepository,
-            ScheduledReportRepository scheduledReportRepository, UserProfileRepository userProfileRepository) {
+            ScheduledReportRepository scheduledReportRepository, UserProfileRepository userProfileRepository,
+            DebtRepository debtRepository, TaxService taxService, FinancialHealthService financialHealthService) {
         this.userRepository = userRepository;
         this.transactionRepository = transactionRepository;
         this.categoryRepository = categoryRepository;
@@ -49,6 +57,9 @@ public class AdminService {
         this.likeRepository = likeRepository;
         this.scheduledReportRepository = scheduledReportRepository;
         this.userProfileRepository = userProfileRepository;
+        this.debtRepository = debtRepository;
+        this.taxService = taxService;
+        this.financialHealthService = financialHealthService;
     }
 
     public AdminStatsDto getSystemStats() {
@@ -208,6 +219,8 @@ public class AdminService {
             transactionsList.add(txnMap);
         }
         profile.put("transactions", transactionsList);
+        profile.put("recentTransactions",
+                transactionsList.stream().limit(5).collect(java.util.stream.Collectors.toList()));
 
         // Full budgets list
         java.util.List<com.budgetwise.entity.Budget> budgets = budgetRepository.findByUserId(userId);
@@ -246,6 +259,39 @@ public class AdminService {
         profile.put("savingsGoalCount", goals.size());
         profile.put("billCount", billRepository.findByUserIdOrderByNextDueDateAsc(userId).size());
         profile.put("investmentCount", investmentRepository.findByUserIdOrderByPurchaseDateDesc(userId).size());
+
+        // Advanced Features Data
+        // 1. Debts
+        java.util.List<com.budgetwise.entity.Debt> debts = debtRepository.findByUserIdOrderByInterestRateDesc(userId);
+        java.util.List<java.util.Map<String, Object>> debtsList = new java.util.ArrayList<>();
+        BigDecimal totalDebt = BigDecimal.ZERO;
+        for (com.budgetwise.entity.Debt debt : debts) {
+            java.util.Map<String, Object> debtMap = new java.util.HashMap<>();
+            debtMap.put("id", debt.getId());
+            debtMap.put("name", debt.getName());
+            debtMap.put("currentBalance", debt.getCurrentBalance());
+            debtMap.put("interestRate", debt.getInterestRate());
+            debtsList.add(debtMap);
+            totalDebt = totalDebt.add(debt.getCurrentBalance());
+        }
+        profile.put("debts", debtsList);
+        profile.put("totalDebt", totalDebt);
+
+        // 2. Tax Estimate
+        try {
+            com.budgetwise.dto.TaxEstimateDto taxEstimate = taxService.calculateTaxEstimate(userId);
+            profile.put("taxEstimate", taxEstimate);
+        } catch (Exception e) {
+            profile.put("taxEstimate", null);
+        }
+
+        // 3. Financial Health
+        try {
+            com.budgetwise.dto.FinancialHealthDto health = financialHealthService.calculateHealthScore(userId);
+            profile.put("financialHealth", health);
+        } catch (Exception e) {
+            profile.put("financialHealth", null);
+        }
 
         return profile;
     }

@@ -2,9 +2,9 @@
 
 ## AI-Driven Personal Finance Management System
 
-**Student Name:** [Your Name]  
-**Organization:** [Company/Organization Name]  
-**Duration:** [Start Date] - [End Date]  
+**Student Name:** D. VENKATA SATYANARAYANA
+**Organization:** INFOSYS SPRINGBOARD 6.0  
+**Duration:**SEP 21, 2025 - DEC 3, 2025  
 **Project:** BudgetWise Tracker - Advanced Personal Finance Management Platform
 
 ---
@@ -1323,12 +1323,12 @@ Complete API documentation available at:
 ---
 
 **Report Submitted By:**  
-[Your Name]  
-[Your Email]  
+D. VENKATA SATYANARAYANA  
+<d.v.satyanarayana260@gmail.com>
 [Date: November 28, 2025]
 
 **Project Repository:**  
-[GitHub/GitLab Link]
+(<https://github.com/Satya136-dvsn/budgetwise_tracker_ai_driven>)
 
 **Live Demo:**  
 <http://localhost:3000> (Development)

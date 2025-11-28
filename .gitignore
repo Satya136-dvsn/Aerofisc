@@ -3,6 +3,7 @@
 
 # Log file
 *.log
+*.txt
 
 # BlueJ files
 *.ctxt
@@ -51,6 +52,7 @@ frontend/.env.local
 # Spring Boot
 backend/src/main/resources/application.properties
 !backend/src/main/resources/application.properties.example
+backend/tokens/
 
 # OS
 .DS_Store

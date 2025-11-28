@@ -36,7 +36,15 @@ const userService = {
         });
     },
 
-    backupToCloud: async () => {
+    getGoogleDriveAuthUrl: async () => {
+        return api.get('/backup/auth-url');
+    },
+
+    checkGoogleDriveStatus: async () => {
+        return api.get('/backup/status');
+    },
+
+    backupToGoogleDrive: async () => {
         return api.post('/backup/upload');
     },
 

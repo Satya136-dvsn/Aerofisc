@@ -22,10 +22,15 @@ public class BillService {
 
     private final BillRepository billRepository;
     private final TransactionRepository transactionRepository;
+    private final EmailService emailService;
+    private final UserService userService;
 
-    public BillService(BillRepository billRepository, TransactionRepository transactionRepository) {
+    public BillService(BillRepository billRepository, TransactionRepository transactionRepository,
+            EmailService emailService, UserService userService) {
         this.billRepository = billRepository;
         this.transactionRepository = transactionRepository;
+        this.emailService = emailService;
+        this.userService = userService;
     }
 
     @Transactional
@@ -152,6 +157,11 @@ public class BillService {
 
         for (Bill bill : overdueBills) {
             bill.setStatus(Bill.BillStatus.OVERDUE);
+
+            if (bill.getAutoReminder()) {
+                String email = userService.getUserById(userId).getEmail();
+                emailService.sendBillReminder(email, bill.getName(), bill.getNextDueDate().toString());
+            }
         }
 
         if (!overdueBills.isEmpty()) {

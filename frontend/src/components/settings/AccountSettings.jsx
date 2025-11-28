@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
     Box,
     Typography,
@@ -13,7 +13,7 @@ import {
     Alert,
     CircularProgress
 } from '@mui/material';
-import { Download, DeleteForever, Warning, CloudUpload } from '@mui/icons-material';
+import { Download, DeleteForever, Warning, CloudUpload, AddLink, CheckCircle } from '@mui/icons-material';
 import ProfessionalCard from '../ui/ProfessionalCard';
 import userService from '../../services/userService';
 import { useAuth } from '../../context/AuthContext';
@@ -27,6 +27,48 @@ const AccountSettings = () => {
     const [password, setPassword] = useState('');
     const [deleteLoading, setDeleteLoading] = useState(false);
     const [error, setError] = useState('');
+    const [isDriveConnected, setIsDriveConnected] = useState(false);
+    const [driveLoading, setDriveLoading] = useState(false);
+    const [backupLoading, setBackupLoading] = useState(false);
+
+    useEffect(() => {
+        checkDriveStatus();
+    }, []);
+
+    const checkDriveStatus = async () => {
+        try {
+            setDriveLoading(true);
+            const response = await userService.checkGoogleDriveStatus();
+            setIsDriveConnected(response.data.isConnected);
+        } catch (error) {
+            console.error("Failed to check Drive status", error);
+        } finally {
+            setDriveLoading(false);
+        }
+    };
+
+    const handleConnectDrive = async () => {
+        try {
+            const response = await userService.getGoogleDriveAuthUrl();
+            window.location.href = response.data.url;
+        } catch (error) {
+            console.error("Failed to get auth URL", error);
+            alert("Failed to initiate Google Drive connection.");
+        }
+    };
+
+    const handleBackupToDrive = async () => {
+        try {
+            setBackupLoading(true);
+            const response = await userService.backupToGoogleDrive();
+            alert(response.data.message || "Backup uploaded successfully!");
+        } catch (error) {
+            console.error("Backup failed", error);
+            alert("Backup failed: " + (error.response?.data?.error || error.message));
+        } finally {
+            setBackupLoading(false);
+        }
+    };
 
     const handleExportData = async () => {
         try {
@@ -97,20 +139,12 @@ const AccountSettings = () => {
                     </Button>
                     <Button
                         variant="contained"
-                        color="secondary"
-                        startIcon={<CloudUpload />}
-                        onClick={async () => {
-                            try {
-                                alert("Starting Cloud Backup...");
-                                await userService.backupToCloud();
-                                alert("Backup uploaded to Dropbox successfully!");
-                            } catch (e) {
-                                console.error(e);
-                                alert("Backup failed: " + (e.response?.data?.error || e.message));
-                            }
-                        }}
+                        color={isDriveConnected ? "success" : "primary"}
+                        startIcon={backupLoading || driveLoading ? <CircularProgress size={20} color="inherit" /> : (isDriveConnected ? <CloudUpload /> : <AddLink />)}
+                        onClick={isDriveConnected ? handleBackupToDrive : handleConnectDrive}
+                        disabled={backupLoading || driveLoading}
                     >
-                        Backup to Dropbox
+                        {driveLoading ? 'Checking...' : (isDriveConnected ? (backupLoading ? 'Backing up...' : 'Backup to Google Drive') : 'Connect Google Drive')}
                     </Button>
                 </Box>
             </ProfessionalCard>

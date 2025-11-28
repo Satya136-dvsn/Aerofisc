@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 public class AuthService {
 
     private final UserRepository userRepository;
@@ -21,44 +22,31 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider tokenProvider;
     private final ProfileService profileService;
+    private final NotificationService notificationService;
 
-    public AuthService(UserRepository userRepository,
-            PasswordEncoder passwordEncoder,
-            AuthenticationManager authenticationManager,
-            JwtTokenProvider tokenProvider,
-            ProfileService profileService) {
+    public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder,
+            AuthenticationManager authenticationManager, JwtTokenProvider tokenProvider,
+            ProfileService profileService, NotificationService notificationService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
         this.tokenProvider = tokenProvider;
         this.profileService = profileService;
+        this.notificationService = notificationService;
     }
 
-    @Transactional
     public AuthResponse register(RegisterRequest request) {
-        // Check if email already exists
-        if (userRepository.existsByEmail(request.getEmail())) {
-            throw new RuntimeException("Email already in use");
+        if (userRepository.existsByUsername(request.getUsername())) {
+            throw new RuntimeException("Username is already taken!");
         }
 
-        // Generate username if not provided
-        String username = request.getUsername();
-        if (username == null || username.trim().isEmpty()) {
-            username = request.getEmail().split("@")[0];
-            // Ensure uniqueness
-            if (userRepository.existsByUsername(username)) {
-                username = username + "_" + System.currentTimeMillis() % 10000;
-            }
-        } else {
-            // Check if provided username exists
-            if (userRepository.existsByUsername(username)) {
-                throw new RuntimeException("Username already in use");
-            }
+        if (userRepository.existsByEmail(request.getEmail())) {
+            throw new RuntimeException("Email Address already in use!");
         }
 
         // Create new user
         User user = new User();
-        user.setUsername(username);
+        user.setUsername(request.getUsername());
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
 
@@ -82,6 +70,13 @@ public class AuthService {
 
         profileService.initializeProfile(savedUser, profileDto);
 
+        // Send Welcome Notification
+        notificationService.createNotification(
+                savedUser.getId(),
+                "INFO",
+                "Welcome to BudgetWise!",
+                "Thanks for joining! Set up your budget and start tracking your expenses.");
+
         // Authenticate user
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
@@ -92,10 +87,7 @@ public class AuthService {
         String accessToken = tokenProvider.generateAccessToken(authentication);
         String refreshToken = tokenProvider.generateRefreshToken(authentication);
 
-        return new AuthResponse(
-                accessToken,
-                refreshToken,
-                tokenProvider.getJwtExpirationMs(),
+        return new AuthResponse(accessToken, refreshToken, tokenProvider.getJwtExpirationMs(),
                 UserDto.fromEntity(savedUser));
     }
 
@@ -112,10 +104,7 @@ public class AuthService {
         User user = userRepository.findById(userPrincipal.getId())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        return new AuthResponse(
-                accessToken,
-                refreshToken,
-                tokenProvider.getJwtExpirationMs(),
+        return new AuthResponse(accessToken, refreshToken, tokenProvider.getJwtExpirationMs(),
                 UserDto.fromEntity(user));
     }
 
@@ -137,10 +126,7 @@ public class AuthService {
         String newAccessToken = tokenProvider.generateAccessToken(authentication);
         String newRefreshToken = tokenProvider.generateRefreshToken(authentication);
 
-        return new AuthResponse(
-                newAccessToken,
-                newRefreshToken,
-                tokenProvider.getJwtExpirationMs(),
+        return new AuthResponse(newAccessToken, newRefreshToken, tokenProvider.getJwtExpirationMs(),
                 UserDto.fromEntity(user));
     }
 }

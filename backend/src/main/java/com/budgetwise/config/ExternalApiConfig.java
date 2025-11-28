@@ -23,8 +23,14 @@ public class ExternalApiConfig {
     @Value("${alphavantage.api.url:https://www.alphavantage.co/query}")
     private String alphaVantageApiUrl;
 
-    @Value("${dropbox.api.key:dummy}")
-    private String dropboxApiKey;
+    @Value("${google.drive.client-id}")
+    private String googleDriveClientId;
+
+    @Value("${google.drive.client-secret}")
+    private String googleDriveClientSecret;
+
+    @Value("${google.drive.redirect-uri}")
+    private String googleDriveRedirectUri;
 
     @Bean
     public RestTemplate restTemplate() {
@@ -57,7 +63,15 @@ public class ExternalApiConfig {
         return alphaVantageApiUrl;
     }
 
-    public String getDropboxApiKey() {
-        return dropboxApiKey;
+    public String getGoogleDriveClientId() {
+        return googleDriveClientId;
+    }
+
+    public String getGoogleDriveClientSecret() {
+        return googleDriveClientSecret;
+    }
+
+    public String getGoogleDriveRedirectUri() {
+        return googleDriveRedirectUri;
     }
 }

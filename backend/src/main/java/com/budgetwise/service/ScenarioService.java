@@ -12,6 +12,10 @@ public class ScenarioService {
 
     public ScenarioDto analyzeScenario(Long userId, BigDecimal incomeChange, BigDecimal expenseChange,
             BigDecimal savingsChange) {
+        // Handle nulls
+        incomeChange = incomeChange != null ? incomeChange : BigDecimal.ZERO;
+        expenseChange = expenseChange != null ? expenseChange : BigDecimal.ZERO;
+        savingsChange = savingsChange != null ? savingsChange : BigDecimal.ZERO;
         // Simplified scenario analysis
         BigDecimal projectedBalance1Year = calculateProjection(incomeChange, expenseChange, savingsChange, 1);
         BigDecimal projectedBalance5Years = calculateProjection(incomeChange, expenseChange, savingsChange, 5);

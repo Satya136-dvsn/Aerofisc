@@ -1,54 +1,28 @@
-// Mock banking service for bank account integration
+import apiClient from './axiosConfig';
+
+// Banking service for bank account integration
 const bankingService = {
     // Get all connected bank accounts
     getAccounts: async () => {
-        return new Promise((resolve) => {
-            setTimeout(() => {
-                resolve({
-                    data: [], // No mock accounts
-                });
-            }, 500);
-        });
+        return apiClient.get('/banking/accounts');
     },
 
-    // Connect a new bank account (mock OAuth flow)
+    // Connect a new bank account
     connectBank: async (bankData) => {
-        return new Promise((resolve, reject) => {
-            setTimeout(() => {
-                reject(new Error('Real-time banking integration is currently unavailable. Please check back later.'));
-            }, 1000);
-        });
+        return apiClient.post('/banking/link', bankData);
     },
 
     // Disconnect a bank account
     disconnectBank: async (accountId) => {
-        return new Promise((resolve) => {
-            setTimeout(() => {
-                resolve({
-                    data: { success: true },
-                    message: 'Bank account disconnected',
-                });
-            }, 500);
-        });
+        return apiClient.delete(`/banking/${accountId}`);
     },
 
     // Sync transactions from bank
     syncTransactions: async (accountId) => {
-        return new Promise((resolve) => {
-            setTimeout(() => {
-                resolve({
-                    data: {
-                        accountId,
-                        lastSync: new Date().toISOString(),
-                        newTransactions: Math.floor(Math.random() * 10),
-                    },
-                    message: 'Transactions synced successfully',
-                });
-            }, 2000);
-        });
+        return apiClient.post(`/banking/${accountId}/sync`);
     },
 
-    // Get available banks list
+    // Get available banks list (Mock for now as it's static data)
     getAvailableBanks: async () => {
         return new Promise((resolve) => {
             setTimeout(() => {
@@ -65,7 +39,7 @@ const bankingService = {
         });
     },
 
-    // Import transactions from connected account
+    // Import transactions (Not needed with real sync, but keeping for compatibility)
     importTransactions: async (accountId, transactions) => {
         return new Promise((resolve) => {
             setTimeout(() => {

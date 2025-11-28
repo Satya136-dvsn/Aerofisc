@@ -3,174 +3,93 @@ package com.budgetwise.service;
 import com.budgetwise.dto.ChatResponseDto;
 import com.budgetwise.entity.Transaction;
 import com.budgetwise.entity.UserProfile;
-import com.budgetwise.repository.BudgetRepository;
-import com.budgetwise.repository.SavingsGoalRepository;
 import com.budgetwise.repository.TransactionRepository;
 import com.budgetwise.repository.UserProfileRepository;
-
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class ChatAssistantService {
 
+    private final GeminiService geminiService;
     private final TransactionRepository transactionRepository;
-    private final BudgetRepository budgetRepository;
-    private final SavingsGoalRepository savingsGoalRepository;
     private final UserProfileRepository userProfileRepository;
-    private final AIService aiService;
 
-    public ChatAssistantService(TransactionRepository transactionRepository, BudgetRepository budgetRepository,
-            SavingsGoalRepository savingsGoalRepository, UserProfileRepository userProfileRepository,
-            AIService aiService) {
+    public ChatAssistantService(GeminiService geminiService, TransactionRepository transactionRepository,
+            UserProfileRepository userProfileRepository) {
+        this.geminiService = geminiService;
         this.transactionRepository = transactionRepository;
-        this.budgetRepository = budgetRepository;
-        this.savingsGoalRepository = savingsGoalRepository;
         this.userProfileRepository = userProfileRepository;
-        this.aiService = aiService;
     }
 
     public ChatResponseDto chat(String message, String conversationId, Long userId) {
-        // Generate conversation ID if not provided
-        if (conversationId == null || conversationId.isEmpty()) {
+        if (conversationId == null) {
             conversationId = UUID.randomUUID().toString();
         }
 
-        // Get user's financial context
-        String context = buildFinancialContext(userId);
+        // 1. Gather Context
+        String financialContext = buildFinancialContext(userId);
 
-        // Generate response based on message
-        String response = generateResponse(message.toLowerCase(), userId, context);
+        // 2. Construct Prompt
+        String prompt = String.format(
+                "You are a helpful financial assistant named BudgetWise AI. " +
+                        "Here is the user's current financial context:\n%s\n\n" +
+                        "User Question: %s\n\n" +
+                        "Provide a helpful, concise, and encouraging response based on the context. " +
+                        "If the context doesn't have the answer, give general financial advice.",
+                financialContext, message);
+
+        // 3. Call AI
+        String aiResponse = geminiService.generateContent(prompt);
 
         return ChatResponseDto.builder()
-                .response(response)
+                .response(aiResponse)
                 .conversationId(conversationId)
-                .context(context)
                 .build();
     }
 
     private String buildFinancialContext(Long userId) {
         StringBuilder context = new StringBuilder();
 
-        // Get current month transactions
+        // Profile
+        UserProfile profile = userProfileRepository.findByUserId(userId).orElse(null);
+        if (profile != null) {
+            context.append("Monthly Income: ").append(profile.getMonthlyIncome()).append("\n");
+            context.append("Savings Target: ").append(profile.getSavingsTarget()).append("\n");
+            context.append("Currency: ").append(profile.getCurrency()).append("\n");
+        }
+
+        // Recent Transactions (Last 5)
+        List<Transaction> recentTxns = transactionRepository.findByUserIdOrderByCreatedAtDesc(userId)
+                .stream().limit(5).collect(Collectors.toList());
+
+        if (!recentTxns.isEmpty()) {
+            context.append("Recent Transactions:\n");
+            for (Transaction t : recentTxns) {
+                context.append("- ").append(t.getDescription())
+                        .append(": ").append(t.getAmount())
+                        .append(" (").append(t.getType()).append(")\n");
+            }
+        }
+
+        // Monthly Summary (Simplified)
         LocalDate startOfMonth = LocalDate.now().withDayOfMonth(1);
         LocalDate endOfMonth = LocalDate.now().withDayOfMonth(LocalDate.now().lengthOfMonth());
+        List<Transaction> monthlyTxns = transactionRepository.findByUserIdAndTransactionDateBetween(userId,
+                startOfMonth, endOfMonth);
 
-        List<Transaction> transactions = transactionRepository.findByUserIdAndTransactionDateBetween(
-                userId, startOfMonth, endOfMonth);
-
-        BigDecimal totalIncome = transactions.stream()
-                .filter(t -> t.getType() == Transaction.TransactionType.INCOME)
-                .map(Transaction::getAmount)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
-
-        BigDecimal totalExpenses = transactions.stream()
+        BigDecimal totalExpense = monthlyTxns.stream()
                 .filter(t -> t.getType() == Transaction.TransactionType.EXPENSE)
                 .map(Transaction::getAmount)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-        int budgetCount = budgetRepository.countByUserId(userId);
-        int goalCount = savingsGoalRepository.countByUserId(userId);
-
-        context.append(String.format("Current month: Income $%.2f, Expenses $%.2f, ",
-                totalIncome, totalExpenses));
-        context.append(String.format("Balance $%.2f. ", totalIncome.subtract(totalExpenses)));
-        context.append(String.format("You have %d budgets and %d savings goals.", budgetCount, goalCount));
+        context.append("Total Expenses this Month: ").append(totalExpense).append("\n");
 
         return context.toString();
-    }
-
-    private String generateResponse(String message, Long userId, String context) {
-        // Simple rule-based responses
-        if (message.contains("spending") || message.contains("expense")) {
-            return generateSpendingResponse(userId);
-        } else if (message.contains("saving") || message.contains("save")) {
-            return generateSavingsResponse(userId);
-        } else if (message.contains("budget")) {
-            return generateBudgetResponse(userId);
-        } else if (message.contains("goal")) {
-            return generateGoalResponse(userId);
-        } else if (message.contains("help") || message.contains("what can you do")) {
-            return "I can help you with:\n" +
-                    "• Analyzing your spending patterns\n" +
-                    "• Tracking your savings goals\n" +
-                    "• Managing your budgets\n" +
-                    "• Providing financial advice\n" +
-                    "• Detecting unusual transactions\n\n" +
-                    "Try asking: 'How is my spending?' or 'Am I saving enough?'";
-        } else {
-            // Fallback to Gemini AI for general financial advice or complex queries
-            String prompt = "Context: " + context + "\nUser Question: " + message +
-                    "\nProvide a helpful, friendly, and concise financial response.";
-            return aiService.getFinancialAdvice(prompt);
-        }
-    }
-
-    private String generateSpendingResponse(Long userId) {
-        LocalDate startOfMonth = LocalDate.now().withDayOfMonth(1);
-        LocalDate endOfMonth = LocalDate.now().withDayOfMonth(LocalDate.now().lengthOfMonth());
-
-        List<Transaction> transactions = transactionRepository.findByUserIdAndTransactionDateBetween(
-                userId, startOfMonth, endOfMonth);
-
-        BigDecimal totalExpenses = transactions.stream()
-                .filter(t -> t.getType() == Transaction.TransactionType.EXPENSE)
-                .map(Transaction::getAmount)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
-
-        if (totalExpenses.compareTo(BigDecimal.ZERO) == 0) {
-            return "You haven't recorded any expenses this month yet. Start tracking your spending to get insights!";
-        }
-
-        return String.format("This month, you've spent $%.2f across %d transactions. " +
-                "Would you like me to break this down by category?",
-                totalExpenses, transactions.size());
-    }
-
-    private String generateSavingsResponse(Long userId) {
-        UserProfile profile = userProfileRepository.findByUserId(userId).orElse(null);
-        int goalCount = savingsGoalRepository.countByUserId(userId);
-
-        if (goalCount == 0) {
-            return "You don't have any savings goals set up yet. " +
-                    "Setting goals can help you stay motivated! Would you like to create one?";
-        }
-
-        return String.format("You have %d active savings goals. " +
-                "Keep up the good work! Regular contributions, even small ones, add up over time.",
-                goalCount);
-    }
-
-    private String generateBudgetResponse(Long userId) {
-        int budgetCount = budgetRepository.countByUserId(userId);
-
-        if (budgetCount == 0) {
-            return "You haven't set up any budgets yet. " +
-                    "Budgets help you control spending and reach your financial goals. " +
-                    "Would you like help creating one?";
-        }
-
-        return String.format("You have %d active budgets. " +
-                "Budgets are a great way to stay on track. " +
-                "Check your dashboard to see how you're doing!",
-                budgetCount);
-    }
-
-    private String generateGoalResponse(Long userId) {
-        int goalCount = savingsGoalRepository.countByUserId(userId);
-
-        if (goalCount == 0) {
-            return "You don't have any savings goals yet. " +
-                    "Setting specific goals makes saving easier and more rewarding. " +
-                    "What would you like to save for?";
-        }
-
-        return String.format("You have %d savings goals. " +
-                "Stay focused and consistent - you're building a better financial future!",
-                goalCount);
     }
 }

@@ -22,12 +22,17 @@ public class BudgetService {
     private final BudgetRepository budgetRepository;
     private final CategoryRepository categoryRepository;
     private final TransactionRepository transactionRepository;
+    private final EmailService emailService;
+    private final UserService userService;
 
-    public BudgetService(BudgetRepository budgetRepository, CategoryRepository categoryRepository, TransactionRepository transactionRepository) {
+    public BudgetService(BudgetRepository budgetRepository, CategoryRepository categoryRepository,
+            TransactionRepository transactionRepository, EmailService emailService, UserService userService) {
         this.budgetRepository = budgetRepository;
         this.categoryRepository = categoryRepository;
         this.transactionRepository = transactionRepository;
-   }
+        this.emailService = emailService;
+        this.userService = userService;
+    }
 
     @Transactional
     public BudgetDto createBudget(BudgetDto dto, Long userId) {
@@ -183,6 +188,20 @@ public class BudgetService {
                     userId, categoryId, budget.getStartDate(), budget.getEndDate());
             budget.setSpent(spent != null ? spent : BigDecimal.ZERO);
             budgetRepository.save(budget);
+
+            // Check for alert
+            if (budget.getAmount().compareTo(BigDecimal.ZERO) > 0) {
+                BigDecimal percentage = budget.getSpent()
+                        .divide(budget.getAmount(), 4, RoundingMode.HALF_UP)
+                        .multiply(new BigDecimal("100"));
+
+                if (percentage.compareTo(budget.getAlertThreshold()) >= 0) {
+                    // Fetch user email
+                    String email = userService.getUserById(userId).getEmail();
+                    String categoryName = categoryRepository.findById(categoryId).get().getName();
+                    emailService.sendBudgetAlert(email, categoryName, percentage.toString());
+                }
+            }
         }
     }
 

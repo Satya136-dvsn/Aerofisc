@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
     Container,
     Box,
@@ -11,6 +11,8 @@ import {
     IconButton,
     Chip,
     Fade,
+    Button,
+    CircularProgress,
 } from '@mui/material';
 import {
     Notifications as NotificationsIcon,
@@ -19,36 +21,74 @@ import {
     Info as InfoIcon,
     CheckCircle as CheckCircleIcon,
     Delete as DeleteIcon,
+    DoneAll as DoneAllIcon,
 } from '@mui/icons-material';
+import notificationService from '../services/notificationService';
 
 const Notifications = () => {
-    const [notifications, setNotifications] = useState([
-        {
-            id: 1,
-            type: 'info',
-            title: 'Welcome to BudgetWise!',
-            message: 'Start tracking your finances today.',
-            date: new Date().toISOString(),
-            read: false,
-        },
-    ]);
+    const [notifications, setNotifications] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        fetchNotifications();
+    }, []);
+
+    const fetchNotifications = async () => {
+        try {
+            const response = await notificationService.getAll();
+            setNotifications(response.data);
+        } catch (error) {
+            console.error('Error fetching notifications:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     const getIcon = (type) => {
         switch (type) {
-            case 'success':
+            case 'SUCCESS':
                 return <CheckCircleIcon color="success" />;
-            case 'warning':
+            case 'WARNING':
                 return <WarningIcon color="warning" />;
-            case 'error':
+            case 'ERROR':
                 return <WarningIcon color="error" />;
-            case 'info':
+            case 'INFO':
             default:
                 return <InfoIcon color="info" />;
         }
     };
 
-    const handleDelete = (id) => {
-        setNotifications(notifications.filter((n) => n.id !== id));
+    const handleDelete = async (id) => {
+        try {
+            await notificationService.delete(id);
+            setNotifications(notifications.filter((n) => n.id !== id));
+        } catch (error) {
+            console.error('Error deleting notification:', error);
+        }
+    };
+
+    const handleMarkAsRead = async (id) => {
+        try {
+            await notificationService.markAsRead(id);
+            setNotifications(
+                notifications.map((n) =>
+                    n.id === id ? { ...n, isRead: true } : n
+                )
+            );
+        } catch (error) {
+            console.error('Error marking notification as read:', error);
+        }
+    };
+
+    const handleMarkAllAsRead = async () => {
+        try {
+            await notificationService.markAllAsRead();
+            setNotifications(
+                notifications.map((n) => ({ ...n, isRead: true }))
+            );
+        } catch (error) {
+            console.error('Error marking all as read:', error);
+        }
     };
 
     const formatDate = (dateString) => {
@@ -60,6 +100,14 @@ const Notifications = () => {
             minute: '2-digit',
         });
     };
+
+    if (loading) {
+        return (
+            <Box display="flex" justifyContent="center" alignItems="center" minHeight="60vh">
+                <CircularProgress />
+            </Box>
+        );
+    }
 
     return (
         <Container maxWidth="lg" sx={{ pb: 4 }}>
@@ -74,11 +122,23 @@ const Notifications = () => {
                                 Stay updated with your financial activities
                             </Typography>
                         </Box>
-                        <Chip
-                            label={`${notifications.filter((n) => !n.read).length} unread`}
-                            color="primary"
-                            variant="outlined"
-                        />
+                        <Box display="flex" gap={2}>
+                            {notifications.some((n) => !n.isRead) && (
+                                <Button
+                                    startIcon={<DoneAllIcon />}
+                                    onClick={handleMarkAllAsRead}
+                                    variant="outlined"
+                                    size="small"
+                                >
+                                    Mark all read
+                                </Button>
+                            )}
+                            <Chip
+                                label={`${notifications.filter((n) => !n.isRead).length} unread`}
+                                color="primary"
+                                variant="outlined"
+                            />
+                        </Box>
                     </Box>
 
                     <Paper>
@@ -99,15 +159,20 @@ const Notifications = () => {
                                         key={notification.id}
                                         divider={index < notifications.length - 1}
                                         sx={{
-                                            bgcolor: notification.read ? 'inherit' : 'action.hover',
+                                            bgcolor: notification.isRead ? 'inherit' : 'action.hover',
                                             '&:hover': {
                                                 bgcolor: 'action.selected',
                                             },
+                                            cursor: 'pointer',
                                         }}
+                                        onClick={() => !notification.isRead && handleMarkAsRead(notification.id)}
                                         secondaryAction={
                                             <IconButton
                                                 edge="end"
-                                                onClick={() => handleDelete(notification.id)}
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    handleDelete(notification.id);
+                                                }}
                                                 size="small"
                                             >
                                                 <DeleteIcon />
@@ -116,7 +181,16 @@ const Notifications = () => {
                                     >
                                         <ListItemIcon>{getIcon(notification.type)}</ListItemIcon>
                                         <ListItemText
-                                            primary={notification.title}
+                                            primary={
+                                                <Typography
+                                                    variant="subtitle1"
+                                                    sx={{
+                                                        fontWeight: notification.isRead ? 400 : 600,
+                                                    }}
+                                                >
+                                                    {notification.title}
+                                                </Typography>
+                                            }
                                             secondary={
                                                 <>
                                                     <Typography component="span" variant="body2" color="text.primary">
@@ -124,7 +198,7 @@ const Notifications = () => {
                                                     </Typography>
                                                     <br />
                                                     <Typography component="span" variant="caption" color="text.secondary">
-                                                        {formatDate(notification.date)}
+                                                        {formatDate(notification.createdAt)}
                                                     </Typography>
                                                 </>
                                             }

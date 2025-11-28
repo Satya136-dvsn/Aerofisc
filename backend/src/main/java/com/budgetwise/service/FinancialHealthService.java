@@ -158,7 +158,7 @@ public class FinancialHealthService {
         }
 
         // Income vs Expenses (20 points)
-        if (monthlyIncome.compareTo(monthlyExpenses) > 0) {
+        if (monthlyIncome.compareTo(BigDecimal.ZERO) > 0 && monthlyIncome.compareTo(monthlyExpenses) > 0) {
             BigDecimal surplus = monthlyIncome.subtract(monthlyExpenses);
             BigDecimal surplusPercent = surplus.divide(monthlyIncome, 4, RoundingMode.HALF_UP)
                     .multiply(BigDecimal.valueOf(100));
