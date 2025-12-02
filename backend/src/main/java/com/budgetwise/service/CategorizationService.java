@@ -2,15 +2,13 @@ package com.budgetwise.service;
 
 import com.budgetwise.dto.CategorizationSuggestionDto;
 import com.budgetwise.entity.Category;
-import com.budgetwise.entity.Transaction;
-import com.budgetwise.entity.User;
 import com.budgetwise.repository.CategoryRepository;
 import com.budgetwise.repository.TransactionRepository;
 import com.budgetwise.repository.UserRepository;
+import com.budgetwise.entity.User;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class CategorizationService {
@@ -29,16 +27,67 @@ public class CategorizationService {
     }
 
     // Keyword dictionary for categorization
-    private static final Map<String, List<String>> CATEGORY_KEYWORDS = new HashMap<>() {
-        {
-            put("Food & Dining", Arrays.asList("restaurant", "cafe", "coffee", "pizza", "burger", "food", "dining",
-                    "mcdonald", "starbucks", "subway", "chipotle", "domino", "kfc", "taco","wendy"));put("Groceries",Arrays.asList("grocery","supermarket","walmart","target","costco","safeway","kroger","whole foods","trader joe","aldi","market","vegetable","fruit","milk","bread"));put("Transportation",Arrays.asList("uber","lyft","taxi","gas","fuel","shell","chevron","exxon","bp","parking","metro","transit","bus","train"));put("Rent",Arrays.asList("rent","lease","apartment","housing","landlord"));put("Utilities",Arrays.asList("electric","water","gas","internet","phone","utility","verizon","at&t","comcast","spectrum","t-mobile"));put("Healthcare",Arrays.asList("doctor","hospital","pharmacy","medical","health","clinic","cvs","walgreens","medicine","prescription"));put("Entertainment",Arrays.asList("movie","cinema","netflix","spotify","hulu","disney","game","theater","concert","ticket","entertainment"));put("Shopping",Arrays.asList("amazon","ebay","shop","store","mall","clothing","fashion","nike","adidas","zara","h&m"));put("Education",Arrays.asList("school","university","college","course","tuition","book","education","learning","udemy","coursera"));put("Travel",Arrays.asList("hotel","flight","airline","airbnb","booking","expedia","travel","vacation","trip","airport"));put("Insurance",Arrays.asList("insurance","policy","premium","geico","state farm","allstate"));put("Salary",Arrays.asList("salary","paycheck","wages","income","bonus","earnings","stipend"));put("Side Hustle",Arrays.asList("freelance","upwork","fiverr","side hustle","contract","gig"));put("Savings",Arrays.asList("savings","save","deposit","contribution","goal","fund","invest"));put("Personal Care",Arrays.asList("saloon","salon","barber","haircut","spa","massage","grooming","cosmetics","makeup"));}};
+    private static final Map<String, List<String>> CATEGORY_KEYWORDS = new HashMap<>();
+
+    static {
+        CATEGORY_KEYWORDS.put("Food & Dining",
+                Arrays.asList("restaurant", "cafe", "coffee", "pizza", "burger", "food", "dining",
+                        "mcdonald", "starbucks", "subway", "chipotle", "domino", "kfc", "taco", "wendy"));
+        CATEGORY_KEYWORDS.put("Groceries",
+                Arrays.asList("grocery", "supermarket", "walmart", "target", "costco", "safeway", "kroger",
+                        "whole foods", "trader joe", "aldi", "market", "vegetable", "fruit", "milk", "bread"));
+        CATEGORY_KEYWORDS.put("Transportation", Arrays.asList("uber", "lyft", "taxi", "gas", "fuel", "shell", "chevron",
+                "exxon", "bp", "parking", "metro", "transit", "bus", "train"));
+        CATEGORY_KEYWORDS.put("Rent", Arrays.asList("rent", "lease", "apartment", "housing", "landlord"));
+        CATEGORY_KEYWORDS.put("Utilities", Arrays.asList("electric", "water", "gas", "internet", "phone", "utility",
+                "verizon", "at&t", "comcast", "spectrum", "t-mobile"));
+        CATEGORY_KEYWORDS.put("Healthcare", Arrays.asList("doctor", "hospital", "pharmacy", "medical", "health",
+                "clinic", "cvs", "walgreens", "medicine", "prescription"));
+        CATEGORY_KEYWORDS.put("Entertainment", Arrays.asList("movie", "cinema", "netflix", "spotify", "hulu", "disney",
+                "game", "theater", "concert", "ticket", "entertainment"));
+        CATEGORY_KEYWORDS.put("Shopping", Arrays.asList("amazon", "ebay", "shop", "store", "mall", "clothing",
+                "fashion", "nike", "adidas", "zara", "h&m"));
+        CATEGORY_KEYWORDS.put("Education", Arrays.asList("school", "university", "college", "course", "tuition", "book",
+                "education", "learning", "udemy", "coursera"));
+        CATEGORY_KEYWORDS.put("Travel", Arrays.asList("hotel", "flight", "airline", "airbnb", "booking", "expedia",
+                "travel", "vacation", "trip", "airport"));
+        CATEGORY_KEYWORDS.put("Insurance",
+                Arrays.asList("insurance", "policy", "premium", "geico", "state farm", "allstate"));
+        CATEGORY_KEYWORDS.put("Salary",
+                Arrays.asList("salary", "paycheck", "wages", "income", "bonus", "earnings", "stipend"));
+        CATEGORY_KEYWORDS.put("Side Hustle",
+                Arrays.asList("freelance", "upwork", "fiverr", "side hustle", "contract", "gig"));
+        CATEGORY_KEYWORDS.put("Savings",
+                Arrays.asList("savings", "save", "deposit", "contribution", "goal", "fund", "invest"));
+        CATEGORY_KEYWORDS.put("Personal Care", Arrays.asList("saloon", "salon", "barber", "haircut", "spa", "massage",
+                "grooming", "cosmetics", "makeup"));
+    }
+
+    public CategorizationSuggestionDto suggestCategory(String description, Long userId) {
+        List<Category> categories = categoryRepository.findByUserIdOrIsSystemTrue(userId);
+
+        // 1. Keyword Matching
+        for (Category category : categories) {
+            if (matchesKeywords(description.toLowerCase(), category.getName())) {
+                return CategorizationSuggestionDto.builder()
+                        .categoryId(category.getId())
+                        .categoryName(category.getName())
+                        .confidence(90.0)
                         .reason(String.format("Matched keywords in description: '%s'", description))
                         .build();
-    }}
+            }
+        }
 
-    // 2. If no keyword match, use Gemini AI (Smart & Flexible)
-    return suggestWithAI(description,categories,userId);}
+        // 2. If no keyword match, use Gemini AI (Smart & Flexible)
+        try {
+            return suggestWithAI(description, categories, userId);
+        } catch (Exception e) {
+            System.err.println("AI Categorization failed: " + e.getMessage());
+        }
+
+        // Fallback if AI fails or returns invalid category
+        return getDefaultSuggestion(categories);
+    }
 
     private boolean matchesKeywords(String description, String categoryName) {
         List<String> keywords = CATEGORY_KEYWORDS.getOrDefault(categoryName, new ArrayList<>());
@@ -51,6 +100,8 @@ public class CategorizationService {
     }
 
     private CategorizationSuggestionDto suggestWithAI(String description, List<Category> categories, Long userId) {
+        String prompt = "Categorize the following transaction description into a single category name. Description: "
+                + description;
         String suggestedCategoryName = geminiService.generateContent(prompt).trim();
 
         // Clean up response (remove quotes, extra spaces)
@@ -70,18 +121,6 @@ public class CategorizationService {
 
         // 2. If no match, CREATE a new category
         return createNewCategory(suggestedCategoryName, userId);
-
-    }catch(
-
-    Exception e)
-    {
-        System.err.println("AI Categorization failed: " + e.getMessage());
-    }
-
-    // Fallback if AI fails or returns invalid category
-    return
-
-    getDefaultSuggestion(categories);
     }
 
     private CategorizationSuggestionDto createNewCategory(String categoryName, Long userId) {
@@ -129,8 +168,6 @@ public class CategorizationService {
             }
         }
 
-        // 3. Levenshtein distance (optional, but simple contains check usually suffices
-        // for this scale)
         return null;
     }
 
