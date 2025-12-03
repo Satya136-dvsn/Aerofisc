@@ -6,32 +6,22 @@ import com.budgetwise.entity.Transaction;
 import com.budgetwise.exception.ResourceNotFoundException;
 import com.budgetwise.repository.BillRepository;
 import com.budgetwise.repository.TransactionRepository;
-
+import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class BillService {
 
     private final BillRepository billRepository;
     private final TransactionRepository transactionRepository;
-    private final EmailService emailService;
-    private final UserService userService;
-
-    public BillService(BillRepository billRepository, TransactionRepository transactionRepository,
-            EmailService emailService, UserService userService) {
-        this.billRepository = billRepository;
-        this.transactionRepository = transactionRepository;
-        this.emailService = emailService;
-        this.userService = userService;
-    }
 
     @Transactional
     public BillDto createBill(BillDto dto, Long userId) {
@@ -105,7 +95,7 @@ public class BillService {
         transaction.setUserId(userId);
         transaction.setType(Transaction.TransactionType.EXPENSE);
         transaction.setAmount(bill.getAmount());
-        transaction.setCategoryId(8L); // Bills & EMI category
+        transaction.setCategoryId(8L); // Could map category name to ID if needed
         transaction.setDescription("Bill Payment: " + bill.getName());
         transaction.setTransactionDate(LocalDate.now());
         transaction.setIsAnomaly(false);
@@ -157,22 +147,11 @@ public class BillService {
 
         for (Bill bill : overdueBills) {
             bill.setStatus(Bill.BillStatus.OVERDUE);
-
-            if (bill.getAutoReminder()) {
-                String email = userService.getUserById(userId).getEmail();
-                emailService.sendBillReminder(email, bill.getName(), bill.getNextDueDate().toString());
-            }
         }
 
         if (!overdueBills.isEmpty()) {
             billRepository.saveAll(overdueBills);
         }
-    }
-
-    @Transactional
-    public void syncBillPayment(Long userId, String description, BigDecimal amount, LocalDate transactionDate) {
-        // Placeholder - sync logic can be added later if needed
-        System.out.println("syncBillPayment called for: " + description);
     }
 
     private BillDto mapToDto(Bill bill) {
