@@ -364,7 +364,7 @@ See [ROADMAP.md](ROADMAP.md) for detailed future plans.
 
 ## 🔒 Security Disclosure
 
-If you discover a security vulnerability, please email <security@budgetwise.com> instead of using the issue tracker.
+If you discover a security vulnerability, please email <d.v.satyanarayana260@gmail.com> instead of using the issue tracker.
 
 ---
 
