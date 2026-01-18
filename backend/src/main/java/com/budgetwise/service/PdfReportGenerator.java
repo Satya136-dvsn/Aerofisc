@@ -176,6 +176,49 @@ public class PdfReportGenerator {
         }
     }
 
+    public byte[] generateGoalsPdf(Long userId, List<SavingsGoal> goals) {
+        try {
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            PdfWriter writer = new PdfWriter(outputStream);
+            PdfDocument pdf = new PdfDocument(writer);
+            Document document = new Document(pdf, PageSize.A4, false);
+            document.setMargins(40, 40, 40, 40);
+
+            addCoverPage(document, "Savings Goals Report");
+            document.add(new AreaBreak());
+
+            addSectionHeader(document, "Your Savings Goals");
+            addGoalsTable(document, goals);
+
+            // Add summary statistics
+            addSectionHeader(document, "Summary");
+            double totalTarget = goals.stream()
+                    .mapToDouble(g -> g.getTargetAmount().doubleValue()).sum();
+            double totalSaved = goals.stream()
+                    .mapToDouble(g -> g.getCurrentAmount().doubleValue()).sum();
+            double overallProgress = totalTarget > 0 ? (totalSaved / totalTarget) * 100 : 0;
+
+            Table summaryTable = new Table(UnitValue.createPercentArray(new float[] { 1, 1 })).useAllAvailableWidth();
+            summaryTable.addCell(createCell("Total Goals", true));
+            summaryTable.addCell(createCell(String.valueOf(goals.size()), false));
+            summaryTable.addCell(createCell("Total Target Amount", true));
+            summaryTable.addCell(createCell(String.format("₹%.2f", totalTarget), false));
+            summaryTable.addCell(createCell("Total Saved", true));
+            summaryTable.addCell(createCell(String.format("₹%.2f", totalSaved), false));
+            summaryTable.addCell(createCell("Overall Progress", true));
+            summaryTable.addCell(createCell(String.format("%.1f%%", overallProgress), false));
+            document.add(summaryTable);
+
+            addFooter(document, pdf);
+            document.close();
+            return outputStream.toByteArray();
+        } catch (Exception e) {
+            System.err.println("ERROR generating Goals PDF: " + e.getMessage());
+            e.printStackTrace();
+            throw new RuntimeException("Failed to generate Goals PDF", e);
+        }
+    }
+
     private void addCoverPage(Document document, String title) {
         document.add(new Paragraph("\n\n\n\n"));
         Paragraph titlePara = new Paragraph(title)

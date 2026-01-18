@@ -95,7 +95,13 @@ public class ExportService {
     }
 
     public byte[] exportGoalsPDF(Long userId) {
-        return exportDashboardPDF(userId);
+        List<SavingsGoal> goals = savingsGoalRepository.findByUserId(userId);
+        return pdfReportGenerator.generateGoalsPdf(userId, goals);
+    }
+
+    public byte[] exportGoalsExcel(Long userId) throws IOException {
+        List<SavingsGoal> goals = savingsGoalRepository.findByUserId(userId);
+        return excelReportGenerator.generateGoalsExcel(userId, goals);
     }
 
     // ========== EXCEL EXPORTS ==========

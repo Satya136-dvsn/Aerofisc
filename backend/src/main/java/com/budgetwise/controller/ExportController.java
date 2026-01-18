@@ -215,4 +215,38 @@ public class ExportController {
                 .headers(headers)
                 .body(data);
     }
+
+    @GetMapping("/goals")
+    public ResponseEntity<byte[]> exportGoals(
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
+            @RequestParam(defaultValue = "excel") String format) throws java.io.IOException {
+
+        byte[] data;
+        String filename;
+        MediaType mediaType;
+
+        switch (format.toLowerCase()) {
+            case "excel":
+                data = exportService.exportGoalsExcel(userPrincipal.getId());
+                filename = "savings-goals.xlsx";
+                mediaType = MediaType
+                        .parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+                break;
+            case "pdf":
+                data = exportService.exportGoalsPDF(userPrincipal.getId());
+                filename = "savings-goals.pdf";
+                mediaType = MediaType.APPLICATION_PDF;
+                break;
+            default:
+                throw new IllegalArgumentException("Goals export only supports Excel and PDF formats");
+        }
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(mediaType);
+        headers.setContentDispositionFormData("attachment", filename);
+
+        return ResponseEntity.ok()
+                .headers(headers)
+                .body(data);
+    }
 }

@@ -157,6 +157,62 @@ public class ExcelReportGenerator {
             sheet.autoSizeColumn(i);
     }
 
+    public byte[] generateGoalsExcel(Long userId, List<SavingsGoal> goals) throws IOException {
+        try (XSSFWorkbook workbook = new XSSFWorkbook()) {
+            CellStyle headerStyle = createHeaderStyle(workbook);
+            CellStyle currencyStyle = createCurrencyStyle(workbook);
+
+            // Goals Sheet
+            XSSFSheet sheet = workbook.createSheet("Savings Goals");
+            Row header = sheet.createRow(0);
+            String[] headers = { "Goal Name", "Target Amount", "Current Amount", "Remaining", "Progress %",
+                    "Deadline" };
+            for (int i = 0; i < headers.length; i++) {
+                createCell(header, i, headers[i], headerStyle);
+            }
+
+            int rowNum = 1;
+            double totalTarget = 0;
+            double totalSaved = 0;
+
+            for (SavingsGoal g : goals) {
+                Row row = sheet.createRow(rowNum++);
+                row.createCell(0).setCellValue(g.getName());
+                createNumericCell(row, 1, g.getTargetAmount().doubleValue(), currencyStyle);
+                createNumericCell(row, 2, g.getCurrentAmount().doubleValue(), currencyStyle);
+
+                double remaining = g.getTargetAmount().subtract(g.getCurrentAmount()).doubleValue();
+                createNumericCell(row, 3, remaining, currencyStyle);
+
+                double progress = g.getTargetAmount().doubleValue() > 0
+                        ? (g.getCurrentAmount().doubleValue() / g.getTargetAmount().doubleValue()) * 100
+                        : 0;
+                row.createCell(4).setCellValue(String.format("%.1f%%", progress));
+                row.createCell(5).setCellValue(g.getDeadline() != null ? g.getDeadline().toString() : "No deadline");
+
+                totalTarget += g.getTargetAmount().doubleValue();
+                totalSaved += g.getCurrentAmount().doubleValue();
+            }
+
+            // Summary row
+            Row summaryRow = sheet.createRow(rowNum + 1);
+            createCell(summaryRow, 0, "TOTAL", headerStyle);
+            createNumericCell(summaryRow, 1, totalTarget, currencyStyle);
+            createNumericCell(summaryRow, 2, totalSaved, currencyStyle);
+            createNumericCell(summaryRow, 3, totalTarget - totalSaved, currencyStyle);
+            double overallProgress = totalTarget > 0 ? (totalSaved / totalTarget) * 100 : 0;
+            summaryRow.createCell(4).setCellValue(String.format("%.1f%%", overallProgress));
+
+            for (int i = 0; i < 6; i++)
+                sheet.autoSizeColumn(i);
+            sheet.createFreezePane(0, 1);
+
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            workbook.write(outputStream);
+            return outputStream.toByteArray();
+        }
+    }
+
     private void createNativePieChart(XSSFSheet sheet, List<Transaction> transactions) {
         // Logic to create a separate sheet for data and then a chart
         // For brevity, skipping complex native chart creation code here as it requires

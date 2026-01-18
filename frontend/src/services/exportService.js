@@ -78,6 +78,18 @@ const exportService = {
     exportAnalyticsPDF: async (timeRange) => {
         return exportService.exportAnalytics(timeRange, 'pdf');
     },
+
+    /**
+     * Export savings goals in specified format
+     */
+    exportGoals: async (format = 'excel') => {
+        const response = await apiClient.get(`/export/goals?format=${format}`, {
+            responseType: 'blob',
+        });
+
+        const extension = format === 'excel' ? 'xlsx' : format;
+        downloadFile(response.data, `savings-goals.${extension}`);
+    },
 };
 
 /**
