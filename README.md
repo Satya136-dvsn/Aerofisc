@@ -1,146 +1,168 @@
-# BudgetWise Tracker - AI-Driven Smart Finance Management 🚀
+# 💰 BudgetWise Tracker - AI-Driven Smart Finance Management
 
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)
 ![Version](https://img.shields.io/badge/version-1.0.0-orange.svg)
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.2-green.svg)
+![React](https://img.shields.io/badge/React-18-blue.svg)
 
-**BudgetWise Tracker** is a comprehensive, full-stack personal finance application designed to help individuals take control of their financial life. Built with a robust **Spring Boot** backend and a responsive **React** frontend, it leverages meaningful data visualization and automation to simplify budgeting, tracking, and savings.
-
----
-
-## 🌟 Key Features
-
-### 🤖 Smart Automation & AI
-- **Recurring Transactions**: Set up automated income and expense entries (Daily, Monthly, Yearly). Pause, resume, or edit them anytime with real-time syncing.
-- **AI Categorization (Beta)**: Intelligent suggestion engine that predicts transaction categories based on description and amount.
-
-### 📊 Powerful Analytics
-- **Interactive Dashboard**: Real-time overview of your financial health with dynamic charts (Income vs Expense, Category Breakdown).
-- **Budget Tracking**: Set monthly budgets for specific categories and get visual alerts when nearing limits.
-- **Savings Goals**: Create target-based savings goals and track contributions visually.
-
-### 💼 Professional Tools
-- **Export Capabilities**: Generate detailed PDF and Excel reports for taxes or offline archiving.
-- **Bill Management**: Never miss a due date with the dedicated Bill tracking module.
-- **Secure Authentication**: Enterprise-grade security using JWT (JSON Web Tokens) and Spring Security.
+**BudgetWise Tracker** is an intelligent personal finance application designed to modernize how individuals manage their money. By combining standard budgeting tools with **AI-powered automation**, it reduces the friction of manual tracking and provides actionable insights instantly.
 
 ---
 
-## 🛠️ Technology Stack
+## 📖 Table of Contents
 
-This project is built using modern, industry-standard technologies to ensure scalability, performance, and maintainability.
-
-### **Frontend (Client-Side)**
-- **Framework**: [React.js](https://reactjs.org/) (Vite)
-- **UI Component Library**: [Material UI (MUI)](https://mui.com/)
-- **State Management**: React Hooks & Context API
-- **Data Visualization**: [Recharts](https://recharts.org/)
-- **HTTP Client**: Axios (with Interceptors)
-
-### **Backend (Server-Side)**
-- **Framework**: [Spring Boot 3.2](https://spring.io/projects/spring-boot)
-- **Language**: Java 21
-- **Database**: MySQL 8.0
-- **ORM**: Hibernate & Spring Data JPA
-- **Security**: Spring Security & JWT
-- **Build Tool**: Maven
-
-### **DevOps & Tools**
-- **Containerization**: Docker & Docker Compose
-- **Version Control**: Git & GitHub
+1. [Project Overview](#-project-overview)
+2. [User Guide: How to Use](#-user-guide-how-to-use)
+    - [Getting Started](#1-getting-started)
+    - [Dashboard & Analytics](#2-dashboard--analytics)
+    - [Managing Transactions](#3-managing-transactions)
+    - [Smart Recurring Payments](#4-smart-recurring-payments)
+    - [Budgets & Alerts](#5-budgets--alerts)
+    - [Savings Goals](#6-savings-goals)
+    - [Exporting Reports](#7-exporting-reports)
+3. [Technical Architecture](#-technical-architecture)
+4. [Installation & Setup](#-installation--setup)
+5. [Contributing](#-contributing)
 
 ---
 
-## 🎯 Target Audience & Use Case
-- **Individuals & Families**: Perfect for tracking daily expenses and managing household budgets.
-- **Freelancers**: efficient way to separate and categorize business vs. personal expenses.
-- **Students**: Simple tool to manage limited monthly allowances and save for goals.
+## 🌟 Project Overview
+
+Traditional finance apps are tedious. **BudgetWise Tracker** solves this by automating the boring parts.
+
+- **For Users**: A seamless, "set and forget" experience for recurring bills, with AI help for daily spending.
+- **For Recruiters/Developers**: A showcase of modern **Full-Stack Architecture**, demonstrating complex state management, real-time data synchronization, and secure REST APIs.
 
 ---
 
-## 🚀 Getting Started
+## 📘 User Guide: How to Use
 
-Follow these instructions to get the project up and running on your local machine.
+### 1. Getting Started
+
+* **Sign Up**: Create a secure account using your email. We use **JWT (JSON Web Token)** encryption, so your session is secure and stateless.
+- **Profile Setup**: Set your monthly income and financial goals to help the AI calibrate your budget recommendations.
+
+### 2. Dashboard & Analytics
+
+Upon logging in, the **Dashboard** serves as your financial command center:
+- **Monthly Overview**: See exactly how much you've earned vs. spent this month.
+- **Trend Analysis**: Interactive, animated charts show your spending habits over the last 6 months.
+- **Category Breakdown**: A donut chart visualizes where your money goes (e.g., "40% Housing", "20% Food").
+- **Recent Activity**: Quick access to your latest 5 transactions.
+
+### 3. Managing Transactions
+
+* **Add Transaction**: Click the `+` button. Enter the amount and description.
+- **✨ AI-Powered Categorization**: Not sure if "Starbucks" is *Food* or *Entertainment*? Click **"Suggest Category with AI"**. The system analyzes the description and amount to automatically select the most accurate category.
+- **Upload Receipts**: Attach images or PDFs to keep proof of purchase.
+
+### 4. Smart Recurring Payments
+
+Never forget a subscription again.
+- **Set It Once**: Go to the **Recurring** tab. Add your Rent (`₹15000`, Monthly) or Netflix (`₹649`, Monthly).
+- **Auto-Creation**: The system automatically creates the transaction on the due date.
+- **Pause/Resume**: Going on vacation? Pause your "Gym Membership" recurring payment with one click. Resume it when you're back.
+
+### 5. Budgets & Alerts
+
+* **Create a Budget**: Go to **Budgets**. Select a category (e.g., "Groceries") and set a limit (e.g., `₹10,000`).
+- **Visual Progress**: As you add grocery transactions, the progress bar fills up.
+- **Smart Alerts**: You will receive an alert if you exceed **80%** of your budget, helping you curb spending *before* it's too late.
+
+### 6. Savings Goals
+
+* **Dream Big**: Create a goal (e.g., "New Laptop", Target: `₹80,000`).
+- **Track Contributions**: Add funds to your goal. The circular progress indicator motivates you as you get closer to 100%.
+- **Projected Date**: Based on your saving rate, the app estimates *when* you will reach your goal.
+
+### 7. Exporting Reports
+
+* **Tax Ready**: Needs to share data with an accountant?
+- **Formats**: Go to **Transactions** or **Savings** and click **Export**.
+- **Download**: Get a clean **Excel** spreadsheet or a professional **PDF** summary instantly.
+
+---
+
+## 🛠️ Technical Architecture
+
+This project is built with scalability and maintainability in mind, following **SOLID principles** and **Clean Architecture**.
+
+### **Backend (Spring Boot 3.2)**
+
+* **Core**: Java 21, Spring Boot, Spring Data JPA.
+- **Database**: MySQL 8.0 (Relational Data Integrity).
+- **Security**: Spring Security + JWT Authentication Filter (Stateless).
+- **Concurrency**: `@Async` scheduled tasks for processing recurring transactions.
+- **Optimization**: Caching with Spring Cache (Redis-ready) for heavy dashboard queries.
+
+### **Frontend (React + Vite)**
+
+* **Core**: React 18, React Router v6.
+- **State Management**: Context API (Auth, Theme) + Custom Hooks.
+- **UI Library**: Material UI (MUI) v5 for a polished, responsive design.
+- **Data Fetching**: Axios with centralized interceptors for error handling and token management.
+- **PWA**: Fully responsive mobile-first layout.
+
+---
+
+## 🚀 Installation & Setup
+
+Want to run this locally? Follow these steps.
 
 ### Prerequisites
-- **Java JDK 21+**
-- **Node.js 18+** & **npm**
-- **MySQL Server** (or Docker for containerized DB)
-- **Maven**
 
-### 1. Clone the Repository
+* Java JDK 21
+- Node.js 18+
+- MySQL Server
+
+### Step 1: Clone the Repo
+
 ```bash
 git clone https://github.com/Satya136-dvsn/budgetwise_tracker_ai_driven.git
-cd budgetwise_tracker_ai_driven
 ```
 
-### 2. Backend Setup
-1. Navigate to the backend directory:
-   ```bash
-   cd backend
-   ```
-2. Configure your database in `src/main/resources/application.properties`:
-   ```properties
-   spring.datasource.url=jdbc:mysql://localhost:3306/budgetwise
-   spring.datasource.username=root
-   spring.datasource.password=your_password
-   ```
-3. Run the application:
-   ```bash
-   mvn spring-boot:run
-   ```
-   The server will start on `http://localhost:8080`.
+### Step 2: Backend Setup
 
-### 3. Frontend Setup
-1. Open a new terminal and navigate to the frontend directory:
-   ```bash
-   cd frontend
-   ```
+1. Navigate to `backend/`.
+2. Update `application.properties` with your MySQL credentials.
+3. Run the server:
+
+    ```bash
+    mvn spring-boot:run
+    ```
+
+### Step 3: Frontend Setup
+
+1. Navigate to `frontend/`.
 2. Install dependencies:
-   ```bash
-   npm install
-   ```
-3. Start the development server:
-   ```bash
-   npm run dev
-   ```
-   The application will be available at `http://localhost:3000`.
 
-### 🐳 Docker Setup (Optional)
-You can run the entire stack (Frontend + Backend + Database) using Docker Compose:
-```bash
-docker-compose up --build
-```
+    ```bash
+    npm install
+    ```
 
----
+3. Start the dev server:
 
-## 📸 Application Screenshots
+    ```bash
+    npm run dev
+    ```
 
-*(Placeholders for future screenshots)*
-| Dashboard | Transactions |
-|:---:|:---:|
-| *Visual overview of expenses* | *Detailed list with filters* |
+### Step 4: Access
+
+Open `http://localhost:3000` in your browser.
 
 ---
 
 ## 🤝 Contributing
 
-Contributions are welcome! If you'd like to improve this project, please fork the repository and submit a pull request.
+Found a bug? Want to add a feature?
 
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
----
-
-## 📄 License
-
-Distributed under the MIT License. See `LICENSE` for more information.
+1. Fork the repository.
+2. Create a branch (`git checkout -b feature/NewFeature`).
+3. Commit changes (`git commit -m 'Add NewFeature'`).
+4. Push to branch (`git push origin feature/NewFeature`).
+5. Open a Pull Request.
 
 ---
 
-<p align="center">
-  Built with ❤️ by Satya
-</p>
+**© 2026 BudgetWise Tracker**. Built with ❤️ for better financial health.
