@@ -26,8 +26,8 @@ import {
     addMonths, subMonths, getYear, getMonth, setMonth, setYear,
     addYears, subYears, getDate, isAfter, isBefore
 } from 'date-fns';
-import BillsService from '../services/BillsService';
-import TransactionService from '../services/TransactionService';
+import BillsService from '../services/billService';
+import TransactionService from '../services/transactionService';
 import categoryService from '../services/categoryService';
 
 const BillsPage = () => {

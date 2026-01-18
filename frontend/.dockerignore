@@ -1,11 +1,39 @@
-node_modules/
+# Docker ignore file - exclude unnecessary files from build context
 
-build/
+# Git
+.git
+.gitignore
+
+# Dependencies
+node_modules
+
+# Build outputs
+dist
+build
+
+# IDE
+.idea
+.vscode
+*.iml
+
+# Logs
+*.log
+npm-debug.log*
+
+# Environment files
 .env
 .env.local
-.env.production
-*.log
+.env.*.local
+
+# OS files
 .DS_Store
-coverage/
-.vscode/
-.idea/
+Thumbs.db
+
+# Test files
+coverage
+*.test.js
+*.spec.js
+
+# Documentation
+README.md
+docs

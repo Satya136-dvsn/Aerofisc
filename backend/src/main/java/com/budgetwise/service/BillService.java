@@ -11,6 +11,7 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -122,6 +123,43 @@ public class BillService {
         Bill bill = billRepository.findByIdAndUserId(id, userId)
                 .orElseThrow(() -> new ResourceNotFoundException("Bill not found"));
         billRepository.delete(bill);
+    }
+
+    /**
+     * Syncs a transaction with matching bills - marks bill as paid if amount and
+     * description match
+     */
+    @Transactional
+    public void syncBillPayment(Long userId, String description, BigDecimal amount, LocalDate paymentDate) {
+        if (description == null || amount == null) {
+            return;
+        }
+
+        // Find bills for this user that are pending and match the amount
+        List<Bill> pendingBills = billRepository.findByUserIdAndStatus(userId, Bill.BillStatus.PENDING);
+
+        for (Bill bill : pendingBills) {
+            // Check if the description contains the bill name (case-insensitive)
+            boolean nameMatches = description.toLowerCase().contains(bill.getName().toLowerCase()) ||
+                    bill.getName().toLowerCase().contains(description.toLowerCase());
+
+            // Check if amounts match (within a small tolerance)
+            boolean amountMatches = bill.getAmount().compareTo(amount) == 0;
+
+            if (nameMatches && amountMatches) {
+                // Mark bill as paid and calculate next due date
+                bill.setStatus(Bill.BillStatus.PAID);
+
+                if (bill.getRecurrence() != Bill.RecurrenceType.ONE_TIME) {
+                    LocalDate nextDue = calculateNextDueDate(bill.getNextDueDate(), bill.getRecurrence());
+                    bill.setNextDueDate(nextDue);
+                    bill.setStatus(Bill.BillStatus.PENDING); // Reset for next occurrence
+                }
+
+                billRepository.save(bill);
+                break; // Only sync with the first matching bill
+            }
+        }
     }
 
     private LocalDate calculateNextDueDate(LocalDate currentDueDate, Bill.RecurrenceType recurrence) {

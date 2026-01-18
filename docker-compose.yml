@@ -1,47 +1,83 @@
 version: '3.8'
 
 services:
-  backend:
-    build: ./backend
-    ports:
-      - "8080:8080"
-    environment:
-      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/budgetwise
-      - SPRING_DATASOURCE_USERNAME=root
-      - SPRING_DATASOURCE_PASSWORD=root
-      - GEMINI_API_KEY=${GEMINI_API_KEY}
-      - GOOGLE_DRIVE_CLIENT_ID=${GOOGLE_DRIVE_CLIENT_ID}
-      - GOOGLE_DRIVE_CLIENT_SECRET=${GOOGLE_DRIVE_CLIENT_SECRET}
-      - GOOGLE_DRIVE_REDIRECT_URI=http://localhost:8080/api/backup/oauth2/callback
-    depends_on:
-      - db
-    networks:
-      - budgetwise-network
-
-  frontend:
-    build: ./frontend
-    ports:
-      - "5173:80"
-    depends_on:
-      - backend
-    networks:
-      - budgetwise-network
-
-  db:
+  # MySQL Database
+  mysql:
     image: mysql:8.0
+    container_name: budgetwise-mysql
+    restart: unless-stopped
     environment:
-      - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_DATABASE=budgetwise
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-budgetwise123}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-budgetwise}
+      MYSQL_USER: ${MYSQL_USER:-budgetwise}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-budgetwise123}
     ports:
       - "3307:3306"
     volumes:
-      - db-data:/var/lib/mysql
+      - mysql_data:/var/lib/mysql
+      - ./backend/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
     networks:
       - budgetwise-network
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+
+  # Spring Boot Backend
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: budgetwise-backend
+    restart: unless-stopped
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/${MYSQL_DATABASE:-budgetwise}?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: ${MYSQL_USER:-budgetwise}
+      SPRING_DATASOURCE_PASSWORD: ${MYSQL_PASSWORD:-budgetwise123}
+      JWT_SECRET: ${JWT_SECRET:-your-super-secret-jwt-key-change-this-in-production}
+      JWT_EXPIRATION: ${JWT_EXPIRATION:-900000}
+      JWT_REFRESH_EXPIRATION: ${JWT_REFRESH_EXPIRATION:-604800000}
+    ports:
+      - "8080:8080"
+    networks:
+      - budgetwise-network
+    healthcheck:
+      test: [ "CMD", "wget", "-q", "--spider", "http://localhost:8080/actuator/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+
+  # React Frontend with Nginx
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: budgetwise-frontend
+    restart: unless-stopped
+    depends_on:
+      backend:
+        condition: service_healthy
+    ports:
+      - "80:80"
+    networks:
+      - budgetwise-network
+    healthcheck:
+      test: [ "CMD", "wget", "-q", "--spider", "http://localhost:80" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
 networks:
   budgetwise-network:
     driver: bridge
 
 volumes:
-  db-data:
+  mysql_data:
+    driver: local
