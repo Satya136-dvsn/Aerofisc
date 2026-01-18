@@ -30,6 +30,7 @@ const FinancialHealthPage = lazy(() => import('../pages/FinancialHealthPage'));
 const RetirementPage = lazy(() => import('../pages/RetirementPage'));
 const TaxPlanningPage = lazy(() => import('../pages/TaxPlanningPage'));
 const ScenarioAnalysisPage = lazy(() => import('../pages/ScenarioAnalysisPage'));
+const RecurringTransactionsPage = lazy(() => import('../pages/RecurringTransactionsPage'));
 
 const LoadingFallback = () => (
     <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh">
@@ -73,6 +74,7 @@ function AppRoutes() {
                     <Route path="/retirement" element={<RetirementPage />} />
                     <Route path="/tax-planning" element={<TaxPlanningPage />} />
                     <Route path="/scenario-analysis" element={<ScenarioAnalysisPage />} />
+                    <Route path="/recurring" element={<RecurringTransactionsPage />} />
                 </Route>
             </Routes>
         </Suspense>
