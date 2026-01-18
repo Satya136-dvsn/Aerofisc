@@ -27,6 +27,7 @@ public class RecurringTransactionService {
     private final TransactionRepository transactionRepository;
     private final CategoryRepository categoryRepository;
     private final BudgetService budgetService;
+    private final TransactionService transactionService;
 
     /**
      * Get all recurring transactions for a user
@@ -60,7 +61,9 @@ public class RecurringTransactionService {
     /**
      * Create a new recurring transaction
      */
-    @Transactional
+    /**
+     * Create a new recurring transaction
+     */
     public RecurringTransactionDto create(RecurringTransactionDto dto, Long userId) {
         // Validate category exists
         categoryRepository.findById(dto.getCategoryId())
@@ -84,13 +87,15 @@ public class RecurringTransactionService {
         RecurringTransaction saved = recurringTransactionRepository.save(rt);
         log.info("Created recurring transaction {} for user {}", saved.getId(), userId);
 
+        // Check format immediate processing
+        processIfDue(saved);
+
         return toDto(saved);
     }
 
     /**
      * Update an existing recurring transaction
      */
-    @Transactional
     public RecurringTransactionDto update(Long id, RecurringTransactionDto dto, Long userId) {
         RecurringTransaction rt = recurringTransactionRepository.findByIdAndUserId(id, userId)
                 .orElseThrow(() -> new ResourceNotFoundException("Recurring transaction not found"));
@@ -118,13 +123,15 @@ public class RecurringTransactionService {
         RecurringTransaction saved = recurringTransactionRepository.save(rt);
         log.info("Updated recurring transaction {} for user {}", saved.getId(), userId);
 
+        // Check for immediate processing
+        processIfDue(saved);
+
         return toDto(saved);
     }
 
     /**
      * Toggle active status of a recurring transaction
      */
-    @Transactional
     public RecurringTransactionDto toggleActive(Long id, Long userId) {
         RecurringTransaction rt = recurringTransactionRepository.findByIdAndUserId(id, userId)
                 .orElseThrow(() -> new ResourceNotFoundException("Recurring transaction not found"));
@@ -133,13 +140,15 @@ public class RecurringTransactionService {
         RecurringTransaction saved = recurringTransactionRepository.save(rt);
         log.info("Toggled recurring transaction {} to {} for user {}", id, rt.getIsActive(), userId);
 
+        // Check for immediate processing
+        processIfDue(saved);
+
         return toDto(saved);
     }
 
     /**
      * Delete a recurring transaction
      */
-    @Transactional
     public void delete(Long id, Long userId) {
         RecurringTransaction rt = recurringTransactionRepository.findByIdAndUserId(id, userId)
                 .orElseThrow(() -> new ResourceNotFoundException("Recurring transaction not found"));
@@ -186,9 +195,6 @@ public class RecurringTransactionService {
                 rt.setOccurrencesProcessed(rt.getOccurrencesProcessed() + 1);
 
                 // Check if should deactivate
-                if (rt.getMaxOccurrences() != null && rt.getOccurrencesProcessed() >= rt.getMaxOccurrences()) {
-                    rt.setIsActive(false);
-                }
                 if (rt.getEndDate() != null && rt.getNextOccurrence().isAfter(rt.getEndDate())) {
                     rt.setIsActive(false);
                 }
@@ -206,6 +212,48 @@ public class RecurringTransactionService {
 
         log.info("Processed {} recurring transactions", processed);
         return processed;
+    }
+
+    /**
+     * Helper to process a single recurring transaction if it is due
+     */
+    private void processIfDue(RecurringTransaction rt) {
+        if (rt.getIsActive() && !rt.getNextOccurrence().isAfter(LocalDate.now())) {
+            log.info("Immediate processing for recurring transaction {}", rt.getId());
+            try {
+                // Create Transaction DTO
+                com.budgetwise.dto.TransactionDto transactionDto = new com.budgetwise.dto.TransactionDto();
+                transactionDto.setType(rt.getType() == RecurringTransaction.TransactionType.INCOME
+                        ? com.budgetwise.entity.Transaction.TransactionType.INCOME
+                        : com.budgetwise.entity.Transaction.TransactionType.EXPENSE);
+                transactionDto.setAmount(rt.getAmount());
+                transactionDto.setCategoryId(rt.getCategoryId());
+                transactionDto.setDescription(rt.getDescription() != null
+                        ? rt.getDescription() + " (Auto)"
+                        : "Recurring Transaction (Auto)");
+                transactionDto.setTransactionDate(rt.getNextOccurrence());
+
+                // Use TransactionService to handle creation, cache eviction, websockets, etc.
+                transactionService.createTransaction(transactionDto, rt.getUserId());
+
+                // Update recurring transaction state
+                rt.setNextOccurrence(rt.calculateNextOccurrence());
+                rt.setOccurrencesProcessed(rt.getOccurrencesProcessed() + 1);
+
+                // Check if should deactivate
+                if (rt.getMaxOccurrences() != null && rt.getOccurrencesProcessed() >= rt.getMaxOccurrences()) {
+                    rt.setIsActive(false);
+                }
+                if (rt.getEndDate() != null && rt.getNextOccurrence().isAfter(rt.getEndDate())) {
+                    rt.setIsActive(false);
+                }
+
+                recurringTransactionRepository.save(rt);
+
+            } catch (Exception e) {
+                log.error("Failed to process recurring transaction {}: {}", rt.getId(), e.getMessage());
+            }
+        }
     }
 
     /**

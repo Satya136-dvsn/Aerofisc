@@ -48,6 +48,7 @@ import {
   SavingsOutlined as RetirementIcon,
   AccountBalance as TaxIcon,
   Psychology as ScenarioIcon,
+  Repeat as RepeatIcon,
 } from '@mui/icons-material';
 import { useAuth } from '../../context/AuthContext';
 
@@ -57,6 +58,7 @@ const DRAWER_WIDTH_COLLAPSED = 64;
 const menuItems = [
   { text: 'Dashboard', icon: <DashboardIcon />, path: '/dashboard' },
   { text: 'Transactions', icon: <ReceiptIcon />, path: '/transactions' },
+  { text: 'Recurring', icon: <RepeatIcon />, path: '/recurring' },
   { text: 'Categories', icon: <CategoryIcon />, path: '/categories' },
   { text: 'Budgets', icon: <BudgetIcon />, path: '/budgets' },
   { text: 'Savings Goals', icon: <SavingsIcon />, path: '/goals' },

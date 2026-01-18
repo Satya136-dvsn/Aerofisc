@@ -79,7 +79,8 @@ const TransactionDialog = ({ open, transaction, onClose }) => {
   const loadCategories = async () => {
     try {
       const response = await categoryService.getAll();
-      setCategories(response.data);
+      // Service already returns response.data
+      setCategories(Array.isArray(response) ? response : []);
     } catch (err) {
       console.error('Failed to load categories:', err);
       if (err.response?.status === 403 || err.response?.status === 401) {
@@ -273,7 +274,7 @@ const TransactionDialog = ({ open, transaction, onClose }) => {
                 helperText={suggestion ? `AI suggests: ${suggestion.categoryName}` : ''}
               >
                 <MenuItem value="">None</MenuItem>
-                {categories.map((cat) => (
+                {categories?.map((cat) => (
                   <MenuItem key={cat.id} value={cat.id}>
                     {cat.icon} {cat.name}
                   </MenuItem>

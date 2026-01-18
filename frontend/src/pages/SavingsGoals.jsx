@@ -17,6 +17,7 @@ import {
 } from '@mui/material';
 import { Add as AddIcon, EmojiEvents as TrophyIcon, AttachMoney as MoneyIcon } from '@mui/icons-material';
 import savingsGoalService from '../services/savingsGoalService';
+import exportService from '../services/exportService';
 import SavingsGoalDialog from '../components/SavingsGoalDialog';
 import GoalCard from '../components/goals/GoalCard';
 
@@ -172,14 +173,30 @@ const SavingsGoals = () => {
                 Track your progress towards your financial dreams
               </Typography>
             </Box>
-            <Button
-              variant="contained"
-              startIcon={<AddIcon />}
-              onClick={handleAdd}
-              size="large"
-            >
-              Create Goal
-            </Button>
+            <Box display="flex" gap={2}>
+              <Button
+                variant="outlined"
+                startIcon={<MoneyIcon />}
+                onClick={() => exportService.exportGoals('excel')}
+              >
+                Export Excel
+              </Button>
+              <Button
+                variant="outlined"
+                startIcon={<TrophyIcon />}
+                onClick={() => exportService.exportGoals('pdf')}
+              >
+                Export PDF
+              </Button>
+              <Button
+                variant="contained"
+                startIcon={<AddIcon />}
+                onClick={handleAdd}
+                size="large"
+              >
+                Create Goal
+              </Button>
+            </Box>
           </Box>
 
           {error && (

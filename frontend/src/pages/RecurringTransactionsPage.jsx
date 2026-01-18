@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import {
-    Box, Typography, Button, Card, CardContent, Grid, Chip, IconButton,
+    Box, Typography, Button, Grid, IconButton,
     Dialog, DialogTitle, DialogContent, DialogActions, TextField, MenuItem,
     FormControl, InputLabel, Select, Switch, FormControlLabel, Alert,
     Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper,
-    CircularProgress, Tooltip
+    CircularProgress, Tooltip, Container, Menu, ListItemIcon, ListItemText, Chip
 } from '@mui/material';
 import {
     Add as AddIcon,
@@ -14,11 +14,14 @@ import {
     Pause as PauseIcon,
     Repeat as RepeatIcon,
     TrendingUp as IncomeIcon,
-    TrendingDown as ExpenseIcon
+    TrendingDown as ExpenseIcon,
+    MoreVert as MoreVertIcon,
+    CheckCircle as ActiveIcon
 } from '@mui/icons-material';
 import { format } from 'date-fns';
 import recurringService from '../services/recurringService';
 import categoryService from '../services/categoryService';
+import StatCard from '../components/ui/StatCard';
 
 const RecurringTransactionsPage = () => {
     const [transactions, setTransactions] = useState([]);
@@ -38,6 +41,10 @@ const RecurringTransactionsPage = () => {
         maxOccurrences: ''
     });
     const [showInactive, setShowInactive] = useState(false);
+
+    // Menu State
+    const [anchorEl, setAnchorEl] = useState(null);
+    const [menuTransaction, setMenuTransaction] = useState(null);
 
     useEffect(() => {
         fetchData();
@@ -144,6 +151,32 @@ const RecurringTransactionsPage = () => {
         }
     };
 
+    // Menu Handlers
+    const handleMenuOpen = (event, transaction) => {
+        setAnchorEl(event.currentTarget);
+        setMenuTransaction(transaction);
+    };
+
+    const handleMenuClose = () => {
+        setAnchorEl(null);
+        setMenuTransaction(null);
+    };
+
+    const handleEditFromMenu = () => {
+        handleOpenDialog(menuTransaction);
+        handleMenuClose();
+    };
+
+    const handleDeleteFromMenu = () => {
+        handleDelete(menuTransaction.id);
+        handleMenuClose();
+    };
+
+    const handleToggleFromMenu = () => {
+        handleToggleActive(menuTransaction.id);
+        handleMenuClose();
+    };
+
     const frequencyOptions = recurringService.getFrequencyOptions();
     const typeOptions = recurringService.getTypeOptions();
 
@@ -155,13 +188,22 @@ const RecurringTransactionsPage = () => {
         );
     }
 
+    const activeIncome = transactions
+        .filter(t => t.isActive && t.type === 'INCOME')
+        .reduce((sum, t) => sum + parseFloat(t.amount), 0);
+
+    const activeExpenses = transactions
+        .filter(t => t.isActive && t.type === 'EXPENSE')
+        .reduce((sum, t) => sum + parseFloat(t.amount), 0);
+
+    const activeCount = transactions.filter(t => t.isActive).length;
+
     return (
-        <Box sx={{ p: 3 }}>
+        <Container maxWidth="xl" sx={{ pb: 4 }}>
             {/* Header */}
-            <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
+            <Box display="flex" justifyContent="space-between" alignItems="center" mb={3} mt={1}>
                 <Box>
-                    <Typography variant="h4" fontWeight="bold">
-                        <RepeatIcon sx={{ mr: 1, verticalAlign: 'middle' }} />
+                    <Typography variant="h4" fontWeight="bold" gutterBottom>
                         Recurring Transactions
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
@@ -182,6 +224,7 @@ const RecurringTransactionsPage = () => {
                         variant="contained"
                         startIcon={<AddIcon />}
                         onClick={() => handleOpenDialog()}
+                        size="large"
                     >
                         New Recurring
                     </Button>
@@ -195,53 +238,41 @@ const RecurringTransactionsPage = () => {
             )}
 
             {/* Stats Cards */}
-            <Grid container spacing={2} sx={{ mb: 3 }}>
+            <Grid container spacing={3} sx={{ mb: 4 }}>
                 <Grid item xs={12} sm={4}>
-                    <Card sx={{ bgcolor: 'success.light', color: 'success.contrastText' }}>
-                        <CardContent>
-                            <Typography variant="h6">Active Income</Typography>
-                            <Typography variant="h4">
-                                ₹{transactions
-                                    .filter(t => t.isActive && t.type === 'INCOME')
-                                    .reduce((sum, t) => sum + parseFloat(t.amount), 0)
-                                    .toLocaleString()}
-                            </Typography>
-                            <Typography variant="body2">/month (avg)</Typography>
-                        </CardContent>
-                    </Card>
+                    <StatCard
+                        title="Active Income"
+                        value={activeIncome}
+                        subtitle="/month (avg)"
+                        icon={<IncomeIcon />}
+                        color="success"
+                    />
                 </Grid>
                 <Grid item xs={12} sm={4}>
-                    <Card sx={{ bgcolor: 'error.light', color: 'error.contrastText' }}>
-                        <CardContent>
-                            <Typography variant="h6">Active Expenses</Typography>
-                            <Typography variant="h4">
-                                ₹{transactions
-                                    .filter(t => t.isActive && t.type === 'EXPENSE')
-                                    .reduce((sum, t) => sum + parseFloat(t.amount), 0)
-                                    .toLocaleString()}
-                            </Typography>
-                            <Typography variant="body2">/month (avg)</Typography>
-                        </CardContent>
-                    </Card>
+                    <StatCard
+                        title="Active Expenses"
+                        value={activeExpenses}
+                        subtitle="/month (avg)"
+                        icon={<ExpenseIcon />}
+                        color="error"
+                    />
                 </Grid>
                 <Grid item xs={12} sm={4}>
-                    <Card sx={{ bgcolor: 'primary.light', color: 'primary.contrastText' }}>
-                        <CardContent>
-                            <Typography variant="h6">Total Active</Typography>
-                            <Typography variant="h4">
-                                {transactions.filter(t => t.isActive).length}
-                            </Typography>
-                            <Typography variant="body2">recurring transactions</Typography>
-                        </CardContent>
-                    </Card>
+                    <StatCard
+                        title="Total Active"
+                        value={activeCount}
+                        subtitle="recurring transactions"
+                        icon={<RepeatIcon />}
+                        color="primary"
+                    />
                 </Grid>
             </Grid>
 
             {/* Transactions Table */}
             <TableContainer component={Paper}>
-                <Table>
+                <Table size="small">
                     <TableHead>
-                        <TableRow sx={{ bgcolor: 'grey.100' }}>
+                        <TableRow>
                             <TableCell>Type</TableCell>
                             <TableCell>Description</TableCell>
                             <TableCell>Category</TableCell>
@@ -255,7 +286,7 @@ const RecurringTransactionsPage = () => {
                     <TableBody>
                         {transactions.length === 0 ? (
                             <TableRow>
-                                <TableCell colSpan={8} align="center" sx={{ py: 4 }}>
+                                <TableCell colSpan={8} align="center" sx={{ py: 6 }}>
                                     <Typography color="text.secondary">
                                         No recurring transactions yet. Create one to get started!
                                     </Typography>
@@ -266,6 +297,7 @@ const RecurringTransactionsPage = () => {
                                 <TableRow
                                     key={transaction.id}
                                     sx={{ opacity: transaction.isActive ? 1 : 0.5 }}
+                                    hover
                                 >
                                     <TableCell>
                                         {transaction.type === 'INCOME' ? (
@@ -274,6 +306,7 @@ const RecurringTransactionsPage = () => {
                                                 label="Income"
                                                 color="success"
                                                 size="small"
+                                                variant="outlined"
                                             />
                                         ) : (
                                             <Chip
@@ -281,11 +314,18 @@ const RecurringTransactionsPage = () => {
                                                 label="Expense"
                                                 color="error"
                                                 size="small"
+                                                variant="outlined"
                                             />
                                         )}
                                     </TableCell>
-                                    <TableCell>{transaction.description || '-'}</TableCell>
-                                    <TableCell>{transaction.categoryName}</TableCell>
+                                    <TableCell>
+                                        <Typography variant="body2" fontWeight={500}>
+                                            {transaction.description || '-'}
+                                        </Typography>
+                                    </TableCell>
+                                    <TableCell>
+                                        <Chip label={transaction.categoryName} size="small" variant="outlined" />
+                                    </TableCell>
                                     <TableCell align="right" sx={{ fontWeight: 'bold' }}>
                                         ₹{parseFloat(transaction.amount).toLocaleString()}
                                     </TableCell>
@@ -307,31 +347,12 @@ const RecurringTransactionsPage = () => {
                                         />
                                     </TableCell>
                                     <TableCell align="center">
-                                        <Tooltip title={transaction.isActive ? 'Pause' : 'Resume'}>
-                                            <IconButton
-                                                size="small"
-                                                onClick={() => handleToggleActive(transaction.id)}
-                                            >
-                                                {transaction.isActive ? <PauseIcon /> : <PlayIcon />}
-                                            </IconButton>
-                                        </Tooltip>
-                                        <Tooltip title="Edit">
-                                            <IconButton
-                                                size="small"
-                                                onClick={() => handleOpenDialog(transaction)}
-                                            >
-                                                <EditIcon />
-                                            </IconButton>
-                                        </Tooltip>
-                                        <Tooltip title="Delete">
-                                            <IconButton
-                                                size="small"
-                                                color="error"
-                                                onClick={() => handleDelete(transaction.id)}
-                                            >
-                                                <DeleteIcon />
-                                            </IconButton>
-                                        </Tooltip>
+                                        <IconButton
+                                            size="small"
+                                            onClick={(e) => handleMenuOpen(e, transaction)}
+                                        >
+                                            <MoreVertIcon fontSize="small" />
+                                        </IconButton>
                                     </TableCell>
                                 </TableRow>
                             ))
@@ -339,6 +360,32 @@ const RecurringTransactionsPage = () => {
                     </TableBody>
                 </Table>
             </TableContainer>
+
+            {/* Action Menu */}
+            <Menu
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl)}
+                onClose={handleMenuClose}
+            >
+                <MenuItem onClick={handleEditFromMenu}>
+                    <ListItemIcon>
+                        <EditIcon fontSize="small" />
+                    </ListItemIcon>
+                    <ListItemText>Edit</ListItemText>
+                </MenuItem>
+                <MenuItem onClick={handleToggleFromMenu}>
+                    <ListItemIcon>
+                        {menuTransaction?.isActive ? <PauseIcon fontSize="small" /> : <PlayIcon fontSize="small" />}
+                    </ListItemIcon>
+                    <ListItemText>{menuTransaction?.isActive ? 'Pause' : 'Resume'}</ListItemText>
+                </MenuItem>
+                <MenuItem onClick={handleDeleteFromMenu}>
+                    <ListItemIcon>
+                        <DeleteIcon fontSize="small" color="error" />
+                    </ListItemIcon>
+                    <ListItemText primaryTypographyProps={{ color: 'error' }}>Delete</ListItemText>
+                </MenuItem>
+            </Menu>
 
             {/* Create/Edit Dialog */}
             <Dialog open={dialogOpen} onClose={handleCloseDialog} maxWidth="sm" fullWidth>
@@ -464,7 +511,7 @@ const RecurringTransactionsPage = () => {
                     </Button>
                 </DialogActions>
             </Dialog>
-        </Box>
+        </Container>
     );
 };
 

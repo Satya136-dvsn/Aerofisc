@@ -1,17 +1,35 @@
 import api from './api';
 
 const categoryService = {
-  getAll: () => api.get('/categories'),
-  
-  getById: (id) => api.get(`/categories/${id}`),
-  
-  create: (data) => api.post('/categories', data),
-  
-  update: (id, data) => api.put(`/categories/${id}`, data),
-  
-  delete: (id) => api.delete(`/categories/${id}`),
-  
-  getUserCategories: () => api.get('/categories/user'),
+  getAll: async () => {
+    const response = await api.get('/categories');
+    return response.data;
+  },
+
+  getById: async (id) => {
+    const response = await api.get(`/categories/${id}`);
+    return response.data;
+  },
+
+  create: async (data) => {
+    const response = await api.post('/categories', data);
+    return response.data;
+  },
+
+  update: async (id, data) => {
+    const response = await api.put(`/categories/${id}`, data);
+    return response.data;
+  },
+
+  delete: async (id) => {
+    const response = await api.delete(`/categories/${id}`);
+    return response.data;
+  },
+
+  getUserCategories: async () => {
+    const response = await api.get('/categories/user');
+    return response.data;
+  },
 };
 
 export default categoryService;
