@@ -1,5 +1,5 @@
 // BudgetWise Service Worker
-// Version: 1.0.0
+// Version: 1.0.1 (Dev Fix)
 
 const CACHE_NAME = 'budgetwise-v1';
 const STATIC_CACHE_NAME = 'budgetwise-static-v1';
@@ -65,41 +65,64 @@ self.addEventListener('fetch', (event) => {
     const { request } = event;
     const url = new URL(request.url);
 
-    // Skip non-GET and non-same-origin requests
-    if (request.method !== 'GET' || url.origin !== location.origin) {
+    // 1. SKIP non-GET requests
+    if (request.method !== 'GET') {
         return;
     }
 
-    // Network-only for API routes
+    // 2. SKIP non-http/https schemes (extensions, etc)
+    if (!url.protocol.startsWith('http')) {
+        return;
+    }
+
+    // 3. SKIP Vite Development Resources (CRITICAL for localhost)
+    // Exclude: node_modules, src, @vite, @react-refresh, *.jsx, *.tsx, hot-updates
+    const isDevResource =
+        url.pathname.includes('node_modules') ||
+        url.pathname.includes('/src/') ||
+        url.pathname.includes('/@') ||
+        url.search.includes('t=') ||
+        url.pathname.endsWith('.jsx') ||
+        url.pathname.endsWith('.tsx') ||
+        url.pathname.endsWith('.ts');
+
+    if (isDevResource) {
+        return; // Let browser handle network request
+    }
+
+    // 4. API Routes: Network-only
     if (NETWORK_ONLY_ROUTES.some((route) => url.pathname.startsWith(route))) {
         event.respondWith(
             fetch(request)
                 .catch(() => {
-                    // Return cached data if available
                     return caches.match(request);
                 })
         );
         return;
     }
 
-    // Cache-first for static assets
+    // 5. Static Assets: Cache-first (Stale-while-revalidate)
     event.respondWith(
         caches.match(request)
             .then((cachedResponse) => {
+                // Network fetch for update
+                const fetchPromise = fetchAndCache(request).catch(err => {
+                    if (cachedResponse) return cachedResponse;
+                    // If strictly a document navigation and failed, show offline
+                    if (request.destination === 'document') {
+                        return caches.match('/offline.html');
+                    }
+                    // Otherwise throw to let browser show error
+                    throw err;
+                });
+
+                // Return cached if available, but update in background
                 if (cachedResponse) {
-                    // Return cached version, but also update cache in background
-                    event.waitUntil(updateCache(request));
+                    event.waitUntil(fetchPromise.catch(() => { }));
                     return cachedResponse;
                 }
 
-                // Not in cache, fetch from network
-                return fetchAndCache(request);
-            })
-            .catch(() => {
-                // Offline fallback
-                if (request.destination === 'document') {
-                    return caches.match('/offline.html');
-                }
+                return fetchPromise;
             })
     );
 });
@@ -109,8 +132,8 @@ async function fetchAndCache(request) {
     try {
         const response = await fetch(request);
 
-        // Only cache successful responses
-        if (response && response.status === 200) {
+        // Only cache valid http/https responses
+        if (response && response.status === 200 && response.type === 'basic') {
             const cache = await caches.open(DYNAMIC_CACHE_NAME);
             cache.put(request, response.clone());
         }
@@ -127,7 +150,7 @@ async function updateCache(request) {
     try {
         const response = await fetch(request);
 
-        if (response && response.status === 200) {
+        if (response && response.status === 200 && response.type === 'basic') {
             const cache = await caches.open(DYNAMIC_CACHE_NAME);
             cache.put(request, response.clone());
         }
@@ -136,7 +159,7 @@ async function updateCache(request) {
     }
 }
 
-// Handle push notifications (for future use)
+// Handle push notifications
 self.addEventListener('push', (event) => {
     const options = {
         body: event.data?.text() || 'New notification from BudgetWise',
@@ -169,7 +192,7 @@ self.addEventListener('notificationclick', (event) => {
     }
 });
 
-// Background sync (for offline transaction support)
+// Background sync
 self.addEventListener('sync', (event) => {
     if (event.tag === 'sync-transactions') {
         event.waitUntil(syncTransactions());
@@ -177,7 +200,5 @@ self.addEventListener('sync', (event) => {
 });
 
 async function syncTransactions() {
-    // This would sync any offline transactions when back online
     console.log('[ServiceWorker] Syncing transactions...');
-    // Implementation would depend on IndexedDB storage of offline transactions
 }
