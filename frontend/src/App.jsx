@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import theme from './theme/theme'
 import AppRoutes from './routes/AppRoutes'
 import { AuthProvider } from './context/AuthContext'
+import { CurrencyProvider } from './context/CurrencyContext'
 
 // Create a client for React Query
 const queryClient = new QueryClient({
@@ -24,7 +25,9 @@ function App() {
         <CssBaseline />
         <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
           <AuthProvider>
-            <AppRoutes />
+            <CurrencyProvider>
+              <AppRoutes />
+            </CurrencyProvider>
           </AuthProvider>
         </Router>
       </ThemeProvider>

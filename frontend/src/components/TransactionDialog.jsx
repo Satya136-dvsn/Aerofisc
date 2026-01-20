@@ -18,11 +18,13 @@ import {
   AutoAwesome as AutoAwesomeIcon,
   CloudUpload as CloudUploadIcon,
   Close as CloseIcon,
-  InsertDriveFile as FileIcon
+  InsertDriveFile as FileIcon,
+  Receipt as ReceiptIcon,
 } from '@mui/icons-material';
 import transactionService from '../services/transactionService';
 import categoryService from '../services/categoryService';
 import aiService from '../services/aiService';
+import ReceiptScanner from './ReceiptScanner';
 
 const TransactionDialog = ({ open, transaction, onClose }) => {
   const [formData, setFormData] = useState({
@@ -39,6 +41,7 @@ const TransactionDialog = ({ open, transaction, onClose }) => {
   const [suggestion, setSuggestion] = useState(null);
   const [receiptFile, setReceiptFile] = useState(null);
   const [receiptPreview, setReceiptPreview] = useState(null);
+  const [showScanner, setShowScanner] = useState(false);
 
   useEffect(() => {
     if (open) {
@@ -122,6 +125,16 @@ const TransactionDialog = ({ open, transaction, onClose }) => {
     setReceiptPreview(null);
   };
 
+  const handleOcrData = (data) => {
+    setFormData((prev) => ({
+      ...prev,
+      amount: data.amount || prev.amount,
+      description: data.description || prev.description,
+      date: data.date || prev.date,
+    }));
+    setShowScanner(false);
+  };
+
   const handleSuggestCategory = async () => {
     if (!formData.description || !formData.amount) {
       setError('Please enter description and amount first');
@@ -191,7 +204,7 @@ const TransactionDialog = ({ open, transaction, onClose }) => {
         // await transactionService.uploadReceipt(formData);
       }
 
-      if (transaction) {
+      if (transaction && transaction.id) {
         await transactionService.update(transaction.id, data);
       } else {
         await transactionService.create(data);
@@ -206,7 +219,7 @@ const TransactionDialog = ({ open, transaction, onClose }) => {
 
   return (
     <Dialog open={open} onClose={() => onClose(false)} maxWidth="sm" fullWidth>
-      <DialogTitle>{transaction ? 'Edit Transaction' : 'Add Transaction'}</DialogTitle>
+      <DialogTitle>{transaction && transaction.id ? 'Edit Transaction' : 'Add Transaction'}</DialogTitle>
       <form onSubmit={handleSubmit}>
         <DialogContent>
           {error && (
@@ -295,26 +308,45 @@ const TransactionDialog = ({ open, transaction, onClose }) => {
               >
                 {!receiptFile ? (
                   <>
-                    <input
-                      accept="image/*,.pdf"
-                      style={{ display: 'none' }}
-                      id="receipt-file-upload"
-                      type="file"
-                      onChange={handleFileChange}
-                    />
-                    <label htmlFor="receipt-file-upload">
+                    <Box display="flex" gap={1} justifyContent="center" mb={1}>
                       <Button
-                        variant="outlined"
-                        component="span"
-                        startIcon={<CloudUploadIcon />}
-                        sx={{ mb: 1 }}
+                        variant="contained"
+                        color="secondary"
+                        startIcon={<ReceiptIcon />}
+                        onClick={() => setShowScanner(true)}
                       >
-                        Upload Receipt
+                        Scan Receipt (OCR)
                       </Button>
-                    </label>
+                      <input
+                        accept="image/*,.pdf"
+                        style={{ display: 'none' }}
+                        id="receipt-file-upload"
+                        type="file"
+                        onChange={handleFileChange}
+                      />
+                      <label htmlFor="receipt-file-upload">
+                        <Button
+                          variant="outlined"
+                          component="span"
+                          startIcon={<CloudUploadIcon />}
+                        >
+                          Upload Receipt
+                        </Button>
+                      </label>
+                    </Box>
                     <Typography variant="caption" display="block" color="text.secondary">
-                      Supports JPG, PNG, PDF (Max 5MB)
+                      Scan to auto-fill or upload for record
                     </Typography>
+
+                    {/* Receipt Scanner Dialog */}
+                    <Dialog open={showScanner} onClose={() => setShowScanner(false)} maxWidth="sm" fullWidth>
+                      <DialogContent sx={{ p: 0 }}>
+                        <ReceiptScanner
+                          onDataExtracted={handleOcrData}
+                          onClose={() => setShowScanner(false)}
+                        />
+                      </DialogContent>
+                    </Dialog>
                   </>
                 ) : (
                   <Box display="flex" alignItems="center" justifyContent="space-between">

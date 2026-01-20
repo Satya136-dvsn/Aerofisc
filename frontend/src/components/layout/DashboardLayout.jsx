@@ -77,6 +77,11 @@ const menuItems = [
   { text: 'Admin', icon: <AdminIcon />, path: '/admin', adminOnly: true },
 ];
 
+import useKeyboardShortcut from '../../hooks/useKeyboardShortcut';
+import TransactionDialog from '../TransactionDialog';
+import OnboardingTour from '../OnboardingTour';
+import VoiceCommandFloatingButton from '../VoiceCommandFloatingButton';
+
 const DashboardLayout = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -89,9 +94,36 @@ const DashboardLayout = () => {
   const [notificationAnchorEl, setNotificationAnchorEl] = useState(null);
   const [userAvatar, setUserAvatar] = useState('');
 
+  // Clean string state for shortcuts (prevents re-renders)
+  const [transactionDialogOpen, setTransactionDialogOpen] = useState(false);
+  const [initialTransactionData, setInitialTransactionData] = useState(null);
+
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+
+  // Keyboard Shortcuts
+  useKeyboardShortcut('n', () => {
+    setInitialTransactionData(null);
+    setTransactionDialogOpen(true);
+  }, { ctrlKey: true });
+  useKeyboardShortcut('d', () => navigate('/dashboard'), { ctrlKey: true });
+  useKeyboardShortcut('t', () => navigate('/transactions'), { ctrlKey: true });
+  useKeyboardShortcut('b', () => navigate('/budgets'), { ctrlKey: true });
+
+  const handleVoiceCommand = (data) => {
+    setInitialTransactionData(data);
+    setTransactionDialogOpen(true);
+  };
+
+  const handleDialogClose = (shouldRefresh) => {
+    setTransactionDialogOpen(false);
+    setTimeout(() => setInitialTransactionData(null), 300);
+    if (shouldRefresh) {
+      // Dispatch event for child components to refresh data
+      window.dispatchEvent(new Event('transaction-updated'));
+    }
+  };
 
   // Persist sidebar state
   useEffect(() => {
@@ -219,6 +251,7 @@ const DashboardLayout = () => {
                   <ListItemButton
                     selected={isSelected}
                     onClick={() => handleNavigation(item.path)}
+                    data-tour={`nav-${item.path.replace('/', '')}`}
                     sx={{
                       borderRadius: 1,
                       minHeight: 48,
@@ -516,6 +549,19 @@ const DashboardLayout = () => {
         <Toolbar /> {/* Spacer for fixed AppBar */}
         <Outlet />
       </Box>
+
+      {/* Global Transaction Dialog */}
+      <TransactionDialog
+        open={transactionDialogOpen}
+        transaction={initialTransactionData}
+        onClose={handleDialogClose}
+      />
+
+      {/* Voice Command Button */}
+      <VoiceCommandFloatingButton onCommand={handleVoiceCommand} />
+
+      {/* Onboarding Tour */}
+      <OnboardingTour />
     </Box>
   );
 };

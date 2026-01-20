@@ -61,7 +61,7 @@ public class PasswordValidator {
         }
 
         public String getErrorMessage() {
-            return String.join("; ", errors);
+            return errors.isEmpty() ? null : String.join("; ", errors);
         }
     }
 }

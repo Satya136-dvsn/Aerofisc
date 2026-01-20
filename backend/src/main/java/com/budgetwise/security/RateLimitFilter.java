@@ -19,9 +19,17 @@ public class RateLimitFilter implements Filter {
     private static final int MAX_REQUESTS_PER_MINUTE = 5;
     private static final long MINUTE_IN_MILLIS = 60000;
 
+    @org.springframework.beans.factory.annotation.Value("${app.ratelimit.enabled:true}")
+    private boolean rateLimitEnabled;
+
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
+
+        if (!rateLimitEnabled) {
+            chain.doFilter(request, response);
+            return;
+        }
 
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;

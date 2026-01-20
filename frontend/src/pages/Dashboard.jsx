@@ -29,7 +29,12 @@ const Dashboard = () => {
   const [recentTransactions, setRecentTransactions] = useState([]);
   const [isExporting, setIsExporting] = useState(false);
 
-  useEffect(() => { loadDashboardData(); }, []);
+  useEffect(() => {
+    loadDashboardData();
+    const handleUpdate = () => loadDashboardData();
+    window.addEventListener('transaction-updated', handleUpdate);
+    return () => window.removeEventListener('transaction-updated', handleUpdate);
+  }, []);
 
   const loadDashboardData = async () => {
     try {

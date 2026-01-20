@@ -10,13 +10,16 @@ import {
   Fab,
   CircularProgress,
   Chip,
+  Dialog,
+  DialogContent,
 } from '@mui/material';
-import { Add as AddIcon, TrendingUp as TrendingUpIcon } from '@mui/icons-material';
+import { Add as AddIcon, TrendingUp as TrendingUpIcon, AutoAwesome as TemplateIcon } from '@mui/icons-material';
 import budgetService from '../services/budgetService';
 import exportService from '../services/exportService';
 import ExportMenu from '../components/common/ExportMenu';
 import BudgetDialog from '../components/BudgetDialog';
 import BudgetCard from '../components/budgets/BudgetCard';
+import BudgetTemplates from '../components/BudgetTemplates';
 
 const Budgets = () => {
   const [budgets, setBudgets] = useState([]);
@@ -24,6 +27,7 @@ const Budgets = () => {
   const [error, setError] = useState('');
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedBudget, setSelectedBudget] = useState(null);
+  const [templateDialogOpen, setTemplateDialogOpen] = useState(false);
 
   useEffect(() => {
     loadBudgets();
@@ -71,6 +75,14 @@ const Budgets = () => {
     setDialogOpen(false);
     setSelectedBudget(null);
     if (reload) loadBudgets();
+  };
+
+  const handleApplyTemplate = async (template) => {
+    setTemplateDialogOpen(false);
+    // Template budgets are just for display/guidance, user creates manually
+    // Show success message and navigate to create
+    setError('');
+    alert(`Template "${template.name}" selected! Click "Create Budget" to set up each category.`);
   };
 
   // Calculate summary stats
@@ -124,6 +136,13 @@ const Budgets = () => {
                 formats={['excel', 'pdf']}
                 onExport={(format) => exportService.exportBudgets(format)}
               />
+              <Button
+                variant="outlined"
+                startIcon={<TemplateIcon />}
+                onClick={() => setTemplateDialogOpen(true)}
+              >
+                Use Template
+              </Button>
               <Button
                 variant="contained"
                 startIcon={<AddIcon />}
@@ -263,6 +282,16 @@ const Budgets = () => {
         budget={selectedBudget}
         onClose={handleDialogClose}
       />
+
+      {/* Budget Templates Dialog */}
+      <Dialog open={templateDialogOpen} onClose={() => setTemplateDialogOpen(false)} maxWidth="md" fullWidth>
+        <DialogContent sx={{ p: 3 }}>
+          <BudgetTemplates
+            onApplyTemplate={handleApplyTemplate}
+            onClose={() => setTemplateDialogOpen(false)}
+          />
+        </DialogContent>
+      </Dialog>
     </Container>
   );
 };

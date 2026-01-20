@@ -18,7 +18,8 @@ import {
     ArrowBackIos as PrevIcon,
     ArrowForwardIos as NextIcon,
     Today as TodayIcon,
-    History as HistoryIcon
+    History as HistoryIcon,
+    Download as DownloadIcon
 } from '@mui/icons-material';
 import {
     format, addDays, startOfMonth, endOfMonth, startOfWeek, endOfWeek,
@@ -29,6 +30,7 @@ import {
 import BillsService from '../services/billService';
 import TransactionService from '../services/transactionService';
 import categoryService from '../services/categoryService';
+import { downloadBillsCalendar } from '../utils/calendarUtils';
 
 const BillsPage = () => {
     const [bills, setBills] = useState([]);
@@ -246,14 +248,27 @@ const BillsPage = () => {
                         Track recurring bills and never miss a payment
                     </Typography>
                 </Box>
-                <Button
-                    variant="contained"
-                    startIcon={<AddIcon />}
-                    onClick={() => handleOpenDialog()}
-                    sx={{ borderRadius: 2, px: 3 }}
-                >
-                    Add Bill
-                </Button>
+                <Box display="flex" gap={1}>
+                    <Tooltip title="Download bills as calendar file (.ics)">
+                        <Button
+                            variant="outlined"
+                            startIcon={<DownloadIcon />}
+                            onClick={() => downloadBillsCalendar(bills)}
+                            disabled={bills.length === 0}
+                            sx={{ borderRadius: 2 }}
+                        >
+                            Export to Calendar
+                        </Button>
+                    </Tooltip>
+                    <Button
+                        variant="contained"
+                        startIcon={<AddIcon />}
+                        onClick={() => handleOpenDialog()}
+                        sx={{ borderRadius: 2, px: 3 }}
+                    >
+                        Add Bill
+                    </Button>
+                </Box>
             </Box>
 
             {/* Summary Cards */}

@@ -73,6 +73,11 @@ const Transactions = () => {
 
   useEffect(() => {
     loadData();
+
+    const handleUpdate = () => loadData();
+    window.addEventListener('transaction-updated', handleUpdate);
+
+    return () => window.removeEventListener('transaction-updated', handleUpdate);
   }, []);
 
   const loadData = async () => {

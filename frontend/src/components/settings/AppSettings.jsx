@@ -1,14 +1,17 @@
-import { useState } from 'react';
-import { Grid, TextField, MenuItem, Typography, Box } from '@mui/material';
+import { useState, useEffect } from 'react';
+import { Grid, TextField, MenuItem, Typography, Box, Alert, Snackbar } from '@mui/material';
 import ProfessionalCard from '../ui/ProfessionalCard';
+import { useCurrency } from '../../context/CurrencyContext';
+import { getCurrencyOptions } from '../../utils/currencyUtils';
 
 const AppSettings = () => {
+    const { currency, updateCurrency, loading } = useCurrency();
     const [settings, setSettings] = useState({
-        currency: 'INR',
         language: 'en',
         dateFormat: 'DD/MM/YYYY',
         timezone: 'Asia/Kolkata',
     });
+    const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
 
     const handleChange = (e) => {
         setSettings({
@@ -16,6 +19,18 @@ const AppSettings = () => {
             [e.target.name]: e.target.value,
         });
     };
+
+    const handleCurrencyChange = async (e) => {
+        const newCurrency = e.target.value;
+        const success = await updateCurrency(newCurrency);
+        if (success) {
+            setSnackbar({ open: true, message: `Currency updated to ${newCurrency}`, severity: 'success' });
+        } else {
+            setSnackbar({ open: true, message: 'Failed to update currency', severity: 'error' });
+        }
+    };
+
+    const currencyOptions = getCurrencyOptions();
 
     return (
         <ProfessionalCard title="Application Preferences" subheader="Customize your experience">
@@ -26,14 +41,16 @@ const AppSettings = () => {
                         fullWidth
                         label="Currency"
                         name="currency"
-                        value={settings.currency}
-                        onChange={handleChange}
-                        helperText="Default: Indian Rupees (₹)"
+                        value={currency}
+                        onChange={handleCurrencyChange}
+                        disabled={loading}
+                        helperText="Your preferred currency for all amounts"
                     >
-                        <MenuItem value="INR">INR (₹)</MenuItem>
-                        <MenuItem value="USD">USD ($)</MenuItem>
-                        <MenuItem value="EUR">EUR (€)</MenuItem>
-                        <MenuItem value="GBP">GBP (£)</MenuItem>
+                        {currencyOptions.map((opt) => (
+                            <MenuItem key={opt.value} value={opt.value}>
+                                {opt.label}
+                            </MenuItem>
+                        ))}
                     </TextField>
                 </Grid>
                 <Grid item xs={12} md={6}>
@@ -82,6 +99,17 @@ const AppSettings = () => {
                     </TextField>
                 </Grid>
             </Grid>
+
+            <Snackbar
+                open={snackbar.open}
+                autoHideDuration={3000}
+                onClose={() => setSnackbar({ ...snackbar, open: false })}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+            >
+                <Alert severity={snackbar.severity} variant="filled">
+                    {snackbar.message}
+                </Alert>
+            </Snackbar>
         </ProfessionalCard>
     );
 };
