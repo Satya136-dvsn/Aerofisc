@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import {
     Container,
     Box,
@@ -12,6 +12,9 @@ import {
     Chip,
     Dialog,
     DialogContent,
+    DialogTitle,
+    DialogActions,
+    DialogContentText,
 } from '@mui/material';
 import { Add as AddIcon, TrendingUp as TrendingUpIcon, AutoAwesome as TemplateIcon } from '@mui/icons-material';
 import budgetService from '../services/budgetService';
@@ -31,39 +34,39 @@ const Budgets = () => {
     const [selectedBudget, setSelectedBudget] = useState(null);
     const [templateDialogOpen, setTemplateDialogOpen] = useState(false);
 
+    // Delete confirmation dialog state
+    const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
+    const [budgetToDelete, setBudgetToDelete] = useState(null);
+    const [isDeleting, setIsDeleting] = useState(false);
+
     useEffect(() => {
-        loadData();
+        loadBudgets();
+        loadCategories();
     }, []);
 
-    const loadData = async () => {
+    const loadCategories = async () => {
         try {
-            setLoading(true);
-            // Load Budgets
-            const budgetRes = await budgetService.getAll();
-            setBudgets(budgetRes.data);
-
-            // Load Categories (categoryService returns data directly based on previous view)
-            const categoryData = await categoryService.getAll();
-            setCategories(categoryData);
-
-            setError('');
+            const response = await categoryService.getAll();
+            setCategories(response.data);
         } catch (err) {
-            console.error('Data load error:', err);
-            if (err.response?.status === 403 || err.response?.status === 401) {
-                return;
-            }
-            setError('Failed to load budgets data');
-        } finally {
-            setLoading(false);
+            console.error('Failed to load categories', err);
         }
     };
 
     const loadBudgets = async () => {
         try {
+            setLoading(true);
             const response = await budgetService.getAll();
             setBudgets(response.data);
+            setError('');
         } catch (err) {
-            console.error('Budget refresh error:', err);
+            console.error('Budget load error:', err);
+            if (err.response?.status === 403 || err.response?.status === 401) {
+                return;
+            }
+            setError('Failed to load budgets');
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -77,21 +80,44 @@ const Budgets = () => {
         setDialogOpen(true);
     };
 
-    const handleDelete = async (id) => {
-        if (!window.confirm('Delete this budget?')) return;
-
-        try {
-            await budgetService.delete(id);
-            loadBudgets();
-        } catch (err) {
-            console.error('Delete budget failed:', err);
-            // More specific error message
-            if (err.response && err.response.status === 409) {
-                setError('Cannot delete budget because it has associated transactions. Please delete the transactions first.');
-            } else {
-                setError('Failed to delete budget. Please try again.');
-            }
+    // Opens the delete confirmation dialog 
+    const handleDelete = useCallback((id) => {
+        console.log('handleDelete called - opening confirm dialog for ID:', id);
+        if (!id) {
+            setError('Invalid budget ID');
+            return;
         }
+        setBudgetToDelete(id);
+        setDeleteConfirmOpen(true);
+    }, []);
+
+    // Actually performs the deletion after user confirms
+    const confirmDelete = async () => {
+        console.log('confirmDelete called for ID:', budgetToDelete);
+        setDeleteConfirmOpen(false);
+
+        if (!budgetToDelete || isDeleting) {
+            return;
+        }
+
+        setIsDeleting(true);
+        try {
+            console.log('Sending delete request for budget:', budgetToDelete);
+            await budgetService.delete(budgetToDelete);
+            console.log('Delete successful');
+            await loadBudgets();
+        } catch (err) {
+            console.error('Delete failed:', err);
+            setError(err.response?.data?.message || 'Failed to delete budget. It may have associated transactions.');
+        } finally {
+            setIsDeleting(false);
+            setBudgetToDelete(null);
+        }
+    };
+
+    const cancelDelete = () => {
+        setDeleteConfirmOpen(false);
+        setBudgetToDelete(null);
     };
 
     const handleDialogClose = (reload) => {
@@ -101,68 +127,128 @@ const Budgets = () => {
     };
 
     const handleApplyTemplate = async (template) => {
+        console.log('handleApplyTemplate called with:', template);
+        console.log('Current categories:', categories);
+        console.log('Existing budgets:', budgets);
+
         setTemplateDialogOpen(false);
 
-        if (!window.confirm(`Apply "${template.name}"? This will create ${template.budgets.length} new budgets.`)) {
-            return;
-        }
+        // No window.confirm here - BudgetTemplates component already has confirmation dialog
 
         setLoading(true);
         let successCount = 0;
+        let updateCount = 0;
 
         try {
             const today = new Date();
-            // Set end date to 1 month from now for monthly budgets
             const endDate = new Date(today);
             endDate.setMonth(endDate.getMonth() + 1);
 
             const startDateStr = today.toISOString().split('T')[0];
             const endDateStr = endDate.toISOString().split('T')[0];
 
-            // We process sequentially to avoid overwhelming backend or race conditions with category creation
+            console.log('Date range:', startDateStr, 'to', endDateStr);
+
             for (const item of template.budgets) {
+                console.log('Processing template item:', item);
                 try {
-                    // 1. Find or Create Category
+                    // 1. Find Category using fuzzy matching (partial match)
                     let categoryId = null;
-                    // Case insensitive check
-                    const existingCat = categories.find(c => c.name.toLowerCase() === item.category.toLowerCase());
+                    const templateCatLower = item.category.toLowerCase();
+
+                    // First try exact match, then partial match
+                    let existingCat = categories.find(c => c.name.toLowerCase() === templateCatLower);
+
+                    if (!existingCat) {
+                        // Try partial match: category contains template name OR template name contains category
+                        existingCat = categories.find(c => {
+                            const catNameLower = c.name.toLowerCase();
+                            return catNameLower.includes(templateCatLower) || templateCatLower.includes(catNameLower);
+                        });
+                    }
+
+                    console.log('Category search result (fuzzy):', existingCat);
 
                     if (existingCat) {
                         categoryId = existingCat.id;
+                        console.log('Using existing category ID:', categoryId, 'Name:', existingCat.name);
                     } else {
-                        // Create new category if it doesn't exist
                         console.log(`Creating new category: ${item.category}`);
-                        const type = item.category.toLowerCase().includes('income') ? 'INCOME' : 'EXPENSE';
-                        const newCatData = await categoryService.create({
+                        const type = item.category.includes('Income') ? 'INCOME' : 'EXPENSE';
+                        const newCatRes = await categoryService.create({
                             name: item.category,
                             type: type,
-                            color: '#808080' // Default color
+                            color: '#808080'
                         });
-                        categoryId = newCatData.id;
-                        // Update local categories list conservatively
-                        setCategories(prev => [...prev, newCatData]);
+                        console.log('Category creation response:', newCatRes);
+                        categoryId = newCatRes.data.id;
+                        setCategories(prev => [...prev, newCatRes.data]);
                     }
 
-                    // 2. Create Budget
-                    await budgetService.create({
-                        categoryId: categoryId, // Critical: Backend expects categoryId
-                        amount: item.amount,
-                        period: item.period || 'MONTHLY',
-                        startDate: startDateStr,
-                        endDate: endDateStr, // Critical: Backend expects endDate
-                        alertThreshold: 80
-                    });
-                    successCount++;
+                    // 2. Check if a budget for this category already exists (by categoryId OR by matched category name)
+                    let existingBudget = budgets.find(b => b.categoryId === categoryId);
+
+                    // Also try matching by category name (in case categoryId differs due to system categories)
+                    if (!existingBudget && existingCat) {
+                        existingBudget = budgets.find(b =>
+                            b.categoryName?.toLowerCase() === existingCat.name.toLowerCase()
+                        );
+                    }
+
+                    console.log('Existing budget search result:', existingBudget);
+
+                    if (existingBudget) {
+                        // Update existing budget
+                        console.log('Updating existing budget:', existingBudget);
+                        const updatePayload = {
+                            categoryId: categoryId,
+                            amount: item.amount,
+                            period: item.period || 'MONTHLY',
+                            startDate: existingBudget.startDate || startDateStr,
+                            endDate: existingBudget.endDate || endDateStr,
+                            alertThreshold: existingBudget.alertThreshold || 80
+                        };
+                        console.log('Update payload:', updatePayload);
+                        await budgetService.update(existingBudget.id, updatePayload);
+                        updateCount++;
+                    } else {
+                        // Create new budget
+                        const budgetPayload = {
+                            categoryId: categoryId,
+                            amount: item.amount,
+                            period: item.period || 'MONTHLY',
+                            startDate: startDateStr,
+                            endDate: endDateStr,
+                            alertThreshold: 80
+                        };
+                        console.log('Creating budget with payload:', budgetPayload);
+
+                        const budgetRes = await budgetService.create(budgetPayload);
+                        console.log('Budget creation response:', budgetRes);
+                        successCount++;
+                    }
                 } catch (innerErr) {
-                    console.warn(`Failed to create budget for ${item.category}:`, innerErr);
+                    console.error(`Failed to process budget for ${item.category}:`, innerErr);
+                    console.error('Error response:', innerErr.response?.data);
                 }
             }
 
-            if (successCount > 0) {
-                alert(`Successfully created ${successCount} budgets from template!`);
+            console.log('Template application complete. Created:', successCount, 'Updated:', updateCount);
+
+            const totalProcessed = successCount + updateCount;
+            if (totalProcessed > 0) {
+                let message = '';
+                if (successCount > 0 && updateCount > 0) {
+                    message = `Successfully created ${successCount} and updated ${updateCount} budgets!`;
+                } else if (successCount > 0) {
+                    message = `Successfully created ${successCount} budgets!`;
+                } else {
+                    message = `Successfully updated ${updateCount} existing budgets!`;
+                }
+                alert(message);
                 loadBudgets();
             } else {
-                setError('Failed to apply template. Check validation rules or if budgets already exist.');
+                setError('Failed to apply template. Please check console for details.');
             }
 
         } catch (err) {
@@ -197,7 +283,7 @@ const Budgets = () => {
         }).format(amount);
     };
 
-    if (loading && budgets.length === 0) {
+    if (loading) {
         return (
             <Box display="flex" justifyContent="center" alignItems="center" minHeight="60vh">
                 <CircularProgress />
@@ -379,6 +465,31 @@ const Budgets = () => {
                         onClose={() => setTemplateDialogOpen(false)}
                     />
                 </DialogContent>
+            </Dialog>
+
+            {/* Delete Confirmation Dialog */}
+            <Dialog
+                open={deleteConfirmOpen}
+                onClose={cancelDelete}
+                aria-labelledby="delete-dialog-title"
+                aria-describedby="delete-dialog-description"
+            >
+                <DialogTitle id="delete-dialog-title">
+                    Delete Budget?
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="delete-dialog-description">
+                        Are you sure you want to delete this budget? This action cannot be undone.
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={cancelDelete} color="inherit">
+                        Cancel
+                    </Button>
+                    <Button onClick={confirmDelete} color="error" variant="contained" autoFocus>
+                        Delete
+                    </Button>
+                </DialogActions>
             </Dialog>
         </Container>
     );

@@ -199,12 +199,20 @@ const BudgetCard = ({ budget, onEdit, onDelete }) => {
 
             <CardActions sx={{ justifyContent: 'flex-end', p: 2, pt: 0 }}>
                 <Tooltip title="Edit Budget">
-                    <IconButton size="small" onClick={() => onEdit(budget)} color="primary">
+                    <IconButton
+                        size="small"
+                        onClick={(e) => { e.stopPropagation(); onEdit(budget); }}
+                        color="primary"
+                    >
                         <EditIcon fontSize="small" />
                     </IconButton>
                 </Tooltip>
                 <Tooltip title="Delete Budget">
-                    <IconButton size="small" onClick={() => onDelete(budget.id)} color="error">
+                    <IconButton
+                        size="small"
+                        onClick={(e) => { e.stopPropagation(); onDelete(budget.id); }}
+                        color="error"
+                    >
                         <DeleteIcon fontSize="small" />
                     </IconButton>
                 </Tooltip>

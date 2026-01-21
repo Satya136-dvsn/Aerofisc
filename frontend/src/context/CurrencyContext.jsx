@@ -16,9 +16,16 @@ export const CurrencyProvider = ({ children }) => {
     const [currency, setCurrency] = useState('INR');
     const [loading, setLoading] = useState(true);
 
-    // Load user's currency preference on mount
+    // Load user's currency preference on mount - only if authenticated
     useEffect(() => {
         const loadCurrency = async () => {
+            // Check if user is authenticated before making API call
+            const token = localStorage.getItem('token');
+            if (!token) {
+                setLoading(false);
+                return;
+            }
+
             try {
                 const response = await userService.getProfile();
                 if (response.data?.currency) {

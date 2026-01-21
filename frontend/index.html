@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8" />
-  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <link rel="icon" type="image/png" href="/logo.png" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <meta name="description"
     content="BudgetWise - AI-Driven Personal Finance Tracker. Track expenses, manage budgets, and achieve your financial goals." />
@@ -38,9 +38,16 @@
   <div id="root"></div>
   <script type="module" src="/src/main.jsx"></script>
 
-  <!-- Service Worker Registration -->
+  <!-- Service Worker Registration - Only in Production -->
   <script>
-    if ('serviceWorker' in navigator) {
+    // Disable Service Worker in development to prevent glitching
+    const isLocalhost = Boolean(
+      window.location.hostname === 'localhost' ||
+      window.location.hostname === '[::1]' ||
+      window.location.hostname.match(/^127(?:\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}$/)
+    );
+
+    if ('serviceWorker' in navigator && !isLocalhost) {
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('/sw.js')
           .then((registration) => {
@@ -49,6 +56,14 @@
           .catch((registrationError) => {
             console.log('SW registration failed: ', registrationError);
           });
+      });
+    } else if ('serviceWorker' in navigator && isLocalhost) {
+      // Unregister any existing service worker on localhost
+      navigator.serviceWorker.getRegistrations().then(registrations => {
+        for (let registration of registrations) {
+          registration.unregister();
+          console.log('SW unregistered for development');
+        }
       });
     }
   </script>
