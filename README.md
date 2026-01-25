@@ -6,103 +6,145 @@
 ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.2-green.svg)
 ![React](https://img.shields.io/badge/React-18-blue.svg)
 
+> A full-stack, production-grade personal finance assistant built with Spring Boot and React, focused on automation, analytics, and secure financial tracking.
+
 ---
 
 ## 🧐 What is BudgetWise Tracker?
 
-**BudgetWise Tracker** is a comprehensive, full-stack personal finance application designed to help individuals take control of their financial life. Unlike simple expense loggers, this project leverages **AI and Automation** to reduce manual effort. It acts as a personal financial assistant that organizes detailed financial data into actionable insights, helping users save money and track spending effortlessly.
+**BudgetWise Tracker** is a comprehensive, full-stack personal finance application designed to help individuals take control of their financial life. It acts as a personal financial assistant that organizes detailed financial data into actionable insights, utilizing **automation and smart logic** to reduce manual effort.
 
-This project serves as a demonstration of **modern, scalable software architecture**, integrating a robust set of features from recurring payments to predictive AI categorization.
+This project serves as a demonstration of **modern, scalable software architecture**, integrating a robust set of features from recurring payments to advanced analytics.
 
 ---
 
 ## 🎯 Who is this for?
 
-This application is built for:
-
-* **👨‍👩‍👧 Individuals & Families**: Anyone looking for a powerful tool to track monthly budgets, manage recurring bills, and visualize spending habits without using complex spreadsheets.
-* **💼 Detailed Planners**: Users who want granular control over their finances, including custom categories, savings targets, and debt tracking.
-* **💻 Developers & Recruiters**: A reference implementation for a production-grade **Spring Boot + React** application. It showcases best practices in security (JWT), state management, RESTful API design, and database modeling.
+* **Individuals & Families**: For tracking budgets, recurring bills, and spending habits without complex spreadsheets.
+* **Detailed Planners**: For granular control over categories, savings targets, and debt tracking.
+* **Developers & Recruiters**: Reference implementation for a production-grade **Spring Boot + React** application. Showcases best practices in security (JWT), state management, RESTful API design, and database modeling.
 
 ---
 
-## ⚡ What can it do?
+## ✨ Implemented Features
 
-BudgetWise covers the entire spectrum of personal finance management:
+### 🔐 Security & User Management
 
-* **Automate Recurring Bills**: Set up rent, Netflix, or EMI payments once. The system automatically creates transactions and updates your budget every month.
-* **AI-Powered Categorization**: Typed "Starbucks"? The AI automatically tags it as *Food & Drink*, saving you time.
-* **Track & Limit Spending**: Set monthly limits for categories (e.g., "Dining Out"). Get visual alerts when you cross 80% of your budget.
-* **Visualize Financial Health**: Interactive charts breakdown your income vs. expenses, showing exactly where every rupee goes.
-* **Goal-Based Savings**: Create specific goals (e.g., "New Phone") and track your progress visually as you set money aside.
-* **Export Data**: Download professional PDF reports or Excel sheets for tax filing or offline analysis.
+- Secure Authentication using Stateless JWT
+* Input validation and request filtering
+* API rate limiting (custom implementation)
 
----
+### 💸 Core Finance & Automation
 
-## 📖 User Guide: How to Use
+- Smart recurring payments using Spring Scheduler (`@Scheduled`)
+* Budget enforcement with real-time utilization tracking
+* Transaction and category management
+* Savings and expense tracking
 
-### 1. Getting Started
+### 📊 Analytics & Reporting
 
-* **Sign Up**: Create a secure account using your email. We use **JWT (JSON Web Token)** encryption, so your session is secure and stateless.
-* **Profile Setup**: Set your monthly income and financial goals to help the AI calibrate your budget recommendations.
-
-### 2. Dashboard & Analytics
-
-Upon logging in, the **Dashboard** serves as your financial command center:
-
-* **Monthly Overview**: See exactly how much you've earned vs. spent this month.
-* **Trend Analysis**: Interactive, animated charts show your spending habits over the last 6 months.
-* **Category Breakdown**: A donut chart visualizes where your money goes (e.g., "40% Housing", "20% Food").
-
-### 3. Managing Transactions
-
-* **Add Transaction**: Click the `+` button. Enter the amount and description.
-* **Suggest with AI**: Click "Suggest Category with AI" to let the system auto-classify your spending.
-* **Upload Receipts**: Attach images/PDFs for record-keeping.
-
-### 4. Smart Recurring Payments
-
-* **Set It Once**: Go to the **Recurring** tab. Add your Rent or Subscriptions.
-* **Auto-Creation**: The system handles the rest on the due date.
-* **Pause/Resume**: Temporarily stop a recurring payment (e.g., while traveling) with one click.
-
-### 5. Budgets & Alerts
-
-* **Set Limits**: Define monthly budgets for specific categories.
-* **Track Progress**: Watch the progress bars fill up as you spend.
-* **Get Alerts**: Receive warnings when you're nearing your limit.
-
-### 6. Savings Goals
-
-* **Create Goals**: Set a target amount for big purchases.
-* **Contribute**: Log contributions and see your "Percent Complete" ring grow.
-
-### 7. Exporting Reports
-
-* **Generate Reports**: Go to **Transactions** or **Savings** > **Export**.
-* **Download**: Get data in Excel or PDF format instantly.
+- Interactive dashboards using Recharts
+* Aggregated financial insights (income vs expense, category breakdown)
+* Professional PDF and Excel export (iText, Apache POI)
 
 ---
 
-## 🛠️ Technical Architecture
+## 🛣️ Planned / Roadmap
 
-This project is built with scalability and maintainability in mind, following **SOLID principles** and **Clean Architecture**.
+The following enhancements are planned or under exploration:
 
-### **Backend (Spring Boot 3.2)**
+* Receipt scanning using OCR (Tesseract.js)
+* Predictive analytics using statistical or ML models
+* Multi-factor authentication (TOTP / Google Authenticator)
+* Cloud backups via Google Drive API
+* Real-time dashboard updates using WebSockets
+* Mobile application (React Native)
+* Family / shared budget workspaces
 
-* **Core**: Java 21, Spring Boot, Spring Data JPA.
-* **Database**: MySQL 8.0 (Relational Data Integrity).
-* **Security**: Spring Security + JWT Authentication Filter (Stateless).
-* **Concurrency**: `@Async` scheduled tasks for processing recurring transactions.
-* **Optimization**: Caching with Spring Cache (Redis-ready) for heavy dashboard queries.
+---
 
-### **Frontend (React + Vite)**
+## 🏗️ System Architecture
 
-* **Core**: React 18, React Router v6.
-* **State Management**: Context API (Auth, Theme) + Custom Hooks.
-* **UI Library**: Material UI (MUI) v5 for a polished, responsive design.
-* **Data Fetching**: Axios with centralized interceptors for error handling and token management.
-* **PWA**: Fully responsive mobile-first layout.
+BudgetWise follows a standard three-tier architecture:
+
+* **Frontend**: React (Vite) consuming REST APIs
+* **Backend**: Spring Boot REST API secured with JWT
+* **Database**: MySQL with optimized relational modeling
+
+This separation ensures scalability, maintainability, and security.
+
+---
+
+## 🛠️ Tools & Technologies
+
+### Backend (Java Ecosystem)
+
+* **Framework**: Spring Boot 3.2 (Web, Data JPA, Security, Validation)
+* **Language**: Java 21 (LTS)
+* **Database**: MySQL 8.0
+* **Security**: Spring Security + JWT (Stateless Authentication)
+* **Performance**: Spring Cache (Redis), Application Level Caching
+* **Utilities**:
+  * **Lombok**: Reduces boilerplate code.
+  * **iText / Apache POI**: For PDF and Excel generation.
+
+### Frontend (Modern Web)
+
+* **Framework**: React 18
+* **Build Tool**: Vite
+* **Styling**: Material UI (MUI) v5
+* **State & Networking**:
+  * **Context API**: Global state management.
+  * **Axios**: Optimized HTTP client with interceptors.
+* **Advanced Features**:
+  * **Recharts**: Data visualization.
+
+### DevOps & Tools
+
+* **Version Control**: Git & GitHub
+* **Containerization**: Docker & Docker Compose
+* **API Testing**: Postman / Swagger UI
+
+---
+
+## 🛣️ Development Journey: From Basic to Advanced
+
+The development of BudgetWise Tracker followed a structured, phased approach, evolving from a simple CRUD application to a sophisticated financial platform.
+
+### Phase 1: The Foundation & Core Logic
+
+We started by building a robust backend with **Spring Boot** and a responsive **React** frontend.
+
+* **Goal**: Establish secure user management and basic transaction tracking.
+* **Achievement**: Created a secure environment where users could register, login, and perform basic Add/Edit/Delete operations.
+
+### Phase 2: Logic Hardening & Data Modeling
+
+Once the base was stable, we introduced complex relationships.
+
+* **Goal**: Implement "Budgets" that actually restrict/monitor spending categories.
+* **Solution**: Implemented strict JPA relationships and optimized queries to recalculate budget utilization instantly.
+
+### Phase 3: Automation & The "Assistant" Factor
+
+We moved from "Passive Tracking" to "Active Management".
+
+* **Feature**: **Recurring Payments**.
+* **Implementation**: Utilized **Spring's `@Scheduled`** tasks to check for due bills daily and auto-generate transactions.
+
+### Phase 4: Intelligence & Polishing
+
+This phase focused on User Experience (UX) and performance.
+
+* **Reporting**: Added iText and Apache POI to generate professional PDF and Excel reports.
+* **Visualization**: Integrated interactive charts to visualize spending habits.
+
+### Phase 5: Security & Performance Optimization
+
+The final polish for production readiness.
+
+* **Security**: Added Custom Rate Limiting and strict input validation.
+* **Performance**: Integrated **Spring Cache (Redis)** for dashboard endpoints to reduce latency.
 
 ---
 
@@ -148,6 +190,24 @@ git clone https://github.com/Satya136-dvsn/budgetwise_tracker_ai_driven.git
 ### Step 4: Access
 
 Open `http://localhost:3000` in your browser.
+
+---
+
+## 📌 Project Status
+
+Feature-complete. Actively maintained for improvements and optimizations.
+
+---
+
+## 📄 Resume & Interview Notes
+
+This project demonstrates:
+
+* Full-stack application design
+* Secure REST API development
+* Automated background processing and Scheduling
+* Performance optimization using caching
+* Real-world finance domain modeling
 
 ---
 
