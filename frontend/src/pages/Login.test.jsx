@@ -41,6 +41,8 @@ describe('Login Page', () => {
     });
 
     it('handles form submission with valid data', async () => {
+        mockLogin.mockResolvedValue({}); // Mock successful login response
+
         render(
             <BrowserRouter>
                 <Login />

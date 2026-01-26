@@ -1,5 +1,6 @@
 // @ts-check
 import { test, expect } from '@playwright/test';
+import fs from 'fs';
 
 test.describe('Advanced Features & Integrations', () => {
     // Shared user credentials
@@ -19,23 +20,44 @@ test.describe('Advanced Features & Integrations', () => {
             console.log('Navigating to register...');
             await page.goto('/register');
             await page.fill('input[name="firstName"]', user.firstName);
+            console.log('Filling Last Name...');
             await page.fill('input[name="lastName"]', user.lastName);
-            await page.fill('input[name="email"]', user.email);
-            await page.fill('input[name="password"]', user.password);
-            await page.fill('input[name="confirmPassword"]', user.confirmPassword);
+
+            console.log('Clicking Next (Step 1 -> 2)...');
+            await page.getByRole('button', { name: 'Next' }).click({ force: true });
+            await page.waitForTimeout(3000);
+
+            console.log('Waiting for Email field...');
+            // Robust check: Ensure Step 1 is gone
+            await expect(page.locator('input[name="firstName"]')).not.toBeVisible();
+
+            const emailInput = page.getByLabel('Email Address');
+            await emailInput.waitFor({ state: 'visible', timeout: 15000 });
+            await emailInput.fill(user.email);
+
+            console.log('Filling Password...');
+            const passwordInput = page.getByLabel('Password', { exact: true });
+            await passwordInput.waitFor({ state: 'visible' });
+            await passwordInput.fill(user.password);
+            await page.getByLabel('Confirm Password').fill(user.confirmPassword);
+
+            console.log('Clicking Next (Step 2 -> 3)...');
+            await page.getByRole('button', { name: 'Next' }).click({ force: true });
+
+            // Robust check: Ensure Step 2 is gone
+            await expect(page.getByLabel('Password', { exact: true })).not.toBeVisible();
+            await expect(page.getByLabel('Confirm Password')).not.toBeVisible();
 
             console.log('Filling extra fields...');
-            const incomeInput = page.locator('input[name="monthlyIncome"]');
-            if (await incomeInput.isVisible()) {
-                await incomeInput.fill(user.monthlyIncome);
-            }
-            const savingsInput = page.locator('input[name="savingsTarget"]');
-            if (await savingsInput.isVisible()) {
-                await savingsInput.fill(user.savingsTarget);
-            }
+            const incomeInput = page.getByLabel('Monthly Income');
+            await incomeInput.waitFor({ state: 'visible', timeout: 15000 });
+            await incomeInput.fill(user.monthlyIncome);
+
+            const savingsInput = page.getByLabel('Monthly Savings Target');
+            await savingsInput.fill(user.savingsTarget);
 
             console.log('Submitting registration...');
-            await page.click('button[type="submit"]');
+            await page.getByRole('button', { name: 'Create Account' }).click();
 
             console.log('Waiting for navigation...');
             await page.waitForTimeout(3000); // Give time for redirect
