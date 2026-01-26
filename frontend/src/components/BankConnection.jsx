@@ -133,6 +133,7 @@ const BankConnection = ({ onTransactionsImported }) => {
                 <Typography variant="h6" display="flex" alignItems="center" gap={1}>
                     <BankIcon color="primary" />
                     Bank Connections
+                    <Chip label="Demo Mode" size="small" color="warning" variant="outlined" />
                 </Typography>
                 <Button
                     variant="contained"
