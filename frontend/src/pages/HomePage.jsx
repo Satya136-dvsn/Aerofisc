@@ -2,6 +2,7 @@ import React from 'react'
 import { Container, Box, Typography, Grid, Card, CardContent } from '@mui/material'
 import { Link as RouterLink } from 'react-router-dom'
 import { ProfessionalButton } from '../components/ui'
+import SEO from '../components/SEO'
 import { TrendingUp, AttachMoney, Assessment, Security, Speed, Group } from '@mui/icons-material'
 
 const HomePage = () => {
@@ -40,6 +41,10 @@ const HomePage = () => {
 
   return (
     <Box sx={{ minHeight: '100vh', backgroundColor: 'background.default' }}>
+      <SEO
+        title="Smart Personal Finance Tracker"
+        description="Take control of your finances with BudgetWise. AI-powered expense tracking, budgeting, and analytics."
+      />
       {/* Hero Section */}
       <Box
         sx={{
@@ -56,14 +61,14 @@ const HomePage = () => {
             gutterBottom
             sx={{ fontWeight: 700, mb: 2 }}
           >
-            Take Control of Your Finances
+            Take Control with the Best Personal Finance Tracker
           </Typography>
           <Typography
             variant="h5"
             component="p"
             sx={{ mb: 4, opacity: 0.9, maxWidth: 600, mx: 'auto' }}
           >
-            BudgetWise helps you track expenses, set savings goals, and make smarter financial decisions with AI-powered insights.
+            BudgetWise is your all-in-one expense manager. Track daily spending, set secure budgets, and achieve financial freedom with AI-powered insights.
           </Typography>
           <Box sx={{ display: 'flex', gap: 2, justifyContent: 'center', flexWrap: 'wrap' }}>
             <ProfessionalButton
@@ -71,8 +76,8 @@ const HomePage = () => {
               to="/register"
               variant="contained"
               size="large"
-              sx={{ 
-                backgroundColor: 'white', 
+              sx={{
+                backgroundColor: 'white',
                 color: 'primary.main',
                 '&:hover': { backgroundColor: 'rgba(255,255,255,0.9)' }
               }}
@@ -84,8 +89,8 @@ const HomePage = () => {
               to="/login"
               variant="outlined"
               size="large"
-              sx={{ 
-                borderColor: 'white', 
+              sx={{
+                borderColor: 'white',
                 color: 'white',
                 '&:hover': { backgroundColor: 'rgba(255,255,255,0.1)' }
               }}
@@ -107,7 +112,7 @@ const HomePage = () => {
         >
           Everything You Need to Succeed
         </Typography>
-        
+
         <Grid container spacing={4}>
           {features.map((feature, index) => (
             <Grid item xs={12} sm={6} md={4} key={index}>
