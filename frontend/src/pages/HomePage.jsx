@@ -42,8 +42,8 @@ const HomePage = () => {
   return (
     <Box sx={{ minHeight: '100vh', backgroundColor: 'background.default' }}>
       <SEO
-        title="Smart Personal Finance Tracker"
-        description="Take control of your finances with BudgetWise. AI-powered expense tracking, budgeting, and analytics."
+        title="Best Free AI Expense Tracker & Budget Planner 2024"
+        description="Take control of your finances with BudgetWise. The #1 Free AI-powered expense tracker, budgeting app, and recurring bill manager for 2024."
       />
       {/* Hero Section */}
       <Box
