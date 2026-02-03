@@ -10,6 +10,15 @@
 
 ---
 
+## 🚀 Live Demo
+
+**[👉 Launch BudgetWise Tracker](https://budgetwise-tracker-ai-driven.vercel.app/)**
+
+> **Note to Recruiters/Users:** The backend is hosted on **Render's Free Tier**, which "spins down" after 15 minutes of inactivity.
+> **Please allow 30-50 seconds for the initial login/load.** Once active, it runs at full speed.
+
+---
+
 ## 🧐 What is BudgetWise Tracker?
 
 **BudgetWise Tracker** is a comprehensive, full-stack personal finance application designed to help individuals take control of their financial life. It acts as a personal financial assistant that organizes detailed financial data into actionable insights, utilizing **automation and smart logic** to reduce manual effort.
@@ -30,20 +39,23 @@ This project serves as a demonstration of **modern, scalable software architectu
 
 ### 🔐 Security & User Management
 
-- Secure Authentication using Stateless JWT
+* Secure Authentication using Stateless JWT
+
 * Input validation and request filtering
 * API rate limiting (custom implementation)
 
 ### 💸 Core Finance & Automation
 
-- Smart recurring payments using Spring Scheduler (`@Scheduled`)
+* Smart recurring payments using Spring Scheduler (`@Scheduled`)
+
 * Budget enforcement with real-time utilization tracking
 * Transaction and category management
 * Savings and expense tracking
 
 ### 📊 Analytics & Reporting
 
-- Interactive dashboards using Recharts
+* Interactive dashboards using Recharts
+
 * Aggregated financial insights (income vs expense, category breakdown)
 * Professional PDF and Excel export (iText, Apache POI)
 
