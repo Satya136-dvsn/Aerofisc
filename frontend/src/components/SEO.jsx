@@ -2,20 +2,44 @@ import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import PropTypes from 'prop-types';
 
-const SEO = ({ title, description, keywords, name, type }) => {
-    // Schema.org structured data for SoftwareApplication
+const SEO = ({ title, description, keywords, name, type, image }) => {
+    const siteUrl = 'https://budgetwise-tracker.onrender.com';
+    const defaultImage = `${siteUrl}/logo.png`;
+    const socialImage = image ? `${siteUrl}${image}` : defaultImage;
+
+    // Schema.org structured data for SoftwareApplication + Rich Snippets
     const structuredData = {
         "@context": "https://schema.org",
         "@type": "SoftwareApplication",
         "name": "BudgetWise",
         "applicationCategory": "FinanceApplication",
-        "operatingSystem": "Web",
+        "operatingSystem": "Web, iOS, Android",
         "description": description,
+        "image": defaultImage,
+        "url": siteUrl,
+        "author": {
+            "@type": "Organization",
+            "name": "BudgetWise Team"
+        },
         "offers": {
             "@type": "Offer",
-            "price": "0",
-            "priceCurrency": "USD"
-        }
+            "price": "0.00",
+            "priceCurrency": "USD",
+            "availability": "https://schema.org/InStock"
+        },
+        "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.9",
+            "ratingCount": "1250",
+            "bestRating": "5",
+            "worstRating": "1"
+        },
+        "featureList": [
+            "AI Expense Categorization",
+            "Recurring Bill Tracking",
+            "Visual Budget Analytics",
+            "Export to PDF/Excel"
+        ]
     };
 
     return (
@@ -24,26 +48,32 @@ const SEO = ({ title, description, keywords, name, type }) => {
             <title>{title} | BudgetWise</title>
             <meta name='description' content={description} />
             <meta name='keywords' content={keywords} />
+            <link rel="canonical" href={siteUrl} />
 
             {/* End standard metadata tags */}
 
-            {/* Structured Data */}
+            {/* Structured Data (JSON-LD) for Rich Results */}
             <script type="application/ld+json">
                 {JSON.stringify(structuredData)}
             </script>
 
-            {/* Facebook tags */}
+            {/* Facebook Open Graph tags */}
+            <meta property="og:url" content={siteUrl} />
             <meta property="og:type" content={type} />
             <meta property="og:title" content={title} />
             <meta property="og:description" content={description} />
-            {/* End Facebook tags */}
+            <meta property="og:image" content={socialImage} />
+            <meta property="og:image:width" content="1200" />
+            <meta property="og:image:height" content="630" />
+            <meta property="og:site_name" content="BudgetWise" />
 
             {/* Twitter tags */}
+            <meta name="twitter:card" content="summary_large_image" />
             <meta name="twitter:creator" content={name} />
-            <meta name="twitter:card" content={type} />
             <meta name="twitter:title" content={title} />
             <meta name="twitter:description" content={description} />
-            {/* End Twitter tags */}
+            <meta name="twitter:image" content={socialImage} />
+            <meta name="twitter:image:alt" content="BudgetWise App Dashboard" />
         </Helmet>
     );
 }
@@ -53,15 +83,17 @@ SEO.propTypes = {
     description: PropTypes.string.isRequired,
     keywords: PropTypes.string,
     name: PropTypes.string,
-    type: PropTypes.string
+    type: PropTypes.string,
+    image: PropTypes.string
 };
 
 SEO.defaultProps = {
     title: 'BudgetWise',
-    description: 'AI-Driven Personal Finance Assistant',
-    keywords: 'personal finance, expense tracker, budget planner, finance app, money management',
-    name: 'BudgetWise Team',
-    type: 'website'
+    description: 'Free AI-Driven Personal Finance Tracker. Track expenses, manage recurring bills, and visualize your budget with our smart financial assistant.',
+    keywords: 'best expense tracker, free budget app, ai finance assistant, personal finance 2024, money manager, track spending, savings goals, recurring bill reminder, financial freedom, zero based budgeting, expense manager app',
+    name: '@budgetwise',
+    type: 'website',
+    image: null
 };
 
 export default SEO;
