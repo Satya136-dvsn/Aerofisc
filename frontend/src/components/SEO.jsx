@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet-async';
 import PropTypes from 'prop-types';
 
 const SEO = ({ title, description, keywords, name, type, image }) => {
-    const siteUrl = 'https://budgetwise-tracker.onrender.com';
+    const siteUrl = 'https://budgetwise-tracker-ai-driven.vercel.app';
     const defaultImage = `${siteUrl}/logo.png`;
     const socialImage = image ? `${siteUrl}${image}` : defaultImage;
 
