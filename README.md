@@ -1,4 +1,4 @@
-# 💰 PennyPilot - AI-Driven Smart Finance Management
+# ✈️ Aerofisc - AI-Driven Financial Autopilot
 
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)
@@ -12,16 +12,16 @@
 
 ## 🚀 Live Demo
 
-**[👉 Launch PennyPilot](https://budgetwise-tracker-ai-driven.vercel.app/)**
+**[👉 Launch Aerofisc](https://pennypilot.vercel.app/)**
 
 > **Note to Recruiters/Users:** The backend is hosted on **Render's Free Tier**, which "spins down" after 15 minutes of inactivity.
 > **Please allow 30-50 seconds for the initial login/load.** Once active, it runs at full speed.
 
 ---
 
-## 🧐 What is PennyPilot?
+## 🧐 What is Aerofisc?
 
-**PennyPilot** is a comprehensive, full-stack personal finance application designed to serve as your **financial autopilot**. It organizes detailed financial data into actionable insights, utilizing **automation and smart logic** to reduce manual effort.
+**Aerofisc** is a comprehensive, full-stack personal finance application designed to serve as your **financial autopilot**. It organizes detailed financial data into actionable insights, utilizing **automation and smart logic** to reduce manual effort.
 
 This project serves as a demonstration of **modern, scalable software architecture**, integrating a robust set of features from recurring payments to advanced analytics.
 
@@ -77,7 +77,7 @@ The following enhancements are planned or under exploration:
 
 ## 🏗️ System Architecture
 
-PennyPilot follows a standard three-tier architecture:
+**Aerofisc** follows a standard three-tier architecture:
 
 * **Frontend**: React (Vite) consuming REST APIs
 * **Backend**: Spring Boot REST API secured with JWT
@@ -121,7 +121,7 @@ This separation ensures scalability, maintainability, and security.
 
 ## 🛣️ Development Journey: From Basic to Advanced
 
-The development of PennyPilot followed a structured, phased approach, evolving from a simple CRUD application to a sophisticated financial platform.
+The development of Aerofisc followed a structured, phased approach, evolving from a simple CRUD application to a sophisticated financial platform.
 
 ### Phase 1: The Foundation & Core Logic
 
@@ -171,7 +171,7 @@ The final polish for production readiness.
 ### Step 1: Clone the Repo
 
 ```bash
-git clone https://github.com/Satya136-dvsn/budgetwise_tracker_ai_driven.git
+git clone https://github.com/Satya136-dvsn/PennyPilot.git
 ```
 
 ### Step 2: Backend Setup
@@ -233,4 +233,4 @@ This project demonstrates:
 
 ---
 
-**© 2026 PennyPilot**. Built with ❤️ for better financial health.
+**© 2026 Aerofisc**. Built with ❤️ for better financial health.

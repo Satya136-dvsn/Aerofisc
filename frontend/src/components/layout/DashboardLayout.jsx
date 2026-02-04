@@ -54,7 +54,7 @@ import { useAuth } from '../../context/AuthContext';
 
 const DRAWER_WIDTH_EXPANDED = 240;
 const DRAWER_WIDTH_COLLAPSED = 64;
-const APP_NAME = 'PennyPilot';
+const APP_NAME = 'Aerofisc';
 
 const menuItems = [
   { text: 'Dashboard', icon: <DashboardIcon />, path: '/dashboard' },

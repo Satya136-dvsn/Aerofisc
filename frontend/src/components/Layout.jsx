@@ -58,8 +58,8 @@ const Layout = () => {
   const drawer = (
     <Box>
       <Toolbar>
-        <Typography variant="h6" noWrap component="div">
-          PennyPilot
+        <Typography variant="h6" component={RouterLink} to="/" sx={{ flexGrow: 1, textDecoration: 'none', color: 'inherit' }}>
+          Aerofisc
         </Typography>
       </Toolbar>
       <Divider />

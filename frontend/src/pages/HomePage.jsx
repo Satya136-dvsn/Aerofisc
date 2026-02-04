@@ -43,7 +43,7 @@ const HomePage = () => {
     <Box sx={{ minHeight: '100vh', backgroundColor: 'background.default' }}>
       <SEO
         title="Best Free AI Expense Tracker & Budget Planner 2024"
-        description="Take control of your finances with BudgetWise. The #1 Free AI-powered expense tracker, budgeting app, and recurring bill manager for 2024."
+        description="Take control of your finances with Aerofisc. The #1 Free AI-powered expense tracker, budgeting app, and recurring bill manager for 2024."
       />
       {/* Hero Section */}
       <Box
@@ -68,7 +68,7 @@ const HomePage = () => {
             component="p"
             sx={{ mb: 4, opacity: 0.9, maxWidth: 600, mx: 'auto' }}
           >
-            PennyPilot is your all-in-one financial autopilot. Track daily spending, set secure budgets, and automate your wealth with AI-powered insights.
+            Aerofisc is your all-in-one financial autopilot. Track daily spending, set secure budgets, and automate your wealth with AI-powered insights.
           </Typography>
           <Box sx={{ display: 'flex', gap: 2, justifyContent: 'center', flexWrap: 'wrap' }}>
             <ProfessionalButton
@@ -175,7 +175,7 @@ const HomePage = () => {
             color="text.secondary"
             sx={{ mb: 4, fontSize: '1.125rem' }}
           >
-            Join thousands of users who are already managing their money smarter with BudgetWise.
+            Join thousands of users who are already managing their money smarter with Aerofisc.
           </Typography>
           <ProfessionalButton
             component={RouterLink}

@@ -45,7 +45,7 @@ const SEO = ({ title, description, keywords, name, type, image }) => {
     return (
         <Helmet>
             {/* Standard metadata tags */}
-            <title>{title} | PennyPilot</title>
+            <title>{title} | Aerofisc</title>
             <meta name='description' content={description} />
             <meta name='keywords' content={keywords} />
             <link rel="canonical" href={siteUrl} />
@@ -56,8 +56,8 @@ const SEO = ({ title, description, keywords, name, type, image }) => {
             <script type="application/ld+json">
                 {JSON.stringify({
                     ...structuredData,
-                    name: "PennyPilot",
-                    author: { "@type": "Organization", "name": "PennyPilot Team" },
+                    name: "Aerofisc",
+                    author: { "@type": "Organization", "name": "Aerofisc Team" },
                 })}
             </script>
 
@@ -69,7 +69,7 @@ const SEO = ({ title, description, keywords, name, type, image }) => {
             <meta property="og:image" content={socialImage} />
             <meta property="og:image:width" content="1200" />
             <meta property="og:image:height" content="630" />
-            <meta property="og:site_name" content="PennyPilot" />
+            <meta property="og:site_name" content="Aerofisc" />
 
             {/* Twitter tags */}
             <meta name="twitter:card" content="summary_large_image" />
@@ -77,7 +77,7 @@ const SEO = ({ title, description, keywords, name, type, image }) => {
             <meta name="twitter:title" content={title} />
             <meta name="twitter:description" content={description} />
             <meta name="twitter:image" content={socialImage} />
-            <meta name="twitter:image:alt" content="PennyPilot App Dashboard" />
+            <meta name="twitter:image:alt" content="Aerofisc App Dashboard" />
         </Helmet>
     );
 }
@@ -92,10 +92,10 @@ SEO.propTypes = {
 };
 
 SEO.defaultProps = {
-    title: 'PennyPilot',
-    description: 'PennyPilot - AI-Driven Personal Finance Transformer. Track expenses, manage budgets, and automate your financial growth.',
+    title: 'Aerofisc',
+    description: 'Aerofisc - AI-Driven Financial Autopilot. Track expenses, manage budgets, and automate your wealth with next-gen insights.',
     keywords: 'best expense tracker, free budget app, ai finance assistant, personal finance 2024, money manager, track spending, savings goals, recurring bill reminder, financial freedom, zero based budgeting, expense manager app',
-    name: 'PennyPilot',
+    name: 'Aerofisc',
     type: 'website',
     image: null
 };
