@@ -1,6 +1,6 @@
-# BudgetWise Tracker - User Guide
+# PennyPilot - User Guide
 
-Welcome to **BudgetWise Tracker**, your personal finance companion designed to help you track expenses, manage budgets, and achieve your financial goals with the power of AI.
+Welcome to **PennyPilot**, your personal finance companion designed to help you track expenses, manage budgets, and automate your financial growth.
 
 ## 🚀 Getting Started
 

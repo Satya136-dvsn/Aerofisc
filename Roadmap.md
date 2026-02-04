@@ -1,4 +1,4 @@
-# BudgetWise Future Enhancements Roadmap
+# PennyPilot Future Enhancements Roadmap
 
 ## Phase 1: Production Readiness (Priority: High)
 
