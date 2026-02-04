@@ -67,7 +67,7 @@ const Login = () => {
       >
         <Paper elevation={3} sx={{ p: 4, width: '100%' }}>
           <Typography variant="h4" component="h1" gutterBottom align="center">
-            BudgetWise
+            PennyPilot
           </Typography>
           <Typography variant="h6" gutterBottom align="center" color="text.secondary">
             Sign In

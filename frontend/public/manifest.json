@@ -1,6 +1,6 @@
 {
-  "name": "BudgetWise Tracker",
-  "short_name": "BudgetWise",
+  "name": "PennyPilot",
+  "short_name": "PennyPilot",
   "description": "AI-Powered Personal Finance Management - Track expenses, manage budgets, and achieve your financial goals",
   "start_url": "/",
   "display": "standalone",
@@ -58,7 +58,11 @@
       "purpose": "any maskable"
     }
   ],
-  "categories": ["finance", "productivity", "utilities"],
+  "categories": [
+    "finance",
+    "productivity",
+    "utilities"
+  ],
   "screenshots": [
     {
       "src": "/screenshots/dashboard.png",
@@ -81,14 +85,24 @@
       "short_name": "Add",
       "description": "Quickly add a new transaction",
       "url": "/transactions?action=add",
-      "icons": [{ "src": "/icons/add-icon.png", "sizes": "96x96" }]
+      "icons": [
+        {
+          "src": "/icons/add-icon.png",
+          "sizes": "96x96"
+        }
+      ]
     },
     {
       "name": "View Dashboard",
       "short_name": "Dashboard",
       "description": "View your financial dashboard",
       "url": "/dashboard",
-      "icons": [{ "src": "/icons/dashboard-icon.png", "sizes": "96x96" }]
+      "icons": [
+        {
+          "src": "/icons/dashboard-icon.png",
+          "sizes": "96x96"
+        }
+      ]
     }
   ],
   "related_applications": [],

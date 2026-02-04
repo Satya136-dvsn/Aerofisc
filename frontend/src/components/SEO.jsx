@@ -45,7 +45,7 @@ const SEO = ({ title, description, keywords, name, type, image }) => {
     return (
         <Helmet>
             {/* Standard metadata tags */}
-            <title>{title} | BudgetWise</title>
+            <title>{title} | PennyPilot</title>
             <meta name='description' content={description} />
             <meta name='keywords' content={keywords} />
             <link rel="canonical" href={siteUrl} />
@@ -54,7 +54,11 @@ const SEO = ({ title, description, keywords, name, type, image }) => {
 
             {/* Structured Data (JSON-LD) for Rich Results */}
             <script type="application/ld+json">
-                {JSON.stringify(structuredData)}
+                {JSON.stringify({
+                    ...structuredData,
+                    name: "PennyPilot",
+                    author: { "@type": "Organization", "name": "PennyPilot Team" },
+                })}
             </script>
 
             {/* Facebook Open Graph tags */}
@@ -65,7 +69,7 @@ const SEO = ({ title, description, keywords, name, type, image }) => {
             <meta property="og:image" content={socialImage} />
             <meta property="og:image:width" content="1200" />
             <meta property="og:image:height" content="630" />
-            <meta property="og:site_name" content="BudgetWise" />
+            <meta property="og:site_name" content="PennyPilot" />
 
             {/* Twitter tags */}
             <meta name="twitter:card" content="summary_large_image" />
@@ -73,7 +77,7 @@ const SEO = ({ title, description, keywords, name, type, image }) => {
             <meta name="twitter:title" content={title} />
             <meta name="twitter:description" content={description} />
             <meta name="twitter:image" content={socialImage} />
-            <meta name="twitter:image:alt" content="BudgetWise App Dashboard" />
+            <meta name="twitter:image:alt" content="PennyPilot App Dashboard" />
         </Helmet>
     );
 }
@@ -88,10 +92,10 @@ SEO.propTypes = {
 };
 
 SEO.defaultProps = {
-    title: 'BudgetWise',
-    description: 'Free AI-Driven Personal Finance Tracker. Track expenses, manage recurring bills, and visualize your budget with our smart financial assistant.',
+    title: 'PennyPilot',
+    description: 'PennyPilot - AI-Driven Personal Finance Transformer. Track expenses, manage budgets, and automate your financial growth.',
     keywords: 'best expense tracker, free budget app, ai finance assistant, personal finance 2024, money manager, track spending, savings goals, recurring bill reminder, financial freedom, zero based budgeting, expense manager app',
-    name: '@budgetwise',
+    name: 'PennyPilot',
     type: 'website',
     image: null
 };

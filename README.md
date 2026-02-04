@@ -19,9 +19,9 @@
 
 ---
 
-## 🧐 What is BudgetWise Tracker?
+## 🧐 What is PennyPilot?
 
-**BudgetWise Tracker** is a comprehensive, full-stack personal finance application designed to help individuals take control of their financial life. It acts as a personal financial assistant that organizes detailed financial data into actionable insights, utilizing **automation and smart logic** to reduce manual effort.
+**PennyPilot** is a comprehensive, full-stack personal finance application designed to serve as your **financial autopilot**. It organizes detailed financial data into actionable insights, utilizing **automation and smart logic** to reduce manual effort.
 
 This project serves as a demonstration of **modern, scalable software architecture**, integrating a robust set of features from recurring payments to advanced analytics.
 

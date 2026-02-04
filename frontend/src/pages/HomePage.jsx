@@ -68,7 +68,7 @@ const HomePage = () => {
             component="p"
             sx={{ mb: 4, opacity: 0.9, maxWidth: 600, mx: 'auto' }}
           >
-            BudgetWise is your all-in-one expense manager. Track daily spending, set secure budgets, and achieve financial freedom with AI-powered insights.
+            PennyPilot is your all-in-one financial autopilot. Track daily spending, set secure budgets, and automate your wealth with AI-powered insights.
           </Typography>
           <Box sx={{ display: 'flex', gap: 2, justifyContent: 'center', flexWrap: 'wrap' }}>
             <ProfessionalButton

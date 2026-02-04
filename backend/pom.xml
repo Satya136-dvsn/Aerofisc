@@ -15,8 +15,8 @@
     <groupId>com.budgetwise</groupId>
     <artifactId>budgetwise-backend</artifactId>
     <version>1.0.0</version>
-    <name>BudgetWise Backend</name>
-    <description>AI-Driven Personal Finance Tracker Backend</description>
+    <name>PennyPilot Backend</name>
+    <description>AI-Driven Personal Finance Management System</description>
     
     <properties>
         <java.version>21</java.version>
