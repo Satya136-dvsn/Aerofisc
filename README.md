@@ -1,4 +1,4 @@
-# 💰 BudgetWise Tracker - AI-Driven Smart Finance Management
+# 💰 PennyPilot - AI-Driven Smart Finance Management
 
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)
@@ -12,7 +12,7 @@
 
 ## 🚀 Live Demo
 
-**[👉 Launch BudgetWise Tracker](https://budgetwise-tracker-ai-driven.vercel.app/)**
+**[👉 Launch PennyPilot](https://budgetwise-tracker-ai-driven.vercel.app/)**
 
 > **Note to Recruiters/Users:** The backend is hosted on **Render's Free Tier**, which "spins down" after 15 minutes of inactivity.
 > **Please allow 30-50 seconds for the initial login/load.** Once active, it runs at full speed.
@@ -77,7 +77,7 @@ The following enhancements are planned or under exploration:
 
 ## 🏗️ System Architecture
 
-BudgetWise follows a standard three-tier architecture:
+PennyPilot follows a standard three-tier architecture:
 
 * **Frontend**: React (Vite) consuming REST APIs
 * **Backend**: Spring Boot REST API secured with JWT
@@ -121,7 +121,7 @@ This separation ensures scalability, maintainability, and security.
 
 ## 🛣️ Development Journey: From Basic to Advanced
 
-The development of BudgetWise Tracker followed a structured, phased approach, evolving from a simple CRUD application to a sophisticated financial platform.
+The development of PennyPilot followed a structured, phased approach, evolving from a simple CRUD application to a sophisticated financial platform.
 
 ### Phase 1: The Foundation & Core Logic
 
@@ -233,4 +233,4 @@ This project demonstrates:
 
 ---
 
-**© 2026 BudgetWise Tracker**. Built with ❤️ for better financial health.
+**© 2026 PennyPilot**. Built with ❤️ for better financial health.
