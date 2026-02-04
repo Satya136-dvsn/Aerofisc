@@ -27,7 +27,7 @@ const exportService = {
         });
 
         const extension = format === 'excel' ? 'xlsx' : format;
-        downloadFile(response.data, `budgetwise-data.${extension}`);
+        downloadFile(response.data, `pennypilot-data.${extension}`);
     },
 
     /**

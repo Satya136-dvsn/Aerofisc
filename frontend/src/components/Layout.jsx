@@ -59,7 +59,7 @@ const Layout = () => {
     <Box>
       <Toolbar>
         <Typography variant="h6" noWrap component="div">
-          BudgetWise
+          PennyPilot
         </Typography>
       </Toolbar>
       <Divider />
@@ -109,7 +109,7 @@ const Layout = () => {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
-            {menuItems.find((item) => item.path === location.pathname)?.text || 'BudgetWise'}
+            {menuItems.find((item) => item.path === location.pathname)?.text || 'PennyPilot'}
           </Typography>
           <Typography variant="body2">{user?.username}</Typography>
         </Toolbar>

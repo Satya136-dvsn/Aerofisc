@@ -8,7 +8,7 @@
  * @returns {string} Unique event ID
  */
 const generateUID = () => {
-    return `${Date.now()}-${Math.random().toString(36).substr(2, 9)}@budgetwise`;
+    return `${Date.now()}-${Math.random().toString(36).substr(2, 9)}@pennypilot`;
 };
 
 /**
@@ -119,11 +119,11 @@ const createBillEvent = (bill) => {
  * @param {string} calendarName - Name for the calendar
  * @returns {string} Complete ICS file content
  */
-export const generateBillsCalendar = (bills, calendarName = 'BudgetWise Bills') => {
+export const generateBillsCalendar = (bills, calendarName = 'PennyPilot Bills') => {
     const header = [
         'BEGIN:VCALENDAR',
         'VERSION:2.0',
-        'PRODID:-//BudgetWise//Bill Tracker//EN',
+        'PRODID:-//PennyPilot//Bill Tracker//EN',
         `X-WR-CALNAME:${calendarName}`,
         'CALSCALE:GREGORIAN',
         'METHOD:PUBLISH',
@@ -144,7 +144,7 @@ export const generateBillsCalendar = (bills, calendarName = 'BudgetWise Bills') 
  * @param {Array} bills - Array of bill objects
  * @param {string} filename - Name for the downloaded file
  */
-export const downloadBillsCalendar = (bills, filename = 'budgetwise-bills.ics') => {
+export const downloadBillsCalendar = (bills, filename = 'pennypilot-bills.ics') => {
     const icsContent = generateBillsCalendar(bills);
     const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
     const url = URL.createObjectURL(blob);

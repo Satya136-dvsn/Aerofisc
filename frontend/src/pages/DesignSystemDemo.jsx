@@ -7,9 +7,9 @@ const DesignSystemDemo = () => {
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
       <Typography variant="h4" component="h1" gutterBottom color="text.primary">
-        BudgetWise Design System
+        PennyPilot Design System
       </Typography>
-      
+
       <Box sx={{ mb: 4 }}>
         <Typography variant="h6" gutterBottom color="text.secondary">
           Professional Dark Mode Theme
