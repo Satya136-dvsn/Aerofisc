@@ -191,7 +191,7 @@ const DashboardLayout = () => {
 
   const getCurrentPageTitle = () => {
     const currentItem = menuItems.find((item) => item.path === location.pathname);
-    return currentItem?.text || 'BudgetWise';
+    return currentItem?.text || 'Aerofisc';
   };
 
   const drawerWidth = isMobile ? DRAWER_WIDTH_EXPANDED : (sidebarOpen ? DRAWER_WIDTH_EXPANDED : DRAWER_WIDTH_COLLAPSED);
@@ -213,18 +213,18 @@ const DashboardLayout = () => {
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
             <img
               src="/logo.png"
-              alt="BudgetWise Logo"
+              alt="Aerofisc Logo"
               style={{ width: 32, height: 32, objectFit: 'contain' }}
             />
             <Typography variant="h6" noWrap component="div" sx={{ fontWeight: 700 }}>
-              BudgetWise
+              Aerofisc
             </Typography>
           </Box>
         )}
         {!sidebarOpen && (
           <img
             src="/logo.png"
-            alt="BudgetWise Logo"
+            alt="Aerofisc Logo"
             style={{ width: 32, height: 32, objectFit: 'contain' }}
           />
         )}
@@ -402,7 +402,7 @@ const DashboardLayout = () => {
                 <InfoIcon fontSize="small" color="info" />
               </ListItemIcon>
               <ListItemText
-                primary="Welcome to BudgetWise!"
+                primary="Welcome to Aerofisc!"
                 secondary="Start tracking your finances today."
                 primaryTypographyProps={{ variant: 'body2', fontWeight: 600 }}
                 secondaryTypographyProps={{ variant: 'caption', noWrap: true }}

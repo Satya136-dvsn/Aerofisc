@@ -1,9 +1,9 @@
-// PennyPilot Service Worker
+// Aerofisc Service Worker
 // Version: 1.0.1 (Dev Fix)
 
-const CACHE_NAME = 'pennypilot-v1';
-const STATIC_CACHE_NAME = 'pennypilot-static-v1';
-const DYNAMIC_CACHE_NAME = 'pennypilot-dynamic-v1';
+const CACHE_NAME = 'aerofisc-v1';
+const STATIC_CACHE_NAME = 'aerofisc-static-v1';
+const DYNAMIC_CACHE_NAME = 'aerofisc-dynamic-v1';
 
 // Static assets to cache on install
 const STATIC_ASSETS = [
@@ -46,7 +46,7 @@ self.addEventListener('activate', (event) => {
                 return Promise.all(
                     cacheNames
                         .filter((cacheName) => {
-                            return cacheName.startsWith('pennypilot-') &&
+                            return cacheName.startsWith('aerofisc-') &&
                                 cacheName !== STATIC_CACHE_NAME &&
                                 cacheName !== DYNAMIC_CACHE_NAME;
                         })
@@ -162,7 +162,7 @@ async function updateCache(request) {
 // Handle push notifications
 self.addEventListener('push', (event) => {
     const options = {
-        body: event.data?.text() || 'New notification from PennyPilot',
+        body: event.data?.text() || 'New notification from Aerofisc',
         icon: '/icons/icon-192x192.png',
         badge: '/icons/icon-72x72.png',
         vibrate: [100, 50, 100],
@@ -177,7 +177,7 @@ self.addEventListener('push', (event) => {
     };
 
     event.waitUntil(
-        self.registration.showNotification('PennyPilot', options)
+        self.registration.showNotification('Aerofisc', options)
     );
 });
 

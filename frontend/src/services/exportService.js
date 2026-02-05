@@ -27,7 +27,7 @@ const exportService = {
         });
 
         const extension = format === 'excel' ? 'xlsx' : format;
-        downloadFile(response.data, `pennypilot-data.${extension}`);
+        downloadFile(response.data, `aerofisc-data.${extension}`);
     },
 
     /**

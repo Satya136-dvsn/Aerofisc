@@ -66,7 +66,7 @@ const Community = () => {
                             Community
                         </Typography>
                         <Typography variant="body2" color="text.secondary">
-                            Connect, share tips, and learn from other PennyPilot users
+                            Connect, share tips, and learn from other Aerofisc users
                         </Typography>
                     </Box>
                     <Button

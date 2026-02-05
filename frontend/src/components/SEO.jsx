@@ -11,7 +11,7 @@ const SEO = ({ title, description, keywords, name, type, image }) => {
     const structuredData = {
         "@context": "https://schema.org",
         "@type": "SoftwareApplication",
-        "name": "BudgetWise",
+        "name": "Aerofisc",
         "applicationCategory": "FinanceApplication",
         "operatingSystem": "Web, iOS, Android",
         "description": description,
@@ -19,7 +19,7 @@ const SEO = ({ title, description, keywords, name, type, image }) => {
         "url": siteUrl,
         "author": {
             "@type": "Organization",
-            "name": "BudgetWise Team"
+            "name": "Aerofisc Team"
         },
         "offers": {
             "@type": "Offer",

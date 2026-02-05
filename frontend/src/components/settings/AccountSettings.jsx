@@ -79,7 +79,7 @@ const AccountSettings = () => {
             const url = window.URL.createObjectURL(new Blob([response.data]));
             const link = document.createElement('a');
             link.href = url;
-            link.setAttribute('download', 'budgetwise_data_export.json');
+            link.setAttribute('download', 'aerofisc_data_export.json');
             document.body.appendChild(link);
             link.click();
             link.remove();

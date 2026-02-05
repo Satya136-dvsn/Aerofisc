@@ -29,7 +29,7 @@ const OnboardingTour = () => {
             target: 'body',
             content: (
                 <div>
-                    <h3>Welcome to PennyPilot! 🚀</h3>
+                    <h3>Welcome to Aerofisc! 🚀</h3>
                     <p>Let's take a quick tour to help you get started with your financial journey.</p>
                 </div>
             ),

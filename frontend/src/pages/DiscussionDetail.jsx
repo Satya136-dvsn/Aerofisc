@@ -57,7 +57,7 @@ The 50/30/20 rule helped me:
 • 20% for savings and debt repayment
 
 Key tips that worked for me:
-1. Track every single expense using BudgetWise
+1. Track every single expense using Aerofisc
 2. Automate savings transfers on payday
 3. Cut subscription services I don't use
 4. Cook at home 5 days a week
