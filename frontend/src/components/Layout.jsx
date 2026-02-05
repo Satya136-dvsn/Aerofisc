@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Outlet, useNavigate, useLocation } from 'react-router-dom';
+import { Outlet, useNavigate, useLocation, Link as RouterLink } from 'react-router-dom';
 import {
   Box,
   AppBar,
@@ -109,7 +109,7 @@ const Layout = () => {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
-            {menuItems.find((item) => item.path === location.pathname)?.text || 'PennyPilot'}
+            {menuItems.find((item) => item.path === location.pathname)?.text || 'Aerofisc'}
           </Typography>
           <Typography variant="body2">{user?.username}</Typography>
         </Toolbar>

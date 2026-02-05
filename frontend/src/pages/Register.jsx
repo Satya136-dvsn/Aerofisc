@@ -15,6 +15,7 @@ import {
   Select,
   MenuItem,
 } from '@mui/material';
+import { ArrowBack } from '@mui/icons-material';
 import { useAuth } from '../context/AuthContext';
 
 const Register = () => {
@@ -73,6 +74,15 @@ const Register = () => {
         }}
       >
         <Paper elevation={3} sx={{ p: 4, width: '100%' }}>
+          <Button
+            component={RouterLink}
+            to="/"
+            startIcon={<ArrowBack />}
+            sx={{ mb: 2 }}
+            color="inherit"
+          >
+            Back to Home
+          </Button>
           <Typography variant="h4" component="h1" gutterBottom align="center">
             Aerofisc
           </Typography>

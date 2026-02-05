@@ -3,7 +3,7 @@ import { Container, Box, Typography, Link, Alert } from '@mui/material'
 import { useNavigate, Link as RouterLink } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { ProfessionalCard, ProfessionalInput, ProfessionalButton } from '../components/ui'
-import { Email, Lock } from '@mui/icons-material'
+import { Email, Lock, ArrowBack } from '@mui/icons-material'
 import { useAuth } from '../context/AuthContext'
 
 const SignIn = () => {
@@ -11,7 +11,7 @@ const SignIn = () => {
   const { login } = useAuth()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
-  
+
   const {
     register,
     handleSubmit,
@@ -26,7 +26,7 @@ const SignIn = () => {
   const onSubmit = async (data) => {
     setLoading(true)
     setError('')
-    
+
     try {
       await login(data.email, data.password)
       navigate('/dashboard')
@@ -42,15 +42,25 @@ const SignIn = () => {
       <Box sx={{ width: '100%', py: 4 }}>
         <ProfessionalCard
           title="Welcome Back"
-          subheader="Sign in to your BudgetWise account"
+          subheader="Sign in to your Aerofisc account"
           sx={{ boxShadow: 3 }}
         >
+          <Box sx={{ mb: 2 }}>
+            <ProfessionalButton
+              variant="text"
+              startIcon={<ArrowBack />}
+              onClick={() => navigate('/')}
+              sx={{ p: 0, minWidth: 'auto', mb: 2 }}
+            >
+              Back to Home
+            </ProfessionalButton>
+          </Box>
           {error && (
             <Alert severity="error" sx={{ mb: 3 }}>
               {error}
             </Alert>
           )}
-          
+
           <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ mt: 1 }}>
             <Box sx={{ mb: 3 }}>
               <ProfessionalInput
@@ -71,7 +81,7 @@ const SignIn = () => {
                 })}
               />
             </Box>
-            
+
             <Box sx={{ mb: 3 }}>
               <ProfessionalInput
                 label="Password"
@@ -91,7 +101,7 @@ const SignIn = () => {
                 })}
               />
             </Box>
-            
+
             <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 3 }}>
               <Link
                 component={RouterLink}
@@ -102,7 +112,7 @@ const SignIn = () => {
                 Forgot password?
               </Link>
             </Box>
-            
+
             <ProfessionalButton
               type="submit"
               fullWidth
@@ -112,7 +122,7 @@ const SignIn = () => {
             >
               Sign In
             </ProfessionalButton>
-            
+
             <Box sx={{ textAlign: 'center' }}>
               <Typography variant="body2" color="text.secondary">
                 Don't have an account?{' '}
@@ -128,7 +138,7 @@ const SignIn = () => {
             </Box>
           </Box>
         </ProfessionalCard>
-        
+
         <Box sx={{ mt: 4, textAlign: 'center' }}>
           <Typography variant="body2" color="text.secondary">
             By signing in, you agree to our{' '}

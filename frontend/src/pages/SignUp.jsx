@@ -3,7 +3,7 @@ import { Container, Box, Typography, Stepper, Step, StepLabel, Alert, Link, Form
 import { useNavigate, Link as RouterLink } from 'react-router-dom'
 import { useForm, Controller } from 'react-hook-form'
 import { ProfessionalCard, ProfessionalInput, ProfessionalButton } from '../components/ui'
-import { Person, Email, Lock, Business, AttachMoney, Work } from '@mui/icons-material'
+import { Person, Email, Lock, Business, AttachMoney, Work, ArrowBack } from '@mui/icons-material'
 import { useAuth } from '../context/AuthContext'
 
 const steps = ['Basic Info', 'Account Setup', 'Financial Profile']
@@ -287,9 +287,19 @@ const SignUp = () => {
       <Box sx={{ width: '100%', py: 4 }}>
         <ProfessionalCard
           title="Create Your Account"
-          subheader="Join BudgetWise to manage your finances smarter"
+          subheader="Join Aerofisc to manage your finances smarter"
           sx={{ boxShadow: 3 }}
         >
+          <Box sx={{ mb: 2 }}>
+            <ProfessionalButton
+              variant="text"
+              startIcon={<ArrowBack />}
+              onClick={() => navigate('/')}
+              sx={{ p: 0, minWidth: 'auto', mb: 2 }}
+            >
+              Back to Home
+            </ProfessionalButton>
+          </Box>
           {error && (
             <Alert severity="error" sx={{ mb: 3 }}>
               {error}
