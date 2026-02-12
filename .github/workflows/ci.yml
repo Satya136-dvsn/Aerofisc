@@ -1,4 +1,4 @@
-name: JAVA CI with Maven and Node.js
+name: Enterprise CI/CD Pipeline
 
 on:
   push:
@@ -7,7 +7,10 @@ on:
     branches: ["master", "main"]
 
 jobs:
-  build-backend:
+  # ------------------------------------------------------------------
+  # Backend Pipeline (Java / Spring Boot)
+  # ------------------------------------------------------------------
+  backend-test-build:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -22,14 +25,21 @@ jobs:
           java-version: "21"
           distribution: "temurin"
           cache: maven
+          cache-dependency-path: backend/pom.xml
+
+      - name: Verify Maven Wrapper
+        run: mvn -N io.takari:maven:wrapper
 
       - name: Build with Maven
         run: mvn -B package --file pom.xml -DskipTests
 
-      - name: Run Tests
+      - name: Run Unit Tests
         run: mvn test -Dspring.profiles.active=test
 
-  build-frontend:
+  # ------------------------------------------------------------------
+  # Frontend Pipeline (React / Vite)
+  # ------------------------------------------------------------------
+  frontend-test-build:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -48,9 +58,38 @@ jobs:
       - name: Install Dependencies
         run: npm ci --legacy-peer-deps
 
-      - name: Build
+      - name: Lint Code
+        run: npm run lint
+
+      - name: Build Project
         run: npm run build
 
-    # Uncomment when frontend tests are ready
-    # - name: Run Tests
-    #   run: npm test
+  # ------------------------------------------------------------------
+  # Docker Build Verification (Dry Run)
+  # ------------------------------------------------------------------
+  docker-build-check:
+    runs-on: ubuntu-latest
+    needs: [backend-test-build, frontend-test-build]
+    if: github.event_name == 'pull_request' # Only check Docker builds on PRs to save minutes
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Backend Image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./backend
+          file: ./backend/Dockerfile
+          push: false
+          tags: budgetwise-backend:test
+
+      - name: Build Frontend Image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./frontend
+          file: ./frontend/Dockerfile
+          push: false
+          tags: budgetwise-frontend:test
