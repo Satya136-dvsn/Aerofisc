@@ -83,7 +83,8 @@ const TransactionDialog = ({ open, transaction, onClose }) => {
     try {
       const response = await categoryService.getAll();
       // Service already returns response.data
-      setCategories(Array.isArray(response) ? response : []);
+      // API returns { data: [...] }
+      setCategories(response.data || []);
     } catch (err) {
       console.error('Failed to load categories:', err);
       if (err.response?.status === 403 || err.response?.status === 401) {

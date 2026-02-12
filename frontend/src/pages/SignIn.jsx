@@ -64,20 +64,16 @@ const SignIn = () => {
           <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ mt: 1 }}>
             <Box sx={{ mb: 3 }}>
               <ProfessionalInput
-                label="Email Address"
-                type="email"
-                placeholder="Enter your email"
+                label="Email or Username"
+                type="text"
+                placeholder="Enter your email or username"
                 fullWidth
                 required
                 startAdornment={<Email sx={{ color: 'text.secondary', mr: 1 }} />}
                 error={!!errors.email}
                 helperText={errors.email?.message}
                 {...register('email', {
-                  required: 'Email is required',
-                  pattern: {
-                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                    message: 'Invalid email address',
-                  },
+                  required: 'Email or Username is required',
                 })}
               />
             </Box>
