@@ -2,7 +2,14 @@ import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import PropTypes from 'prop-types';
 
-const SEO = ({ title, description, keywords, name, type, image }) => {
+const SEO = ({
+    title = 'Aerofisc',
+    description = 'Aerofisc - AI-Driven Financial Autopilot. Track expenses, manage budgets, and automate your wealth with next-gen insights.',
+    keywords = 'best expense tracker, free budget app, ai finance assistant, personal finance 2024, money manager, track spending, savings goals, recurring bill reminder, financial freedom, zero based budgeting, expense manager app',
+    name = 'Aerofisc',
+    type = 'website',
+    image = null
+}) => {
     const siteUrl = 'https://budgetwise-tracker-ai-driven.vercel.app';
     const defaultImage = `${siteUrl}/logo.png`;
     const socialImage = image ? `${siteUrl}${image}` : defaultImage;
@@ -83,21 +90,12 @@ const SEO = ({ title, description, keywords, name, type, image }) => {
 }
 
 SEO.propTypes = {
-    title: PropTypes.string.isRequired,
-    description: PropTypes.string.isRequired,
+    title: PropTypes.string,
+    description: PropTypes.string,
     keywords: PropTypes.string,
     name: PropTypes.string,
     type: PropTypes.string,
     image: PropTypes.string
-};
-
-SEO.defaultProps = {
-    title: 'Aerofisc',
-    description: 'Aerofisc - AI-Driven Financial Autopilot. Track expenses, manage budgets, and automate your wealth with next-gen insights.',
-    keywords: 'best expense tracker, free budget app, ai finance assistant, personal finance 2024, money manager, track spending, savings goals, recurring bill reminder, financial freedom, zero based budgeting, expense manager app',
-    name: 'Aerofisc',
-    type: 'website',
-    image: null
 };
 
 export default SEO;
