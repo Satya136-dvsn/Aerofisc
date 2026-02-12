@@ -23,10 +23,14 @@ const Register = () => {
   const { register } = useAuth();
   const [formData, setFormData] = useState({
     username: '',
+    firstName: '',
+    lastName: '',
     email: '',
     password: '',
     confirmPassword: '',
     role: 'USER',
+    monthlyIncome: '',
+    savingsTarget: ''
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -44,8 +48,14 @@ const Register = () => {
       return;
     }
 
-    if (formData.password.length < 6) {
-      setError('Password must be at least 6 characters');
+    if (formData.password.length < 8) {
+      setError('Password must be at least 8 characters');
+      return;
+    }
+
+    const passwordRegex = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!]).*$/;
+    if (!passwordRegex.test(formData.password)) {
+      setError('Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character');
       return;
     }
 
@@ -97,6 +107,30 @@ const Register = () => {
           )}
 
           <Box component="form" onSubmit={handleSubmit} sx={{ mt: 2 }}>
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  fullWidth
+                  label="First Name"
+                  name="firstName"
+                  value={formData.firstName}
+                  onChange={handleChange}
+                  margin="normal"
+                  required
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  fullWidth
+                  label="Last Name"
+                  name="lastName"
+                  value={formData.lastName}
+                  onChange={handleChange}
+                  margin="normal"
+                  required
+                />
+              </Grid>
+            </Grid>
             <TextField
               fullWidth
               label="Username"
@@ -106,7 +140,6 @@ const Register = () => {
               margin="normal"
               required
               autoComplete="username"
-              autoFocus
             />
             <TextField
               fullWidth
@@ -129,6 +162,7 @@ const Register = () => {
               margin="normal"
               required
               autoComplete="new-password"
+              helperText="Min 8 chars, 1 uppercase, 1 lowercase, 1 number, 1 special char"
             />
             <TextField
               fullWidth

@@ -24,6 +24,7 @@ const SignUp = () => {
     trigger,
   } = useForm({
     defaultValues: {
+      username: '',
       firstName: '',
       lastName: '',
       role: 'USER',
@@ -46,7 +47,7 @@ const SignUp = () => {
         fieldsToValidate = ['firstName', 'lastName', 'role']
         break
       case 1:
-        fieldsToValidate = ['email', 'password', 'confirmPassword']
+        fieldsToValidate = ['username', 'email', 'password', 'confirmPassword']
         break
       case 2:
         fieldsToValidate = ['monthlyIncome', 'savingsTarget']
@@ -71,6 +72,7 @@ const SignUp = () => {
 
     try {
       const userData = {
+        username: data.username,
         firstName: data.firstName,
         lastName: data.lastName,
         role: data.role,
@@ -166,6 +168,30 @@ const SignUp = () => {
           <Box>
             <Box sx={{ mb: 3 }}>
               <ProfessionalInput
+                key="username"
+                label="Username"
+                placeholder="Choose a username"
+                fullWidth
+                required
+                startAdornment={<Person sx={{ color: 'text.secondary', mr: 1 }} />}
+                error={!!errors.username}
+                helperText={errors.username?.message}
+                {...register('username', {
+                  required: 'Username is required',
+                  minLength: {
+                    value: 3,
+                    message: 'Username must be at least 3 characters',
+                  },
+                  maxLength: {
+                    value: 20,
+                    message: 'Username must be less than 20 characters',
+                  },
+                })}
+              />
+            </Box>
+
+            <Box sx={{ mb: 3 }}>
+              <ProfessionalInput
                 key="email"
                 label="Email Address"
                 type="email"
@@ -199,8 +225,12 @@ const SignUp = () => {
                 {...register('password', {
                   required: 'Password is required',
                   minLength: {
-                    value: 6,
-                    message: 'Password must be at least 6 characters',
+                    value: 8,
+                    message: 'Password must be at least 8 characters',
+                  },
+                  pattern: {
+                    value: /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!]).*$/,
+                    message: 'Password must contain uppercase, lowercase, number and special char',
                   },
                 })}
               />

@@ -212,18 +212,16 @@ const DashboardLayout = () => {
         {sidebarOpen && (
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
             <img
-              src="/logo.png"
+              src="/icons/logo.png"
               alt="Aerofisc Logo"
-              style={{ width: 32, height: 32, objectFit: 'contain' }}
+              style={{ width: '180px', height: 'auto', maxHeight: '60px', objectFit: 'contain' }}
             />
-            <Typography variant="h6" noWrap component="div" sx={{ fontWeight: 700 }}>
-              Aerofisc
-            </Typography>
+
           </Box>
         )}
         {!sidebarOpen && (
           <img
-            src="/logo.png"
+            src="/icons/logo.png"
             alt="Aerofisc Logo"
             style={{ width: 32, height: 32, objectFit: 'contain' }}
           />
