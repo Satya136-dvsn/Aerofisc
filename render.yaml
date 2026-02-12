@@ -1,0 +1,40 @@
+services:
+  - type: web
+    name: aerofisc-backend
+    runtime: docker
+    repo: https://github.com/Satya136-dvsn/Aerofisc
+    rootDir: backend
+    plan: free
+    region: oregon
+    envVars:
+      - key: SPRING_DATASOURCE_URL
+        fromDatabase:
+          name: aerofisc-db
+          property: connectionString
+      - key: SPRING_DATASOURCE_USERNAME
+        fromDatabase:
+          name: aerofisc-db
+          property: user
+      - key: SPRING_DATASOURCE_PASSWORD
+        fromDatabase:
+          name: aerofisc-db
+          property: password
+      - key: JWT_SECRET
+        generateValue: true
+      - key: CORS_ALLOWED_ORIGINS
+        value: "*" # Update this after dealing with frontend
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: ALPHAVANTAGE_API_KEY
+        sync: false
+      - key: PORT
+        value: 8080
+
+databases:
+  - name: aerofisc-db
+    databaseName: budgetwise
+    user: aerofisc_user
+    plan: free
+    region: oregon
+
+version: "1"
