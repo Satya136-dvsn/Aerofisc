@@ -11,19 +11,19 @@ COPY src ./src
 RUN mvn clean package -DskipTests
 
 # Run stage
-FROM amazoncorretto:21
+FROM eclipse-temurin:21-jre
 WORKDIR /app
 
-# Add non-root user (Amazon Linux uses useradd)
-RUN useradd -r -m spring
-USER spring
+# Add non-root user for security
+RUN groupadd -r spring && useradd -r -g spring spring
+USER spring:spring
 
 # Copy jar from build stage
 COPY --from=build /app/target/*.jar app.jar
 
 # Environment variables with defaults
 ENV SPRING_PROFILES_ACTIVE=docker
-ENV JAVA_OPTS="-Xms256m -Xmx512m -Djava.net.preferIPv4Stack=true -Djava.security.egd=file:/dev/./urandom"
+ENV JAVA_OPTS="-Xms256m -Xmx512m"
 
 # Expose port
 EXPOSE 8080

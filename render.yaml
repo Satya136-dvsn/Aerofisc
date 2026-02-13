@@ -8,7 +8,7 @@ services:
     region: oregon
     envVars:
       - key: SPRING_DATASOURCE_URL
-        value: jdbc:postgresql://db.jbfqrfjswygcagvhtxcs.supabase.co:5432/postgres?ssl=true
+        value: jdbc:postgresql://aws-1-ap-south-1.pooler.supabase.com:6543/postgres?ssl=true
       - key: SPRING_DATASOURCE_USERNAME
         value: postgres
       - key: SPRING_DATASOURCE_PASSWORD
