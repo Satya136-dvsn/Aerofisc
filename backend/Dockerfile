@@ -20,9 +20,8 @@ RUN groupadd -r spring && useradd -r -g spring spring
 # Create directory for PostgreSQL certificates (Driver expects this)
 RUN mkdir -p /home/spring/.postgresql
 
-# Download Supabase Root CA
-# Using wget since it is already used in HEALTHCHECK
-RUN wget -O /home/spring/.postgresql/root.crt https://supabase.co/downloads/prod-ca-2021.crt
+# Copy Supabase Root CA from local context
+COPY prod-ca-2021.crt /home/spring/.postgresql/root.crt
 
 # Set permissions
 RUN chmod 600 /home/spring/.postgresql/root.crt && \
