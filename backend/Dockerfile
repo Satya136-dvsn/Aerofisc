@@ -18,13 +18,13 @@ WORKDIR /app
 RUN groupadd -r spring && useradd -r -g spring spring
 
 # Create directory for PostgreSQL certificates (Driver expects this)
-RUN mkdir -p /home/spring/.postgresql
+# Copy Supabase Root CA and import into Java Truststore
+COPY prod-ca-2021.crt /tmp/supabase-root.crt
+RUN keytool -importcert -alias supabase-root -keystore $JAVA_HOME/lib/security/cacerts -storepass changeit -noprompt -trustcacerts -file /tmp/supabase-root.crt && \
+  rm /tmp/supabase-root.crt
 
-# Copy Supabase Root CA from local context
-COPY prod-ca-2021.crt /home/spring/.postgresql/root.crt
-
-# Set permissions
-RUN chmod 600 /home/spring/.postgresql/root.crt && \
+# Create directory for PostgreSQL certificates (if still needed by some drivers, though truststore usually suffices)
+RUN mkdir -p /home/spring/.postgresql && \
   chown -R spring:spring /home/spring
 
 USER spring:spring
