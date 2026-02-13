@@ -8,17 +8,11 @@ services:
     region: oregon
     envVars:
       - key: SPRING_DATASOURCE_URL
-        fromDatabase:
-          name: aerofisc-db
-          property: connectionString
+        value: jdbc:postgresql://db.jbfqrfjswygcagvhtxcs.supabase.co:5432/postgres
       - key: SPRING_DATASOURCE_USERNAME
-        fromDatabase:
-          name: aerofisc-db
-          property: user
+        value: postgres
       - key: SPRING_DATASOURCE_PASSWORD
-        fromDatabase:
-          name: aerofisc-db
-          property: password
+        sync: false # User will input this securely in dashboard
       - key: JWT_SECRET
         generateValue: true
       - key: CORS_ALLOWED_ORIGINS
@@ -29,12 +23,5 @@ services:
         sync: false
       - key: PORT
         value: 8080
-
-databases:
-  - name: aerofisc-db
-    databaseName: budgetwise
-    user: aerofisc_user
-    plan: free
-    region: oregon
 
 version: "1"
