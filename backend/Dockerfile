@@ -23,7 +23,7 @@ COPY --from=build /app/target/*.jar app.jar
 
 # Environment variables with defaults
 ENV SPRING_PROFILES_ACTIVE=docker
-ENV JAVA_OPTS="-Xms256m -Xmx512m -Djava.net.preferIPv4Stack=true"
+ENV JAVA_OPTS="-Xms256m -Xmx512m"
 
 # Expose port
 EXPOSE 8080
