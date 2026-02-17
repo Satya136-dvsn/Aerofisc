@@ -1,3 +1,9 @@
+/*
+ * © 2026 VenkataSatyanarayana Duba
+ * aerofisc - Proprietary Software
+ * Unauthorized copying or distribution prohibited.
+*/
+
 import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ReferenceLine } from 'recharts';
 import { Box, Typography, Skeleton, useTheme } from '@mui/material';
 

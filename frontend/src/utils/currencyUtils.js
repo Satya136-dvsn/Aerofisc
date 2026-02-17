@@ -1,3 +1,9 @@
+/*
+ * © 2026 VenkataSatyanarayana Duba
+ * aerofisc - Proprietary Software
+ * Unauthorized copying or distribution prohibited.
+*/
+
 /**
  * Currency Utilities for Multi-Currency Support
  * Supports: INR (₹), USD ($), EUR (€), GBP (£), JPY (¥)

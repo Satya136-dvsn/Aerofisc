@@ -1,3 +1,9 @@
+/*
+ * © 2026 VenkataSatyanarayana Duba
+ * aerofisc - Proprietary Software
+ * Unauthorized copying or distribution prohibited.
+*/
+
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.jsx'

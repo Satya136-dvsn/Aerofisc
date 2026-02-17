@@ -1,3 +1,9 @@
+/*
+ * © 2026 VenkataSatyanarayana Duba
+ * aerofisc - Proprietary Software
+ * Unauthorized copying or distribution prohibited.
+*/
+
 import { useState } from 'react';
 import { Container, Grid, Typography, Box, Fade, Tabs, Tab, Paper } from '@mui/material';
 import { Person, Security, Notifications, Tune, ManageAccounts, AccountBalance } from '@mui/icons-material';

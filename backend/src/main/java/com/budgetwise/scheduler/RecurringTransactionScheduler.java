@@ -1,3 +1,9 @@
+/*
+ * © 2026 VenkataSatyanarayana Duba
+ * aerofisc - Proprietary Software
+ * Unauthorized copying or distribution prohibited.
+*/
+
 package com.budgetwise.scheduler;
 
 import com.budgetwise.service.RecurringTransactionService;

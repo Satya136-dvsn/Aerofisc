@@ -1,3 +1,9 @@
+/*
+ * © 2026 VenkataSatyanarayana Duba
+ * aerofisc - Proprietary Software
+ * Unauthorized copying or distribution prohibited.
+*/
+
 import { useState, useEffect } from 'react';
 import { Box, Typography, Paper, Chip, CircularProgress, Alert } from '@mui/material';
 import { TrendingUp, Warning, CheckCircle } from '@mui/icons-material';

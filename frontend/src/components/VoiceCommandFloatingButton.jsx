@@ -1,3 +1,9 @@
+/*
+ * © 2026 VenkataSatyanarayana Duba
+ * aerofisc - Proprietary Software
+ * Unauthorized copying or distribution prohibited.
+*/
+
 import React, { useState, useEffect } from 'react';
 import { Fab, Tooltip, Zoom, CircularProgress, Snackbar, Alert } from '@mui/material';
 import { Mic as MicIcon, MicOff as MicOffIcon } from '@mui/icons-material';

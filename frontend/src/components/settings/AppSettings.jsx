@@ -1,3 +1,9 @@
+/*
+ * © 2026 VenkataSatyanarayana Duba
+ * aerofisc - Proprietary Software
+ * Unauthorized copying or distribution prohibited.
+*/
+
 import { useState, useEffect } from 'react';
 import { Grid, TextField, MenuItem, Typography, Box, Alert, Snackbar } from '@mui/material';
 import ProfessionalCard from '../ui/ProfessionalCard';

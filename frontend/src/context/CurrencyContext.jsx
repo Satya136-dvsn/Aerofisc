@@ -1,3 +1,9 @@
+/*
+ * © 2026 VenkataSatyanarayana Duba
+ * aerofisc - Proprietary Software
+ * Unauthorized copying or distribution prohibited.
+*/
+
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import userService from '../services/userService';
 import { formatCurrency, formatCurrencyCompact, getCurrencySymbol, CURRENCIES } from '../utils/currencyUtils';

@@ -1,3 +1,9 @@
+/*
+ * © 2026 VenkataSatyanarayana Duba
+ * aerofisc - Proprietary Software
+ * Unauthorized copying or distribution prohibited.
+*/
+
 import { Box, Button, Container, IconButton, Paper, Snackbar, Alert } from '@mui/material';
 import { Refresh as RefreshIcon } from '@mui/icons-material';
 import { useState } from 'react';

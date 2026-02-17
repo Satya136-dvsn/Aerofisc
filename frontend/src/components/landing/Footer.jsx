@@ -1,3 +1,9 @@
+/*
+ * © 2026 VenkataSatyanarayana Duba
+ * aerofisc - Proprietary Software
+ * Unauthorized copying or distribution prohibited.
+*/
+
 import { Box, Container, Typography, Stack, Link, Divider } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 
@@ -92,7 +98,7 @@ const Footer = () => {
                     spacing={2}
                 >
                     <Typography variant="caption" sx={{ color: '#475569' }}>
-                        © {currentYear} Aerofisc. Free to use. Built with ❤️
+                        © 2026 VenkataSatyanarayana Duba | Aerofisc Proprietary Software | All Rights Reserved
                     </Typography>
                 </Stack>
             </Container>

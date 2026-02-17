@@ -1,3 +1,9 @@
+/*
+ * © 2026 VenkataSatyanarayana Duba
+ * aerofisc - Proprietary Software
+ * Unauthorized copying or distribution prohibited.
+*/
+
 import { useState } from 'react';
 import { Grid, Box, Button, Typography, Chip, Snackbar, Alert, Menu, MenuItem } from '@mui/material';
 import reportService from '../../services/reportService';

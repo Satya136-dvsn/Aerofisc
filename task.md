@@ -119,3 +119,20 @@
 - [x] Update Sitemap with Vercel URL <!-- id: 85 -->
 - [x] Implement Google Analytics (GA4 Tag) <!-- id: 86 -->
 - [x] Fix Vercel SPA Routing (404 on refresh) <!-- id: 87 -->
+
+# Task: Open Source Ownership & Attribution
+
+- [x] Switch License to AGPLv3 <!-- id: 88 -->
+- [x] Create COPYRIGHT file <!-- id: 89 -->
+- [x] Implement Backend Attribution Log <!-- id: 90 -->
+- [x] Implement Frontend Attribution Footer <!-- id: 91 -->
+- [x] Verify Changes <!-- id: 92 -->
+
+# Task: Proprietary Copyright Headers
+
+- [x] Create automation script `add_copyright.py` <!-- id: 93 -->
+- [x] Run script to add headers to Backend <!-- id: 94 -->
+- [x] Run script to add headers to Frontend <!-- id: 95 -->
+- [x] Remove AGPL License (Conflict Resolution) <!-- id: 96 -->
+- [x] Update Attribution Logs to 'Proprietary' <!-- id: 97 -->
+- [x] Verify Headers <!-- id: 98 -->

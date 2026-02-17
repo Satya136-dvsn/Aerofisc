@@ -1,3 +1,9 @@
+/*
+ * © 2026 VenkataSatyanarayana Duba
+ * aerofisc - Proprietary Software
+ * Unauthorized copying or distribution prohibited.
+*/
+
 import React, { useState } from 'react'
 import { Container, Box, Typography, Stepper, Step, StepLabel, Alert, Link, FormControl, InputLabel, Select, MenuItem } from '@mui/material'
 import { useNavigate, Link as RouterLink } from 'react-router-dom'

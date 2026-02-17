@@ -1,3 +1,9 @@
+/*
+ * © 2026 VenkataSatyanarayana Duba
+ * aerofisc - Proprietary Software
+ * Unauthorized copying or distribution prohibited.
+*/
+
 import { useState, useEffect } from 'react';
 import { Container, Box, Typography, Fade, Snackbar, Alert, CircularProgress, Button } from '@mui/material';
 import SystemStatsWidget from '../components/admin/SystemStatsWidget';

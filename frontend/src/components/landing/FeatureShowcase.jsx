@@ -1,3 +1,9 @@
+/*
+ * © 2026 VenkataSatyanarayana Duba
+ * aerofisc - Proprietary Software
+ * Unauthorized copying or distribution prohibited.
+*/
+
 import { Box, Container, Typography, Grid } from '@mui/material';
 import {
     AutoAwesome as AIIcon,

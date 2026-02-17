@@ -1,3 +1,9 @@
+/*
+ * © 2026 VenkataSatyanarayana Duba
+ * aerofisc - Proprietary Software
+ * Unauthorized copying or distribution prohibited.
+*/
+
 import { Box } from '@mui/material';
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';

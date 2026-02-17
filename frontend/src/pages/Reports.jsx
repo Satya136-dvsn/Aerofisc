@@ -1,3 +1,9 @@
+/*
+ * © 2026 VenkataSatyanarayana Duba
+ * aerofisc - Proprietary Software
+ * Unauthorized copying or distribution prohibited.
+*/
+
 import { useState } from 'react';
 import { Container, Grid, Typography, Box, Fade, Tabs, Tab } from '@mui/material';
 import ProfessionalCard from '../components/ui/ProfessionalCard';

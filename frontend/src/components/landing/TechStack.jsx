@@ -1,3 +1,9 @@
+/*
+ * © 2026 VenkataSatyanarayana Duba
+ * aerofisc - Proprietary Software
+ * Unauthorized copying or distribution prohibited.
+*/
+
 import { Box, Container, Typography, Stack } from '@mui/material';
 import { motion } from 'framer-motion';
 

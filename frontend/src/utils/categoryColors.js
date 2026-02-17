@@ -1,3 +1,9 @@
+/*
+ * © 2026 VenkataSatyanarayana Duba
+ * aerofisc - Proprietary Software
+ * Unauthorized copying or distribution prohibited.
+*/
+
 // Centralized category color mapping for consistent UI
 // These colors are vibrant, distinct, and accessible
 

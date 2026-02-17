@@ -1,3 +1,9 @@
+/*
+ * © 2026 VenkataSatyanarayana Duba
+ * aerofisc - Proprietary Software
+ * Unauthorized copying or distribution prohibited.
+*/
+
 import { Paper, Box, Typography, Grid } from '@mui/material';
 import { People, AttachMoney, Storage, TrendingUp } from '@mui/icons-material';
 

@@ -1,3 +1,9 @@
+/*
+ * © 2026 VenkataSatyanarayana Duba
+ * aerofisc - Proprietary Software
+ * Unauthorized copying or distribution prohibited.
+*/
+
 import { Box, Container, Typography, Button, Stack, Chip } from '@mui/material';
 import { ArrowForward, PlayArrow, TrendingUp, TrendingDown, AccountBalance, Savings, Receipt, AutoAwesome, Mic, DocumentScanner, ShowChart } from '@mui/icons-material';
 import { motion } from 'framer-motion';

@@ -1,3 +1,9 @@
+/*
+ * © 2026 VenkataSatyanarayana Duba
+ * aerofisc - Proprietary Software
+ * Unauthorized copying or distribution prohibited.
+*/
+
 import React from 'react'
 import { Card, CardContent, Typography, Box } from '@mui/material'
 import { styled } from '@mui/material/styles'
