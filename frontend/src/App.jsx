@@ -13,6 +13,7 @@ import AppRoutes from './routes/AppRoutes'
 import { AuthProvider } from './context/AuthContext'
 import { CurrencyProvider } from './context/CurrencyContext'
 import { HelmetProvider } from 'react-helmet-async'
+import { Analytics } from '@vercel/analytics/react'
 
 // Create a client for React Query
 const queryClient = new QueryClient({
@@ -28,6 +29,7 @@ const queryClient = new QueryClient({
 function App() {
   return (
     <HelmetProvider>
+      <Analytics />
       <QueryClientProvider client={queryClient}>
         <ThemeProvider theme={theme}>
           <CssBaseline />
