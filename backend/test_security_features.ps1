@@ -1,7 +1,7 @@
-# Security Features Test Suite
+﻿# Security Features Test Suite
 
 Write-Host "========================================" -ForegroundColor Cyan
-Write-Host "  BUDGETWISE SECURITY FEATURES TEST" -ForegroundColor Cyan
+Write-Host "  Aerofisc SECURITY FEATURES TEST" -ForegroundColor Cyan
 Write-Host "========================================" -ForegroundColor Cyan
 Write-Host ""
 
@@ -130,3 +130,4 @@ Write-Host "Note: Some tests require manual verification:" -ForegroundColor Yell
 Write-Host "  - Token rotation: Login, then use refresh endpoint and verify new token" -ForegroundColor Gray
 Write-Host "  - Session management: Login and access /api/sessions with valid token" -ForegroundColor Gray
 Write-Host "  - Admin endpoints: Login as admin and access /api/audit/all" -ForegroundColor Gray
+

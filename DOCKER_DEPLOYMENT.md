@@ -1,4 +1,4 @@
-# BudgetWise Docker Deployment Guide
+# Aerofisc Docker Deployment Guide
 
 ## Prerequisites
 
@@ -18,7 +18,7 @@ cp .env.example .env
 Edit `.env` and set your own passwords and secrets:
 
 - `MYSQL_ROOT_PASSWORD` - Strong password for MySQL root
-- `MYSQL_PASSWORD` - Password for budgetwise_user  
+- `MYSQL_PASSWORD` - Password for Aerofisc_user  
 - `JWT_SECRET` - Long random string for JWT tokens (256+ bits)
 - `CORS_ORIGINS` - Your frontend domain(s)
 
@@ -103,10 +103,10 @@ docker-compose exec mysql mysql -u root -p
 
 ```bash
 # Create backup
-docker-compose exec mysql mysqldump -u root -p budgetwise > backup.sql
+docker-compose exec mysql mysqldump -u root -p Aerofisc > backup.sql
 
 # Restore backup
-docker-compose exec -T mysql mysql -u root -p budgetwise < backup.sql
+docker-compose exec -T mysql mysql -u root -p Aerofisc < backup.sql
 ```
 
 ### Migrate Existing Data
@@ -115,10 +115,10 @@ If you have existing data in local MySQL:
 
 ```bash
 # Export from local MySQL
-mysqldump -u root -p budgetwise > local_backup.sql
+mysqldump -u root -p Aerofisc > local_backup.sql
 
 # Import to Docker MySQL
-docker-compose exec -T mysql mysql -u root -p budgetwise < local_backup.sql
+docker-compose exec -T mysql mysql -u root -p Aerofisc < local_backup.sql
 ```
 
 ## Production Deployment
@@ -134,7 +134,7 @@ sudo service docker start
 
 # Clone repo and deploy
 git clone your-repo
-cd budgetwise-tracker
+cd Aerofisc-tracker
 cp .env.example .env
 # Edit .env with production values
 docker-compose up -d
@@ -152,7 +152,7 @@ sh get-docker.sh
 
 # Deploy
 git clone your-repo
-cd budgetwise-tracker
+cd Aerofisc-tracker
 docker-compose up -d
 ```
 
@@ -178,8 +178,8 @@ sudo certbot --nginx -d yourdomain.com
 | Variable | Description | Example |
 |----------|-------------|---------|
 | `MYSQL_ROOT_PASSWORD` | MySQL root password | `SuperSecret123!` |
-| `MYSQL_DATABASE` | Database name | `budgetwise` |
-| `MYSQL_USER` | Application DB user | `budgetwise_user` |
+| `MYSQL_DATABASE` | Database name | `Aerofisc` |
+| `MYSQL_USER` | Application DB user | `Aerofisc_user` |
 | `MYSQL_PASSWORD` | Application DB password | `DbPass123!` |
 | `JWT_SECRET` | JWT signing secret | `long-random-string-256-bits` |
 | `CORS_ORIGINS` | Allowed frontend origins | `http://localhost,https://app.com` |
@@ -235,7 +235,7 @@ docker-compose up -d --build
 docker-compose ps
 
 # Detailed health check
-docker inspect budgetwise-backend | grep -A 10 Health
+docker inspect Aerofisc-backend | grep -A 10 Health
 ```
 
 ### Resource Usage
@@ -282,3 +282,4 @@ For issues or questions:
 ---
 
 **Happy Deploying! 🚀**
+

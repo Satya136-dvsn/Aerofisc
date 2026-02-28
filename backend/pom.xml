@@ -12,8 +12,8 @@
         <relativePath/>
     </parent>
     
-    <groupId>com.budgetwise</groupId>
-    <artifactId>budgetwise-backend</artifactId>
+    <groupId>com.Aerofisc</groupId>
+    <artifactId>Aerofisc-backend</artifactId>
     <version>1.0.0</version>
     <name>Aerofisc Backend</name>
     <description>AI-Driven Financial Autopilot System</description>
@@ -259,3 +259,4 @@
         </plugins>
     </build>
 </project>
+

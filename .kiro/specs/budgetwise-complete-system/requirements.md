@@ -2,11 +2,11 @@
 
 ## Introduction
 
-BudgetWise is a comprehensive AI-driven personal finance tracker and budgeting application designed to help individuals manage their daily income, expenses, and savings goals. The system provides a personalized dashboard with real-time data visualization, AI-powered insights, community interaction features, and administrative capabilities. The application is built using a modern full-stack architecture with Java Spring Boot backend, React frontend, embedded Java-based AI services, and MySQL database.
+Aerofisc is a comprehensive AI-driven personal finance tracker and budgeting application designed to help individuals manage their daily income, expenses, and savings goals. The system provides a personalized dashboard with real-time data visualization, AI-powered insights, community interaction features, and administrative capabilities. The application is built using a modern full-stack architecture with Java Spring Boot backend, React frontend, embedded Java-based AI services, and MySQL database.
 
 ## Glossary
 
-- **System**: The BudgetWise application platform
+- **System**: The Aerofisc application platform
 - **User**: An authenticated individual using the application to track finances
 - **Admin**: A privileged user with access to administrative functions
 - **Transaction**: A financial record representing income or expense
@@ -309,3 +309,4 @@ BudgetWise is a comprehensive AI-driven personal finance tracker and budgeting a
 8. THE System SHALL implement scenario analysis with what-if modeling, financial projections, and goal impact analysis
 9. THE System SHALL provide multi-currency support with 20+ currencies, real-time exchange rates, and currency conversion
 10. THE System SHALL implement collaborative features with shared budgets, family accounts, and real-time synchronization
+

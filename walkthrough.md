@@ -1,4 +1,4 @@
-# Walkthrough - BudgetWise Tracker
+# Walkthrough - Aerofisc Tracker
 
 ## Deployment Status: LIVE 🚀
 
@@ -52,3 +52,4 @@ The application code is robust. The test infrastructure specific to E2E needs op
 - **Issue**: GitHub Actions failed to build backend due to missing database connection.
 - **Fix**: Updated `ci.yml` to force `spring.profiles.active=test`, ensuring usage of the in-memory H2 database during CI builds.
 - **Status**: ✅ **FIXED** (Builds should now pass consistently).
+

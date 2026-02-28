@@ -1,0 +1,35 @@
+/*
+ * © 2026 VenkataSatyanarayana Duba
+ * aerofisc - Proprietary Software
+ * Unauthorized copying or distribution prohibited.
+*/
+
+package com.Aerofisc.repository;
+
+import com.Aerofisc.entity.Post;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import java.util.Optional;
+
+@Repository
+public interface PostRepository extends JpaRepository<Post, Long> {
+
+    Page<Post> findAllByOrderByCreatedAtDesc(Pageable pageable);
+
+    Page<Post> findByUserIdOrderByCreatedAtDesc(Long userId, Pageable pageable);
+
+    List<Post> findByUserIdOrderByCreatedAtDesc(Long userId);
+
+    Optional<Post> findByIdAndUserId(Long id, Long userId);
+
+    @Query("SELECT p FROM Post p ORDER BY (p.likeCount + p.commentCount) DESC")
+    Page<Post> findTrendingPosts(Pageable pageable);
+
+    void deleteByUserId(Long userId);
+}
+

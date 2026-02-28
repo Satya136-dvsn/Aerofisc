@@ -100,4 +100,5 @@ A: We use advanced machine learning to analyze your transaction patterns and pro
 
 ## 📞 Support
 
-If you encounter any issues or have feature requests, please contact our support team at **<support@budgetwise.com>** or visit our [Community Forum](/community).
+If you encounter any issues or have feature requests, please contact our support team at **<support@Aerofisc.com>** or visit our [Community Forum](/community).
+

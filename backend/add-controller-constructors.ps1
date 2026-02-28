@@ -1,5 +1,5 @@
-# Find and add constructors to ALL controller classes automatically
-$controllersPath = "c:\budgetwise tracker\backend\src\main\java\com\budgetwise\controller"
+﻿# Find and add constructors to ALL controller classes automatically
+$controllersPath = "c:\Aerofisc tracker\backend\src\main\java\com\Aerofisc\controller"
 
 Get-ChildItem -Path $controllersPath -Filter "*.java" | ForEach-Object {
     $file = $_.FullName
@@ -52,3 +52,4 @@ Get-ChildItem -Path $controllersPath -Filter "*.java" | ForEach-Object {
 }
 
 Write-Host "`n=== Constructor generation complete! ==="
+

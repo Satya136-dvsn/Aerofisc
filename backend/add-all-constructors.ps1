@@ -1,5 +1,5 @@
-# Find and add constructors to ALL service classes automatically
-$servicesPath = "c:\budgetwise tracker\backend\src\main\java\com\budgetwise\service"
+﻿# Find and add constructors to ALL service classes automatically
+$servicesPath = "c:\Aerofisc tracker\backend\src\main\java\com\Aerofisc\service"
 
 Get-ChildItem -Path $servicesPath -Filter "*.java" | ForEach-Object {
     $file = $_.FullName
@@ -52,3 +52,4 @@ Get-ChildItem -Path $servicesPath -Filter "*.java" | ForEach-Object {
 }
 
 Write-Host "`n=== Constructor generation complete! ==="
+

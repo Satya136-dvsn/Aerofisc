@@ -1,4 +1,4 @@
-# Deployment Guide for BudgetWise
+# Deployment Guide for Aerofisc
 
 ## 1. Where to Deploy?
 
@@ -24,14 +24,14 @@ This is a **Full-Stack Application** with two distinct parts. They need to be ho
 
 1. Push your code to GitHub (Done).
 2. Log in to Vercel -> "Add New Project".
-3. Import the `budgetwise-tracker` repository.
+3. Import the `Aerofisc-tracker` repository.
 4. **Configuration**:
     * **Root Directory**: `frontend` (Important! Check this box).
     * **Framework Preset**: Vite.
     * **Build Command**: `npm run build`.
     * **Output Directory**: `dist`.
 5. **Environment Variables**:
-    * `VITE_API_BASE_URL`: The URL of your deployed backend (e.g., `https://budgetwise-backend.onrender.com`).
+    * `VITE_API_BASE_URL`: The URL of your deployed backend (e.g., `https://Aerofisc-backend.onrender.com`).
 
 ### B. Deploy Backend to Render (Web Service) & Database to Supabase
 
@@ -46,7 +46,7 @@ This is a **Full-Stack Application** with two distinct parts. They need to be ho
     * Connect your GitHub repo.
     * **Runtime**: Java.
     * **Build Command**: `mvn clean package -DskipTests` (Render usually detects this).
-    * **Start Command**: `java -jar target/budgetwise-0.0.1-SNAPSHOT.jar`.
+    * **Start Command**: `java -jar target/Aerofisc-0.0.1-SNAPSHOT.jar`.
     * **Select "Free" Instance Type**.
 
 3. **Environment Variables (in Render Dashboard)**:
@@ -63,7 +63,7 @@ This is a **Full-Stack Application** with two distinct parts. They need to be ho
     * Connect your GitHub repo.
     * **Runtime**: Java.
     * **Build Command**: `mvn clean package -DskipTests` (Render usually detects this).
-    * **Start Command**: `java -jar target/budgetwise-0.0.1-SNAPSHOT.jar`.
+    * **Start Command**: `java -jar target/Aerofisc-0.0.1-SNAPSHOT.jar`.
     * **Select "Free" Instance Type**.
 
 6. **Environment Variables (in Render Dashboard)**:
@@ -107,3 +107,4 @@ Your project is **complete** for a launch MVP. You do *not* need empty placehold
 * ✅ **SEO**: Implemented.
 
 You are ready to go live!
+

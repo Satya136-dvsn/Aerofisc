@@ -1,13 +1,13 @@
--- BudgetWise Database Initialization Script
+-- Aerofisc Database Initialization Script
 -- Run this script in MySQL Workbench to set up the database
 
 -- Create database if it doesn't exist
-CREATE DATABASE IF NOT EXISTS budgetwise
+CREATE DATABASE IF NOT EXISTS Aerofisc
 CHARACTER SET utf8mb4
 COLLATE utf8mb4_unicode_ci;
 
 -- Use the database
-USE budgetwise;
+USE Aerofisc;
 
 -- Note: Tables will be auto-created by Hibernate with spring.jpa.hibernate.ddl-auto=update
 -- This script is for manual database creation if needed
@@ -128,7 +128,8 @@ INSERT INTO categories (name, type, icon, color, is_system, user_id) VALUES
 ON DUPLICATE KEY UPDATE name=name;
 
 -- Verify database creation
-SELECT 'Database budgetwise created successfully!' AS Status;
+SELECT 'Database Aerofisc created successfully!' AS Status;
 
 -- Show current database
 SELECT DATABASE() AS CurrentDatabase;
+

@@ -2,7 +2,7 @@
 
 ## Overview
 
-BudgetWise Tracker is a comprehensive financial management application with the following major features:
+Aerofisc Tracker is a comprehensive financial management application with the following major features:
 
 ## 1. User Authentication & Security
 
@@ -296,3 +296,4 @@ BudgetWise Tracker is a comprehensive financial management application with the 
 ---
 
 *For detailed implementation information, refer to [INTERNSHIP_REPORT.md](INTERNSHIP_REPORT.md)*
+

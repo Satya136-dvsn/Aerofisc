@@ -2,7 +2,7 @@
 
 ## Overview
 
-BudgetWise is a full-stack financial management platform built using a modern monolithic architecture with Spring Boot backend and React frontend. The system provides a seamless, real-time user experience with all services integrated within a single Spring Boot application. The design emphasizes simplicity, maintainability, performance, and professional UI/UX standards.
+Aerofisc is a full-stack financial management platform built using a modern monolithic architecture with Spring Boot backend and React frontend. The system provides a seamless, real-time user experience with all services integrated within a single Spring Boot application. The design emphasizes simplicity, maintainability, performance, and professional UI/UX standards.
 
 ### Technology Stack
 
@@ -375,7 +375,7 @@ The application implements a comprehensive design system for consistency and pro
 #### Package Structure
 
 ```
-com.budgetwise.backend/
+com.Aerofisc.backend/
 ├── config/
 │   ├── SecurityConfig.java
 │   ├── WebSocketConfig.java
@@ -492,7 +492,7 @@ com.budgetwise.backend/
 #### Structure (Java-based AI within Spring Boot)
 
 ```
-com.budgetwise.backend/
+com.Aerofisc.backend/
 ├── ai/
 │   ├── model/
 │   │   ├── LinearRegression.java
@@ -564,7 +564,7 @@ com.budgetwise.backend/
 #### Structure (within Spring Boot backend)
 
 ```
-com.budgetwise.backend/
+com.Aerofisc.backend/
 ├── community/
 │   ├── model/
 │   │   ├── Post.java
@@ -1243,3 +1243,4 @@ CREATE TABLE prediction_history (
 8. **Voice Assistant**: Integration with Alexa/Google Assistant
 9. **Gamification**: Achievements and rewards for savings milestones
 10. **Financial Education**: In-app tutorials and courses
+

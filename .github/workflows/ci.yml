@@ -1,4 +1,4 @@
-name: Enterprise CI/CD Pipeline
+﻿name: Enterprise CI/CD Pipeline
 
 on:
   push:
@@ -84,7 +84,7 @@ jobs:
           context: ./backend
           file: ./backend/Dockerfile
           push: false
-          tags: budgetwise-backend:test
+          tags: Aerofisc-backend:test
 
       - name: Build Frontend Image
         uses: docker/build-push-action@v5
@@ -92,4 +92,5 @@ jobs:
           context: ./frontend
           file: ./frontend/Dockerfile
           push: false
-          tags: budgetwise-frontend:test
+          tags: Aerofisc-frontend:test
+

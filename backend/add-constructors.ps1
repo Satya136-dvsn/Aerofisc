@@ -1,4 +1,4 @@
-# Auto-generate constructors for services
+﻿# Auto-generate constructors for services
 $services = @(
     "AdminService",
     "AnomalyDetectionService",
@@ -18,7 +18,7 @@ $services = @(
 )
 
 foreach ($serviceName in $services) {
-    $file = "c:\budgetwise tracker\backend\src\main\java\com\budgetwise\service\$serviceName.java"
+    $file = "c:\Aerofisc tracker\backend\src\main\java\com\Aerofisc\service\$serviceName.java"
     
     if (Test-Path $file) {
         $content = Get-Content $file -Raw
@@ -71,3 +71,4 @@ foreach ($serviceName in $services) {
 }
 
 Write-Host "Constructor generation complete!"
+

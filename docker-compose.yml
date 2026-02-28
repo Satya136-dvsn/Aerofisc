@@ -1,13 +1,13 @@
-version: '3.8'
+﻿version: '3.8'
 
 services:
   # PostgreSQL Database
   postgres:
     image: postgres:15-alpine
-    container_name: budgetwise-postgres
+    container_name: Aerofisc-postgres
     restart: unless-stopped
     environment:
-      POSTGRES_DB: ${POSTGRES_DB:-budgetwise}
+      POSTGRES_DB: ${POSTGRES_DB:-Aerofisc}
       POSTGRES_USER: ${POSTGRES_USER:-postgres}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres123}
     ports:
@@ -15,7 +15,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
-      - budgetwise-network
+      - Aerofisc-network
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U postgres" ]
       interval: 10s
@@ -27,14 +27,14 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    container_name: budgetwise-backend
+    container_name: Aerofisc-backend
     restart: unless-stopped
     depends_on:
       postgres:
         condition: service_healthy
     environment:
       SPRING_PROFILES_ACTIVE: docker
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB:-budgetwise}
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB:-Aerofisc}
       SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-postgres}
       SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:-postgres123}
       JWT_SECRET: ${JWT_SECRET:-your-super-secret-jwt-key-change-this-in-production}
@@ -43,7 +43,7 @@ services:
     ports:
       - "8080:8080"
     networks:
-      - budgetwise-network
+      - Aerofisc-network
     healthcheck:
       test: [ "CMD", "wget", "-q", "--spider", "http://localhost:8080/actuator/health" ]
       interval: 30s
@@ -56,7 +56,7 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-    container_name: budgetwise-frontend
+    container_name: Aerofisc-frontend
     restart: unless-stopped
     depends_on:
       backend:
@@ -64,7 +64,7 @@ services:
     ports:
       - "80:80"
     networks:
-      - budgetwise-network
+      - Aerofisc-network
     healthcheck:
       test: [ "CMD", "wget", "-q", "--spider", "http://localhost:80" ]
       interval: 30s
@@ -72,9 +72,10 @@ services:
       retries: 3
 
 networks:
-  budgetwise-network:
+  Aerofisc-network:
     driver: bridge
 
 volumes:
   postgres_data:
     driver: local
+
