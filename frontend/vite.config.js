@@ -39,5 +39,6 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: './src/setupTests.js',
     css: true,
+    include: ['src/**/*.{test,spec}.{js,jsx}'],
   },
 })
