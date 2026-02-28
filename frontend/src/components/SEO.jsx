@@ -16,7 +16,7 @@ const SEO = ({
     type = 'website',
     image = null
 }) => {
-    const siteUrl = 'https://budgetwise-tracker-ai-driven.vercel.app';
+    const siteUrl = 'https://aerofisc.vercel.app';
     const defaultImage = `${siteUrl}/logo.png`;
     const socialImage = image ? `${siteUrl}${image}` : defaultImage;
 
