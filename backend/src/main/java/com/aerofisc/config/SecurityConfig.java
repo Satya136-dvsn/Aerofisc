@@ -59,6 +59,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/profile/test").permitAll()
                         .requestMatchers("/api/categories/test").permitAll()
                         .requestMatchers("/actuator/**").permitAll()
+                        .requestMatchers("/health").permitAll()
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html").permitAll()
                         .requestMatchers("/api/debug/**").permitAll()
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
@@ -96,5 +97,3 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder(12);
     }
 }
-
-
