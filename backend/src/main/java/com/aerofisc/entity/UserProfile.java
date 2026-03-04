@@ -56,7 +56,7 @@ public class UserProfile {
     private Boolean notificationPush = true;
 
     @Lob
-    @Column(name = "avatar", columnDefinition = "LONGTEXT")
+    @Column(name = "avatar", columnDefinition = "TEXT")
     private String avatar;
 
     @Column(name = "created_at", nullable = false, updatable = false)
@@ -213,5 +213,3 @@ public class UserProfile {
         this.avatar = avatar;
     }
 }
-
-
