@@ -18,7 +18,19 @@ public class AerofiscApplication {
         System.out.println("   Copyright (c) 2026 VenkataSatyanarayana Duba");
         System.out.println("   All Rights Reserved");
         System.out.println("==================================================");
-        SpringApplication.run(AerofiscApplication.class, args);
+
+        SpringApplication app = new SpringApplication(AerofiscApplication.class);
+
+        // DEV_MODE Architecture Logic
+        String devMode = System.getenv("DEV_MODE");
+        String useRealDb = System.getenv("USE_REAL_DB");
+
+        if ("true".equalsIgnoreCase(devMode) && !"true".equalsIgnoreCase(useRealDb)) {
+            System.out.println(
+                    "⚠️ STRICT TESTING DEV_MODE ENABLED ⚠️ - Bypassing PostgreSQL, initializing H2 Database mock layer.");
+            app.setAdditionalProfiles("dev");
+        }
+
+        app.run(args);
     }
 }
-
