@@ -1,16 +1,16 @@
 /*
- * © 2026 VenkataSatyanarayana Duba
+ * Â© 2026 VenkataSatyanarayana Duba
  * aerofisc - Proprietary Software
  * Unauthorized copying or distribution prohibited.
 */
 
-package com.Aerofisc.service;
+package com.aerofisc.service;
 
-import com.Aerofisc.dto.PredictionDto;
-import com.Aerofisc.entity.Budget;
-import com.Aerofisc.entity.SavingsGoal;
-import com.Aerofisc.entity.Transaction;
-import com.Aerofisc.repository.CategoryRepository;
+import com.aerofisc.dto.PredictionDto;
+import com.aerofisc.entity.Budget;
+import com.aerofisc.entity.SavingsGoal;
+import com.aerofisc.entity.Transaction;
+import com.aerofisc.repository.CategoryRepository;
 import com.itextpdf.io.image.ImageDataFactory;
 import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.kernel.pdf.PdfDocument;
@@ -208,9 +208,9 @@ public class PdfReportGenerator {
             summaryTable.addCell(createCell("Total Goals", true));
             summaryTable.addCell(createCell(String.valueOf(goals.size()), false));
             summaryTable.addCell(createCell("Total Target Amount", true));
-            summaryTable.addCell(createCell(String.format("₹%.2f", totalTarget), false));
+            summaryTable.addCell(createCell(String.format("â‚¹%.2f", totalTarget), false));
             summaryTable.addCell(createCell("Total Saved", true));
-            summaryTable.addCell(createCell(String.format("₹%.2f", totalSaved), false));
+            summaryTable.addCell(createCell(String.format("â‚¹%.2f", totalSaved), false));
             summaryTable.addCell(createCell("Overall Progress", true));
             summaryTable.addCell(createCell(String.format("%.1f%%", overallProgress), false));
             document.add(summaryTable);
@@ -269,11 +269,11 @@ public class PdfReportGenerator {
 
         Table table = new Table(UnitValue.createPercentArray(new float[] { 1, 1 })).useAllAvailableWidth();
         table.addCell(createCell("Total Income", true));
-        table.addCell(createCell(String.format("₹%.2f", income), false));
+        table.addCell(createCell(String.format("â‚¹%.2f", income), false));
         table.addCell(createCell("Total Expenses", true));
-        table.addCell(createCell(String.format("₹%.2f", expense), false));
+        table.addCell(createCell(String.format("â‚¹%.2f", expense), false));
         table.addCell(createCell("Net Savings", true));
-        table.addCell(createCell(String.format("₹%.2f", income - expense), false));
+        table.addCell(createCell(String.format("â‚¹%.2f", income - expense), false));
 
         document.add(table);
     }
@@ -289,7 +289,7 @@ public class PdfReportGenerator {
         for (Transaction t : transactions) {
             addBodyCell(table, t.getTransactionDate().toString(), isOdd);
             addBodyCell(table, t.getType().toString(), isOdd);
-            addBodyCell(table, String.format("₹%.2f", t.getAmount()), isOdd);
+            addBodyCell(table, String.format("â‚¹%.2f", t.getAmount()), isOdd);
             addBodyCell(table, getCategoryName(t.getCategoryId()), isOdd);
             isOdd = !isOdd;
         }
@@ -306,9 +306,9 @@ public class PdfReportGenerator {
         boolean isOdd = true;
         for (Budget b : budgets) {
             addBodyCell(table, getCategoryName(b.getCategoryId()), isOdd);
-            addBodyCell(table, String.format("₹%.2f", b.getAmount()), isOdd);
-            addBodyCell(table, String.format("₹%.2f", b.getSpent()), isOdd);
-            addBodyCell(table, String.format("₹%.2f", b.getAmount().subtract(b.getSpent())), isOdd);
+            addBodyCell(table, String.format("â‚¹%.2f", b.getAmount()), isOdd);
+            addBodyCell(table, String.format("â‚¹%.2f", b.getSpent()), isOdd);
+            addBodyCell(table, String.format("â‚¹%.2f", b.getAmount().subtract(b.getSpent())), isOdd);
             isOdd = !isOdd;
         }
         document.add(table);
@@ -324,8 +324,8 @@ public class PdfReportGenerator {
         boolean isOdd = true;
         for (SavingsGoal g : goals) {
             addBodyCell(table, g.getName(), isOdd);
-            addBodyCell(table, String.format("₹%.2f", g.getTargetAmount()), isOdd);
-            addBodyCell(table, String.format("₹%.2f", g.getCurrentAmount()), isOdd);
+            addBodyCell(table, String.format("â‚¹%.2f", g.getTargetAmount()), isOdd);
+            addBodyCell(table, String.format("â‚¹%.2f", g.getCurrentAmount()), isOdd);
 
             double progress = 0;
             if (g.getTargetAmount().compareTo(java.math.BigDecimal.ZERO) > 0) {
@@ -353,9 +353,9 @@ public class PdfReportGenerator {
         boolean isOdd = true;
         for (PredictionDto p : predictions) {
             addBodyCell(table, p.getCategoryName(), isOdd);
-            addBodyCell(table, String.format("₹%.2f", p.getPredictedAmount()), isOdd);
+            addBodyCell(table, String.format("â‚¹%.2f", p.getPredictedAmount()), isOdd);
 
-            String trendSymbol = "STABLE".equals(p.getTrend()) ? "→" : ("INCREASING".equals(p.getTrend()) ? "↑" : "↓");
+            String trendSymbol = "STABLE".equals(p.getTrend()) ? "â†’" : ("INCREASING".equals(p.getTrend()) ? "â†‘" : "â†“");
             addBodyCell(table, p.getTrend() + " " + trendSymbol, isOdd);
 
             addBodyCell(table, String.format("%.0f%%", p.getConfidenceScore() * 100), isOdd);
@@ -456,4 +456,5 @@ public class PdfReportGenerator {
         }
     }
 }
+
 

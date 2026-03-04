@@ -1,14 +1,14 @@
 /*
- * © 2026 VenkataSatyanarayana Duba
+ * Â© 2026 VenkataSatyanarayana Duba
  * aerofisc - Proprietary Software
  * Unauthorized copying or distribution prohibited.
 */
 
-package com.Aerofisc.controller;
+package com.aerofisc.controller;
 
-import com.Aerofisc.dto.ReportDto;
-import com.Aerofisc.security.UserPrincipal;
-import com.Aerofisc.service.ReportService;
+import com.aerofisc.dto.ReportDto;
+import com.aerofisc.security.UserPrincipal;
+import com.aerofisc.service.ReportService;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -23,9 +23,9 @@ import java.util.List;
 public class ReportController {
 
     private final ReportService reportService;
-    private final com.Aerofisc.service.ExportService exportService;
+    private final com.aerofisc.service.ExportService exportService;
 
-    public ReportController(ReportService reportService, com.Aerofisc.service.ExportService exportService) {
+    public ReportController(ReportService reportService, com.aerofisc.service.ExportService exportService) {
         this.reportService = reportService;
         this.exportService = exportService;
     }
@@ -127,4 +127,5 @@ public class ReportController {
         return ResponseEntity.ok().build();
     }
 }
+
 

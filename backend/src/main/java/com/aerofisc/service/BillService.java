@@ -1,17 +1,17 @@
 /*
- * © 2026 VenkataSatyanarayana Duba
+ * Â© 2026 VenkataSatyanarayana Duba
  * aerofisc - Proprietary Software
  * Unauthorized copying or distribution prohibited.
 */
 
-package com.Aerofisc.service;
+package com.aerofisc.service;
 
-import com.Aerofisc.dto.BillDto;
-import com.Aerofisc.entity.Bill;
-import com.Aerofisc.entity.Transaction;
-import com.Aerofisc.exception.ResourceNotFoundException;
-import com.Aerofisc.repository.BillRepository;
-import com.Aerofisc.repository.TransactionRepository;
+import com.aerofisc.dto.BillDto;
+import com.aerofisc.entity.Bill;
+import com.aerofisc.entity.Transaction;
+import com.aerofisc.exception.ResourceNotFoundException;
+import com.aerofisc.repository.BillRepository;
+import com.aerofisc.repository.TransactionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
@@ -223,4 +223,5 @@ public class BillService {
         return dto;
     }
 }
+
 

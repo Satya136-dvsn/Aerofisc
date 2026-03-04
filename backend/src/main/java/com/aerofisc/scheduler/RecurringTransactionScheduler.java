@@ -1,12 +1,12 @@
 /*
- * © 2026 VenkataSatyanarayana Duba
+ * Â© 2026 VenkataSatyanarayana Duba
  * aerofisc - Proprietary Software
  * Unauthorized copying or distribution prohibited.
 */
 
-package com.Aerofisc.scheduler;
+package com.aerofisc.scheduler;
 
-import com.Aerofisc.service.RecurringTransactionService;
+import com.aerofisc.service.RecurringTransactionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -56,4 +56,5 @@ public class RecurringTransactionScheduler {
         }
     }
 }
+
 

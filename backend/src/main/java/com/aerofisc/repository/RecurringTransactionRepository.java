@@ -1,12 +1,12 @@
 /*
- * © 2026 VenkataSatyanarayana Duba
+ * Â© 2026 VenkataSatyanarayana Duba
  * aerofisc - Proprietary Software
  * Unauthorized copying or distribution prohibited.
 */
 
-package com.Aerofisc.repository;
+package com.aerofisc.repository;
 
-import com.Aerofisc.entity.RecurringTransaction;
+import com.aerofisc.entity.RecurringTransaction;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -53,4 +53,5 @@ public interface RecurringTransactionRepository extends JpaRepository<RecurringT
      */
     void deleteByUserId(Long userId);
 }
+
 

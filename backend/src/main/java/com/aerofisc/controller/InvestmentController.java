@@ -1,15 +1,15 @@
 /*
- * © 2026 VenkataSatyanarayana Duba
+ * Â© 2026 VenkataSatyanarayana Duba
  * aerofisc - Proprietary Software
  * Unauthorized copying or distribution prohibited.
 */
 
-package com.Aerofisc.controller;
+package com.aerofisc.controller;
 
-import com.Aerofisc.dto.InvestmentDto;
-import com.Aerofisc.dto.PortfolioSummaryDto;
-import com.Aerofisc.security.UserPrincipal;
-import com.Aerofisc.service.InvestmentService;
+import com.aerofisc.dto.InvestmentDto;
+import com.aerofisc.dto.PortfolioSummaryDto;
+import com.aerofisc.security.UserPrincipal;
+import com.aerofisc.service.InvestmentService;
 import jakarta.validation.Valid;
 
 import org.springframework.http.HttpStatus;
@@ -94,4 +94,5 @@ public class InvestmentController {
         return ResponseEntity.noContent().build();
     }
 }
+
 

@@ -1,10 +1,10 @@
 /*
- * © 2026 VenkataSatyanarayana Duba
+ * Â© 2026 VenkataSatyanarayana Duba
  * aerofisc - Proprietary Software
  * Unauthorized copying or distribution prohibited.
 */
 
-package com.Aerofisc.service;
+package com.aerofisc.service;
 
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
@@ -30,4 +30,5 @@ public class WebSocketService {
         messagingTemplate.convertAndSend("/topic/user/" + userId + "/notifications", notification);
     }
 }
+
 

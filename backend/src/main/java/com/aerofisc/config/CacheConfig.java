@@ -1,10 +1,10 @@
 /*
- * © 2026 VenkataSatyanarayana Duba
+ * Â© 2026 VenkataSatyanarayana Duba
  * aerofisc - Proprietary Software
  * Unauthorized copying or distribution prohibited.
 */
 
-package com.Aerofisc.config;
+package com.aerofisc.config;
 
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
@@ -53,4 +53,5 @@ public class CacheConfig {
 // Note: To use Redis caching, uncomment Redis configuration in
 // application.properties
 // and replace this with RedisCacheManager configuration
+
 

@@ -1,21 +1,21 @@
 /*
- * © 2026 VenkataSatyanarayana Duba
+ * Â© 2026 VenkataSatyanarayana Duba
  * aerofisc - Proprietary Software
  * Unauthorized copying or distribution prohibited.
 */
 
-package com.Aerofisc.service;
+package com.aerofisc.service;
 
-import com.Aerofisc.dto.DashboardSummaryDto;
-import com.Aerofisc.dto.MonthlyTrendDto;
-import com.Aerofisc.dto.CategoryBreakdownDto;
-import com.Aerofisc.dto.TransactionDto;
-import com.Aerofisc.entity.Transaction;
-import com.Aerofisc.repository.BudgetRepository;
-import com.Aerofisc.repository.SavingsGoalRepository;
-import com.Aerofisc.repository.TransactionRepository;
-import com.Aerofisc.service.PredictionService;
-import com.Aerofisc.dto.PredictionDto;
+import com.aerofisc.dto.DashboardSummaryDto;
+import com.aerofisc.dto.MonthlyTrendDto;
+import com.aerofisc.dto.CategoryBreakdownDto;
+import com.aerofisc.dto.TransactionDto;
+import com.aerofisc.entity.Transaction;
+import com.aerofisc.repository.BudgetRepository;
+import com.aerofisc.repository.SavingsGoalRepository;
+import com.aerofisc.repository.TransactionRepository;
+import com.aerofisc.service.PredictionService;
+import com.aerofisc.dto.PredictionDto;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -35,12 +35,12 @@ public class DashboardService {
         private final TransactionRepository transactionRepository;
         private final BudgetRepository budgetRepository;
         private final SavingsGoalRepository savingsGoalRepository;
-        private final com.Aerofisc.repository.CategoryRepository categoryRepository;
+        private final com.aerofisc.repository.CategoryRepository categoryRepository;
         private final PredictionService predictionService;
 
         public DashboardService(TransactionRepository transactionRepository, BudgetRepository budgetRepository,
                         SavingsGoalRepository savingsGoalRepository,
-                        com.Aerofisc.repository.CategoryRepository categoryRepository,
+                        com.aerofisc.repository.CategoryRepository categoryRepository,
                         PredictionService predictionService) {
                 this.transactionRepository = transactionRepository;
                 this.budgetRepository = budgetRepository;
@@ -238,8 +238,8 @@ public class DashboardService {
 
                 // Fetch all categories for name mapping
                 Map<Long, String> categoryNames = categoryRepository.findAll().stream()
-                                .collect(Collectors.toMap(com.Aerofisc.entity.Category::getId,
-                                                com.Aerofisc.entity.Category::getName));
+                                .collect(Collectors.toMap(com.aerofisc.entity.Category::getId,
+                                                com.aerofisc.entity.Category::getName));
 
                 List<CategoryBreakdownDto> breakdown = new ArrayList<>();
 
@@ -299,4 +299,5 @@ public class DashboardService {
                                 .build();
         }
 }
+
 

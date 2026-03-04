@@ -1,12 +1,12 @@
 /*
- * © 2026 VenkataSatyanarayana Duba
+ * Â© 2026 VenkataSatyanarayana Duba
  * aerofisc - Proprietary Software
  * Unauthorized copying or distribution prohibited.
 */
 
-package com.Aerofisc.controller;
+package com.aerofisc.controller;
 
-import com.Aerofisc.dto.RegisterRequest;
+import com.aerofisc.dto.RegisterRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -129,4 +129,5 @@ public class AuthControllerValidationTest {
                 .andExpect(jsonPath("$.error").value("Validation Failed"));
     }
 }
+
 

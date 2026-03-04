@@ -1,14 +1,14 @@
 /*
- * © 2026 VenkataSatyanarayana Duba
+ * Â© 2026 VenkataSatyanarayana Duba
  * aerofisc - Proprietary Software
  * Unauthorized copying or distribution prohibited.
 */
 
-package com.Aerofisc.controller;
+package com.aerofisc.controller;
 
-import com.Aerofisc.dto.TaxEstimateDto;
-import com.Aerofisc.security.UserPrincipal;
-import com.Aerofisc.service.TaxService;
+import com.aerofisc.dto.TaxEstimateDto;
+import com.aerofisc.security.UserPrincipal;
+import com.aerofisc.service.TaxService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -30,4 +30,5 @@ public class TaxController {
         return ResponseEntity.ok(estimate);
     }
 }
+
 

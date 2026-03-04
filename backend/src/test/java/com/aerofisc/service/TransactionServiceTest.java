@@ -1,17 +1,17 @@
 /*
- * © 2026 VenkataSatyanarayana Duba
+ * Â© 2026 VenkataSatyanarayana Duba
  * aerofisc - Proprietary Software
  * Unauthorized copying or distribution prohibited.
 */
 
-package com.Aerofisc.service;
+package com.aerofisc.service;
 
-import com.Aerofisc.dto.TransactionDto;
-import com.Aerofisc.entity.Category;
-import com.Aerofisc.entity.Transaction;
-import com.Aerofisc.exception.ResourceNotFoundException;
-import com.Aerofisc.repository.CategoryRepository;
-import com.Aerofisc.repository.TransactionRepository;
+import com.aerofisc.dto.TransactionDto;
+import com.aerofisc.entity.Category;
+import com.aerofisc.entity.Transaction;
+import com.aerofisc.exception.ResourceNotFoundException;
+import com.aerofisc.repository.CategoryRepository;
+import com.aerofisc.repository.TransactionRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -146,4 +146,5 @@ class TransactionServiceTest {
         verify(budgetService).updateBudgetProgress(userId, 1L);
     }
 }
+
 

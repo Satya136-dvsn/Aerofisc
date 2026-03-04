@@ -17,8 +17,8 @@ public class ReflectionCoverageTest {
         ClassPathScanningCandidateComponentProvider provider = new ClassPathScanningCandidateComponentProvider(false);
         provider.addIncludeFilter(new RegexPatternTypeFilter(Pattern.compile(".*")));
 
-        Set<BeanDefinition> classes = provider.findCandidateComponents("com.Aerofisc.entity");
-        classes.addAll(provider.findCandidateComponents("com.Aerofisc.dto"));
+        Set<BeanDefinition> classes = provider.findCandidateComponents("com.aerofisc.entity");
+        classes.addAll(provider.findCandidateComponents("com.aerofisc.dto"));
 
         for (BeanDefinition bean : classes) {
             try {
@@ -91,3 +91,4 @@ public class ReflectionCoverageTest {
         }
     }
 }
+

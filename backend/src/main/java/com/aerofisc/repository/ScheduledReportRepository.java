@@ -1,12 +1,12 @@
 /*
- * © 2026 VenkataSatyanarayana Duba
+ * Â© 2026 VenkataSatyanarayana Duba
  * aerofisc - Proprietary Software
  * Unauthorized copying or distribution prohibited.
 */
 
-package com.Aerofisc.repository;
+package com.aerofisc.repository;
 
-import com.Aerofisc.entity.ScheduledReport;
+import com.aerofisc.entity.ScheduledReport;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -20,4 +20,5 @@ public interface ScheduledReportRepository extends JpaRepository<ScheduledReport
 
     void deleteByUserId(Long userId);
 }
+
 

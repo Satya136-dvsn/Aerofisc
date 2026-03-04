@@ -1,17 +1,17 @@
 /*
- * © 2026 VenkataSatyanarayana Duba
+ * Â© 2026 VenkataSatyanarayana Duba
  * aerofisc - Proprietary Software
  * Unauthorized copying or distribution prohibited.
 */
 
-package com.Aerofisc.service;
+package com.aerofisc.service;
 
-import com.Aerofisc.dto.CategorizationSuggestionDto;
-import com.Aerofisc.entity.Category;
-import com.Aerofisc.repository.CategoryRepository;
-import com.Aerofisc.repository.TransactionRepository;
-import com.Aerofisc.repository.UserRepository;
-import com.Aerofisc.entity.User;
+import com.aerofisc.dto.CategorizationSuggestionDto;
+import com.aerofisc.entity.Category;
+import com.aerofisc.repository.CategoryRepository;
+import com.aerofisc.repository.TransactionRepository;
+import com.aerofisc.repository.UserRepository;
+import com.aerofisc.entity.User;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -209,4 +209,5 @@ public class CategorizationService {
         // Placeholder for future learning
     }
 }
+
 

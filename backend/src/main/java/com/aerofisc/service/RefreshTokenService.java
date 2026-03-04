@@ -1,15 +1,15 @@
 /*
- * © 2026 VenkataSatyanarayana Duba
+ * Â© 2026 VenkataSatyanarayana Duba
  * aerofisc - Proprietary Software
  * Unauthorized copying or distribution prohibited.
 */
 
-package com.Aerofisc.service;
+package com.aerofisc.service;
 
-import com.Aerofisc.entity.RefreshToken;
-import com.Aerofisc.entity.User;
-import com.Aerofisc.repository.RefreshTokenRepository;
-import com.Aerofisc.repository.UserRepository;
+import com.aerofisc.entity.RefreshToken;
+import com.aerofisc.entity.User;
+import com.aerofisc.repository.RefreshTokenRepository;
+import com.aerofisc.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -107,4 +107,5 @@ public class RefreshTokenService {
         }
     }
 }
+
 

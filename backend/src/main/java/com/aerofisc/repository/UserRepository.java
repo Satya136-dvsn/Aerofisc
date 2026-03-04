@@ -1,12 +1,12 @@
 /*
- * © 2026 VenkataSatyanarayana Duba
+ * Â© 2026 VenkataSatyanarayana Duba
  * aerofisc - Proprietary Software
  * Unauthorized copying or distribution prohibited.
 */
 
-package com.Aerofisc.repository;
+package com.aerofisc.repository;
 
-import com.Aerofisc.entity.User;
+import com.aerofisc.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -27,4 +27,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     long countByIsActive(Boolean isActive);
 }
+
 

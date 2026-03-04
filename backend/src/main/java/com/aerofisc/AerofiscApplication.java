@@ -1,5 +1,5 @@
 /*
- * © 2026 VenkataSatyanarayana Duba
+ * Â© 2026 VenkataSatyanarayana Duba
  * aerofisc - Proprietary Software
  * Unauthorized copying or distribution prohibited.
 */
@@ -27,10 +27,11 @@ public class AerofiscApplication {
 
         if ("true".equalsIgnoreCase(devMode) && !"true".equalsIgnoreCase(useRealDb)) {
             System.out.println(
-                    "⚠️ STRICT TESTING DEV_MODE ENABLED ⚠️ - Bypassing PostgreSQL, initializing H2 Database mock layer.");
+                    "âš ï¸ STRICT TESTING DEV_MODE ENABLED âš ï¸ - Bypassing PostgreSQL, initializing H2 Database mock layer.");
             app.setAdditionalProfiles("dev");
         }
 
         app.run(args);
     }
 }
+

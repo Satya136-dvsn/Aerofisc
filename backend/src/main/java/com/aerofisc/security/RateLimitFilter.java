@@ -1,10 +1,10 @@
 /*
- * © 2026 VenkataSatyanarayana Duba
+ * Â© 2026 VenkataSatyanarayana Duba
  * aerofisc - Proprietary Software
  * Unauthorized copying or distribution prohibited.
 */
 
-package com.Aerofisc.security;
+package com.aerofisc.security;
 
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
@@ -115,4 +115,5 @@ public class RateLimitFilter implements Filter {
         }
     }
 }
+
 

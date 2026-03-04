@@ -1,10 +1,10 @@
 /*
- * © 2026 VenkataSatyanarayana Duba
+ * Â© 2026 VenkataSatyanarayana Duba
  * aerofisc - Proprietary Software
  * Unauthorized copying or distribution prohibited.
 */
 
-package com.Aerofisc.dto;
+package com.aerofisc.dto;
 
 public class MfaSetupResponse {
     private String secret;
@@ -31,4 +31,5 @@ public class MfaSetupResponse {
         this.qrCodeUrl = qrCodeUrl;
     }
 }
+
 

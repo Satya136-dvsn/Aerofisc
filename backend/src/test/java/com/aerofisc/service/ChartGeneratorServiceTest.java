@@ -1,13 +1,13 @@
 /*
- * © 2026 VenkataSatyanarayana Duba
+ * Â© 2026 VenkataSatyanarayana Duba
  * aerofisc - Proprietary Software
  * Unauthorized copying or distribution prohibited.
 */
 
-package com.Aerofisc.service;
+package com.aerofisc.service;
 
-import com.Aerofisc.dto.CategoryBreakdownDto;
-import com.Aerofisc.dto.MonthlyTrendDto;
+import com.aerofisc.dto.CategoryBreakdownDto;
+import com.aerofisc.dto.MonthlyTrendDto;
 import org.junit.jupiter.api.Test;
 
 import java.awt.image.BufferedImage;
@@ -69,4 +69,5 @@ public class ChartGeneratorServiceTest {
         assertEquals(400, image.getHeight());
     }
 }
+
 

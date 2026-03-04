@@ -1,16 +1,16 @@
 /*
- * © 2026 VenkataSatyanarayana Duba
+ * Â© 2026 VenkataSatyanarayana Duba
  * aerofisc - Proprietary Software
  * Unauthorized copying or distribution prohibited.
 */
 
-package com.Aerofisc.service;
+package com.aerofisc.service;
 
-import com.Aerofisc.dto.InvestmentDto;
-import com.Aerofisc.dto.PortfolioSummaryDto;
-import com.Aerofisc.entity.Investment;
-import com.Aerofisc.exception.ResourceNotFoundException;
-import com.Aerofisc.repository.InvestmentRepository;
+import com.aerofisc.dto.InvestmentDto;
+import com.aerofisc.dto.PortfolioSummaryDto;
+import com.aerofisc.entity.Investment;
+import com.aerofisc.exception.ResourceNotFoundException;
+import com.aerofisc.repository.InvestmentRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -233,4 +233,5 @@ public class InvestmentService {
                 .build();
     }
 }
+
 

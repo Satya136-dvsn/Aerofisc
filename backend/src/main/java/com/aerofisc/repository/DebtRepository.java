@@ -1,12 +1,12 @@
 /*
- * © 2026 VenkataSatyanarayana Duba
+ * Â© 2026 VenkataSatyanarayana Duba
  * aerofisc - Proprietary Software
  * Unauthorized copying or distribution prohibited.
 */
 
-package com.Aerofisc.repository;
+package com.aerofisc.repository;
 
-import com.Aerofisc.entity.Debt;
+import com.aerofisc.entity.Debt;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -32,4 +32,5 @@ public interface DebtRepository extends JpaRepository<Debt, Long> {
     @Query("SELECT COUNT(d) FROM Debt d WHERE d.userId = :userId")
     Long countDebtsByUserId(@Param("userId") Long userId);
 }
+
 

@@ -1,4 +1,4 @@
-package com.Aerofisc.entity;
+package com.aerofisc.entity;
 
 import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
@@ -102,3 +102,4 @@ public class EntityCoverageTest {
         assertEquals(acc.hashCode(), acc2.hashCode());
     }
 }
+

@@ -1,14 +1,14 @@
 /*
- * © 2026 VenkataSatyanarayana Duba
+ * Â© 2026 VenkataSatyanarayana Duba
  * aerofisc - Proprietary Software
  * Unauthorized copying or distribution prohibited.
 */
 
-package com.Aerofisc.controller;
+package com.aerofisc.controller;
 
-import com.Aerofisc.dto.RetirementDto;
-import com.Aerofisc.security.UserPrincipal;
-import com.Aerofisc.service.RetirementService;
+import com.aerofisc.dto.RetirementDto;
+import com.aerofisc.security.UserPrincipal;
+import com.aerofisc.service.RetirementService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -82,4 +82,5 @@ public class RetirementController {
                 "projectedBalance", projection));
     }
 }
+
 

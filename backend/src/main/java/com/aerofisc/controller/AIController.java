@@ -1,16 +1,16 @@
 /*
- * © 2026 VenkataSatyanarayana Duba
+ * Â© 2026 VenkataSatyanarayana Duba
  * aerofisc - Proprietary Software
  * Unauthorized copying or distribution prohibited.
 */
 
-package com.Aerofisc.controller;
+package com.aerofisc.controller;
 
-import com.Aerofisc.dto.*;
-import com.Aerofisc.security.UserPrincipal;
-import com.Aerofisc.service.BudgetAdvisorService;
-import com.Aerofisc.service.CategorizationService;
-import com.Aerofisc.service.PredictionService;
+import com.aerofisc.dto.*;
+import com.aerofisc.security.UserPrincipal;
+import com.aerofisc.service.BudgetAdvisorService;
+import com.aerofisc.service.CategorizationService;
+import com.aerofisc.service.PredictionService;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -65,4 +65,5 @@ public class AIController {
         return ResponseEntity.ok().build();
     }
 }
+
 

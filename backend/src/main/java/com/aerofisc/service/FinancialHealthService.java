@@ -1,14 +1,14 @@
 /*
- * © 2026 VenkataSatyanarayana Duba
+ * Â© 2026 VenkataSatyanarayana Duba
  * aerofisc - Proprietary Software
  * Unauthorized copying or distribution prohibited.
 */
 
-package com.Aerofisc.service;
+package com.aerofisc.service;
 
-import com.Aerofisc.dto.FinancialHealthDto;
-import com.Aerofisc.entity.Transaction;
-import com.Aerofisc.repository.*;
+import com.aerofisc.dto.FinancialHealthDto;
+import com.aerofisc.entity.Transaction;
+import com.aerofisc.repository.*;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -250,4 +250,5 @@ public class FinancialHealthService {
         return recommendations;
     }
 }
+
 

@@ -1,15 +1,15 @@
 /*
- * © 2026 VenkataSatyanarayana Duba
+ * Â© 2026 VenkataSatyanarayana Duba
  * aerofisc - Proprietary Software
  * Unauthorized copying or distribution prohibited.
 */
 
-package com.Aerofisc.service;
+package com.aerofisc.service;
 
-import com.Aerofisc.dto.AdminStatsDto;
-import com.Aerofisc.entity.AuditLog;
-import com.Aerofisc.entity.User;
-import com.Aerofisc.repository.*;
+import com.aerofisc.dto.AdminStatsDto;
+import com.aerofisc.entity.AuditLog;
+import com.aerofisc.entity.User;
+import com.aerofisc.repository.*;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,10 +18,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
-import com.Aerofisc.service.TaxService;
-import com.Aerofisc.service.FinancialHealthService;
-import com.Aerofisc.dto.TaxEstimateDto;
-import com.Aerofisc.dto.FinancialHealthDto;
+import com.aerofisc.service.TaxService;
+import com.aerofisc.service.FinancialHealthService;
+import com.aerofisc.dto.TaxEstimateDto;
+import com.aerofisc.dto.FinancialHealthDto;
 
 @Service
 public class AdminService {
@@ -74,7 +74,7 @@ public class AdminService {
         long totalCategories = categoryRepository.count();
         long activeUsers = userRepository.countByIsActive(true);
         BigDecimal revenue = transactionRepository
-                .sumTotalByType(com.Aerofisc.entity.Transaction.TransactionType.INCOME);
+                .sumTotalByType(com.aerofisc.entity.Transaction.TransactionType.INCOME);
 
         return AdminStatsDto.builder()
                 .totalUsers(totalUsers)
@@ -121,8 +121,8 @@ public class AdminService {
 
         // 1. Handle Community Data (Posts, Comments, Likes)
         // A. Delete likes on user's comments (by others)
-        List<com.Aerofisc.entity.Comment> userComments = commentRepository.findByUserId(userId);
-        List<Long> userCommentIds = userComments.stream().map(com.Aerofisc.entity.Comment::getId).toList();
+        List<com.aerofisc.entity.Comment> userComments = commentRepository.findByUserId(userId);
+        List<Long> userCommentIds = userComments.stream().map(com.aerofisc.entity.Comment::getId).toList();
         if (!userCommentIds.isEmpty()) {
             likeRepository.deleteByCommentIdIn(userCommentIds);
         }
@@ -131,8 +131,8 @@ public class AdminService {
         commentRepository.deleteByUserId(userId);
 
         // C. Delete likes and comments on user's posts (by others)
-        List<com.Aerofisc.entity.Post> userPosts = postRepository.findByUserIdOrderByCreatedAtDesc(userId);
-        List<Long> userPostIds = userPosts.stream().map(com.Aerofisc.entity.Post::getId).toList();
+        List<com.aerofisc.entity.Post> userPosts = postRepository.findByUserIdOrderByCreatedAtDesc(userId);
+        List<Long> userPostIds = userPosts.stream().map(com.aerofisc.entity.Post::getId).toList();
         if (!userPostIds.isEmpty()) {
             likeRepository.deleteByPostIdIn(userPostIds);
             commentRepository.deleteByPostIdIn(userPostIds);
@@ -168,7 +168,7 @@ public class AdminService {
         java.util.Map<String, Object> profile = new java.util.HashMap<>();
 
         // User basic info (without password)
-        com.Aerofisc.entity.User user = userRepository.findById(userId).orElseThrow();
+        com.aerofisc.entity.User user = userRepository.findById(userId).orElseThrow();
         java.util.Map<String, Object> userInfo = new java.util.HashMap<>();
         userInfo.put("id", user.getId());
         userInfo.put("username", user.getUsername());
@@ -179,7 +179,7 @@ public class AdminService {
         profile.put("user", userInfo);
 
         // User profile (including avatar/photo)
-        com.Aerofisc.entity.UserProfile userProfile = userProfileRepository.findByUserId(userId).orElse(null);
+        com.aerofisc.entity.UserProfile userProfile = userProfileRepository.findByUserId(userId).orElse(null);
         if (userProfile != null) {
             java.util.Map<String, Object> profileInfo = new java.util.HashMap<>();
             profileInfo.put("firstName", userProfile.getFirstName());
@@ -193,17 +193,17 @@ public class AdminService {
         }
 
         // Financial summary
-        java.util.List<com.Aerofisc.entity.Transaction> allTransactions = transactionRepository
+        java.util.List<com.aerofisc.entity.Transaction> allTransactions = transactionRepository
                 .findByUserIdOrderByCreatedAtDesc(userId);
 
         BigDecimal totalIncome = allTransactions.stream()
-                .filter(t -> t.getType() == com.Aerofisc.entity.Transaction.TransactionType.INCOME)
-                .map(com.Aerofisc.entity.Transaction::getAmount)
+                .filter(t -> t.getType() == com.aerofisc.entity.Transaction.TransactionType.INCOME)
+                .map(com.aerofisc.entity.Transaction::getAmount)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
         BigDecimal totalExpenses = allTransactions.stream()
-                .filter(t -> t.getType() == com.Aerofisc.entity.Transaction.TransactionType.EXPENSE)
-                .map(com.Aerofisc.entity.Transaction::getAmount)
+                .filter(t -> t.getType() == com.aerofisc.entity.Transaction.TransactionType.EXPENSE)
+                .map(com.aerofisc.entity.Transaction::getAmount)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
         java.util.Map<String, BigDecimal> financialSummary = new java.util.HashMap<>();
@@ -214,7 +214,7 @@ public class AdminService {
 
         // Full transactions list (all of them, not just 5)
         java.util.List<java.util.Map<String, Object>> transactionsList = new java.util.ArrayList<>();
-        for (com.Aerofisc.entity.Transaction txn : allTransactions) {
+        for (com.aerofisc.entity.Transaction txn : allTransactions) {
             java.util.Map<String, Object> txnMap = new java.util.HashMap<>();
             txnMap.put("id", txn.getId());
             txnMap.put("amount", txn.getAmount());
@@ -229,9 +229,9 @@ public class AdminService {
                 transactionsList.stream().limit(5).collect(java.util.stream.Collectors.toList()));
 
         // Full budgets list
-        java.util.List<com.Aerofisc.entity.Budget> budgets = budgetRepository.findByUserId(userId);
+        java.util.List<com.aerofisc.entity.Budget> budgets = budgetRepository.findByUserId(userId);
         java.util.List<java.util.Map<String, Object>> budgetsList = new java.util.ArrayList<>();
-        for (com.Aerofisc.entity.Budget budget : budgets) {
+        for (com.aerofisc.entity.Budget budget : budgets) {
             java.util.Map<String, Object> budgetMap = new java.util.HashMap<>();
             budgetMap.put("id", budget.getId());
             budgetMap.put("categoryId", budget.getCategoryId());
@@ -245,9 +245,9 @@ public class AdminService {
         profile.put("budgets", budgetsList);
 
         // Full savings goals list
-        java.util.List<com.Aerofisc.entity.SavingsGoal> goals = savingsGoalRepository.findByUserId(userId);
+        java.util.List<com.aerofisc.entity.SavingsGoal> goals = savingsGoalRepository.findByUserId(userId);
         java.util.List<java.util.Map<String, Object>> goalsList = new java.util.ArrayList<>();
-        for (com.Aerofisc.entity.SavingsGoal goal : goals) {
+        for (com.aerofisc.entity.SavingsGoal goal : goals) {
             java.util.Map<String, Object> goalMap = new java.util.HashMap<>();
             goalMap.put("id", goal.getId());
             goalMap.put("name", goal.getName());
@@ -268,10 +268,10 @@ public class AdminService {
 
         // Advanced Features Data
         // 1. Debts
-        java.util.List<com.Aerofisc.entity.Debt> debts = debtRepository.findByUserIdOrderByInterestRateDesc(userId);
+        java.util.List<com.aerofisc.entity.Debt> debts = debtRepository.findByUserIdOrderByInterestRateDesc(userId);
         java.util.List<java.util.Map<String, Object>> debtsList = new java.util.ArrayList<>();
         BigDecimal totalDebt = BigDecimal.ZERO;
-        for (com.Aerofisc.entity.Debt debt : debts) {
+        for (com.aerofisc.entity.Debt debt : debts) {
             java.util.Map<String, Object> debtMap = new java.util.HashMap<>();
             debtMap.put("id", debt.getId());
             debtMap.put("name", debt.getName());
@@ -285,7 +285,7 @@ public class AdminService {
 
         // 2. Tax Estimate
         try {
-            com.Aerofisc.dto.TaxEstimateDto taxEstimate = taxService.calculateTaxEstimate(userId);
+            com.aerofisc.dto.TaxEstimateDto taxEstimate = taxService.calculateTaxEstimate(userId);
             profile.put("taxEstimate", taxEstimate);
         } catch (Exception e) {
             profile.put("taxEstimate", null);
@@ -293,7 +293,7 @@ public class AdminService {
 
         // 3. Financial Health
         try {
-            com.Aerofisc.dto.FinancialHealthDto health = financialHealthService.calculateHealthScore(userId);
+            com.aerofisc.dto.FinancialHealthDto health = financialHealthService.calculateHealthScore(userId);
             profile.put("financialHealth", health);
         } catch (Exception e) {
             profile.put("financialHealth", null);
@@ -302,4 +302,5 @@ public class AdminService {
         return profile;
     }
 }
+
 

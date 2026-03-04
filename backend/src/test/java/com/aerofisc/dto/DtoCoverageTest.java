@@ -1,10 +1,10 @@
-package com.Aerofisc.dto;
+package com.aerofisc.dto;
 
 import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import com.Aerofisc.entity.Debt;
-import com.Aerofisc.entity.RecurringTransaction;
+import com.aerofisc.entity.Debt;
+import com.aerofisc.entity.RecurringTransaction;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class DtoCoverageTest {
@@ -120,3 +120,4 @@ public class DtoCoverageTest {
         assertEquals(dto.getName(), dto2.getName());
     }
 }
+

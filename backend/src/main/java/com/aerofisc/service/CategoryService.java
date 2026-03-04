@@ -1,16 +1,16 @@
 /*
- * © 2026 VenkataSatyanarayana Duba
+ * Â© 2026 VenkataSatyanarayana Duba
  * aerofisc - Proprietary Software
  * Unauthorized copying or distribution prohibited.
 */
 
-package com.Aerofisc.service;
+package com.aerofisc.service;
 
-import com.Aerofisc.dto.CategoryDto;
-import com.Aerofisc.entity.Category;
-import com.Aerofisc.entity.User;
-import com.Aerofisc.repository.CategoryRepository;
-import com.Aerofisc.repository.UserRepository;
+import com.aerofisc.dto.CategoryDto;
+import com.aerofisc.entity.Category;
+import com.aerofisc.entity.User;
+import com.aerofisc.repository.CategoryRepository;
+import com.aerofisc.repository.UserRepository;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.cache.annotation.CacheEvict;
@@ -26,10 +26,10 @@ public class CategoryService {
 
     private final CategoryRepository categoryRepository;
     private final UserRepository userRepository;
-    private final com.Aerofisc.repository.TransactionRepository transactionRepository;
+    private final com.aerofisc.repository.TransactionRepository transactionRepository;
 
     public CategoryService(CategoryRepository categoryRepository, UserRepository userRepository,
-            com.Aerofisc.repository.TransactionRepository transactionRepository) {
+            com.aerofisc.repository.TransactionRepository transactionRepository) {
         this.categoryRepository = categoryRepository;
         this.userRepository = userRepository;
         this.transactionRepository = transactionRepository;
@@ -48,33 +48,33 @@ public class CategoryService {
 
         if (existingSystemCategories.isEmpty()) {
             // Expense categories
-            createSystemCategory("Food & Dining", Category.CategoryType.EXPENSE, "🍽️", "#FF6B6B");
-            createSystemCategory("Groceries", Category.CategoryType.EXPENSE, "🛒", "#4ECDC4");
-            createSystemCategory("Transportation", Category.CategoryType.EXPENSE, "🚗", "#45B7D1");
-            createSystemCategory("Rent", Category.CategoryType.EXPENSE, "🏠", "#96CEB4");
-            createSystemCategory("Utilities", Category.CategoryType.EXPENSE, "💡", "#FFEAA7");
-            createSystemCategory("Healthcare", Category.CategoryType.EXPENSE, "🏥", "#DFE6E9");
-            createSystemCategory("Entertainment", Category.CategoryType.EXPENSE, "🎬", "#A29BFE");
-            createSystemCategory("Shopping", Category.CategoryType.EXPENSE, "🛍️", "#FD79A8");
-            createSystemCategory("Travel", Category.CategoryType.EXPENSE, "✈️", "#6C5CE7");
-            createSystemCategory("Education", Category.CategoryType.EXPENSE, "📚", "#00B894");
-            createSystemCategory("Insurance", Category.CategoryType.EXPENSE, "🛡️", "#0984E3");
-            createSystemCategory("Personal Care", Category.CategoryType.EXPENSE, "💅", "#FDCB6E");
-            createSystemCategory("Gifts & Donations", Category.CategoryType.EXPENSE, "🎁", "#E17055");
-            createSystemCategory("Bills & EMI", Category.CategoryType.EXPENSE, "📄", "#B2BEC3");
-            createSystemCategory("Other Expenses", Category.CategoryType.EXPENSE, "📦", "#636E72");
+            createSystemCategory("Food & Dining", Category.CategoryType.EXPENSE, "ðŸ½ï¸", "#FF6B6B");
+            createSystemCategory("Groceries", Category.CategoryType.EXPENSE, "ðŸ›’", "#4ECDC4");
+            createSystemCategory("Transportation", Category.CategoryType.EXPENSE, "ðŸš—", "#45B7D1");
+            createSystemCategory("Rent", Category.CategoryType.EXPENSE, "ðŸ ", "#96CEB4");
+            createSystemCategory("Utilities", Category.CategoryType.EXPENSE, "ðŸ’¡", "#FFEAA7");
+            createSystemCategory("Healthcare", Category.CategoryType.EXPENSE, "ðŸ¥", "#DFE6E9");
+            createSystemCategory("Entertainment", Category.CategoryType.EXPENSE, "ðŸŽ¬", "#A29BFE");
+            createSystemCategory("Shopping", Category.CategoryType.EXPENSE, "ðŸ›ï¸", "#FD79A8");
+            createSystemCategory("Travel", Category.CategoryType.EXPENSE, "âœˆï¸", "#6C5CE7");
+            createSystemCategory("Education", Category.CategoryType.EXPENSE, "ðŸ“š", "#00B894");
+            createSystemCategory("Insurance", Category.CategoryType.EXPENSE, "ðŸ›¡ï¸", "#0984E3");
+            createSystemCategory("Personal Care", Category.CategoryType.EXPENSE, "ðŸ’…", "#FDCB6E");
+            createSystemCategory("Gifts & Donations", Category.CategoryType.EXPENSE, "ðŸŽ", "#E17055");
+            createSystemCategory("Bills & EMI", Category.CategoryType.EXPENSE, "ðŸ“„", "#B2BEC3");
+            createSystemCategory("Other Expenses", Category.CategoryType.EXPENSE, "ðŸ“¦", "#636E72");
 
             // Income categories
-            createSystemCategory("Salary", Category.CategoryType.INCOME, "💰", "#00B894");
-            createSystemCategory("Business Income", Category.CategoryType.INCOME, "💼", "#0984E3");
-            createSystemCategory("Freelance", Category.CategoryType.INCOME, "💻", "#6C5CE7");
-            createSystemCategory("Investments", Category.CategoryType.INCOME, "📈", "#FDCB6E");
-            createSystemCategory("Rental Income", Category.CategoryType.INCOME, "🏘️", "#00CEC9");
-            createSystemCategory("Gifts Received", Category.CategoryType.INCOME, "🎁", "#FD79A8");
-            createSystemCategory("Refunds", Category.CategoryType.INCOME, "↩️", "#74B9FF");
-            createSystemCategory("Other Income", Category.CategoryType.INCOME, "💵", "#55EFC4");
+            createSystemCategory("Salary", Category.CategoryType.INCOME, "ðŸ’°", "#00B894");
+            createSystemCategory("Business Income", Category.CategoryType.INCOME, "ðŸ’¼", "#0984E3");
+            createSystemCategory("Freelance", Category.CategoryType.INCOME, "ðŸ’»", "#6C5CE7");
+            createSystemCategory("Investments", Category.CategoryType.INCOME, "ðŸ“ˆ", "#FDCB6E");
+            createSystemCategory("Rental Income", Category.CategoryType.INCOME, "ðŸ˜ï¸", "#00CEC9");
+            createSystemCategory("Gifts Received", Category.CategoryType.INCOME, "ðŸŽ", "#FD79A8");
+            createSystemCategory("Refunds", Category.CategoryType.INCOME, "â†©ï¸", "#74B9FF");
+            createSystemCategory("Other Income", Category.CategoryType.INCOME, "ðŸ’µ", "#55EFC4");
 
-            System.out.println("✅ System categories seeded successfully!");
+            System.out.println("âœ… System categories seeded successfully!");
         }
     }
 
@@ -213,4 +213,5 @@ public class CategoryService {
         categoryRepository.delete(category);
     }
 }
+
 

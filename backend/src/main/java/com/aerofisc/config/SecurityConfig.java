@@ -1,13 +1,13 @@
 /*
- * © 2026 VenkataSatyanarayana Duba
+ * Â© 2026 VenkataSatyanarayana Duba
  * aerofisc - Proprietary Software
  * Unauthorized copying or distribution prohibited.
 */
 
-package com.Aerofisc.config;
+package com.aerofisc.config;
 
-import com.Aerofisc.security.JwtAuthenticationFilter;
-import com.Aerofisc.security.RateLimitFilter;
+import com.aerofisc.security.JwtAuthenticationFilter;
+import com.aerofisc.security.RateLimitFilter;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -96,4 +96,5 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder(12);
     }
 }
+
 

@@ -1,13 +1,13 @@
 /*
- * © 2026 VenkataSatyanarayana Duba
+ * Â© 2026 VenkataSatyanarayana Duba
  * aerofisc - Proprietary Software
  * Unauthorized copying or distribution prohibited.
 */
 
-package com.Aerofisc.controller;
+package com.aerofisc.controller;
 
-import com.Aerofisc.dto.*;
-import com.Aerofisc.service.AuthService;
+import com.aerofisc.dto.*;
+import com.aerofisc.service.AuthService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -41,7 +41,7 @@ public class AuthController {
     }
 
     @PostMapping("/verify-mfa")
-    public ResponseEntity<AuthResponse> verifyMfa(@RequestBody com.Aerofisc.dto.MfaVerificationRequest request) {
+    public ResponseEntity<AuthResponse> verifyMfa(@RequestBody com.aerofisc.dto.MfaVerificationRequest request) {
         // We expect preAuthToken in the secret field of MfaVerificationRequest for
         // simplicity,
         // or we should create a new DTO. Let's assume the client sends the token as
@@ -57,4 +57,5 @@ public class AuthController {
         return ResponseEntity.ok("Auth endpoint is working!");
     }
 }
+
 

@@ -1,13 +1,13 @@
 /*
- * © 2026 VenkataSatyanarayana Duba
+ * Â© 2026 VenkataSatyanarayana Duba
  * aerofisc - Proprietary Software
  * Unauthorized copying or distribution prohibited.
 */
 
-package com.Aerofisc.service;
+package com.aerofisc.service;
 
-import com.Aerofisc.entity.Budget;
-import com.Aerofisc.entity.Transaction;
+import com.aerofisc.entity.Budget;
+import com.aerofisc.entity.Transaction;
 import org.knowm.xchart.*;
 import org.knowm.xchart.style.Styler;
 import org.knowm.xchart.style.PieStyler;
@@ -158,4 +158,5 @@ public class ChartGenerator {
         return BitmapEncoder.getBufferedImage(chart);
     }
 }
+
 

@@ -1,14 +1,14 @@
 /*
- * © 2026 VenkataSatyanarayana Duba
+ * Â© 2026 VenkataSatyanarayana Duba
  * aerofisc - Proprietary Software
  * Unauthorized copying or distribution prohibited.
 */
 
-package com.Aerofisc.controller;
+package com.aerofisc.controller;
 
-import com.Aerofisc.service.ExportService;
-import com.Aerofisc.service.UserService;
-import com.Aerofisc.security.UserPrincipal;
+import com.aerofisc.service.ExportService;
+import com.aerofisc.service.UserService;
+import com.aerofisc.security.UserPrincipal;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpHeaders;
@@ -61,4 +61,5 @@ public class GdprController {
         return ResponseEntity.ok(Map.of("message", "Account successfully deleted"));
     }
 }
+
 

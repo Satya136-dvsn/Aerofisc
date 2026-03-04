@@ -1,15 +1,15 @@
 /*
- * © 2026 VenkataSatyanarayana Duba
+ * Â© 2026 VenkataSatyanarayana Duba
  * aerofisc - Proprietary Software
  * Unauthorized copying or distribution prohibited.
 */
 
-package com.Aerofisc.controller;
+package com.aerofisc.controller;
 
-import com.Aerofisc.dto.ChatRequestDto;
-import com.Aerofisc.dto.ChatResponseDto;
-import com.Aerofisc.security.UserPrincipal;
-import com.Aerofisc.service.ChatAssistantService;
+import com.aerofisc.dto.ChatRequestDto;
+import com.aerofisc.dto.ChatResponseDto;
+import com.aerofisc.security.UserPrincipal;
+import com.aerofisc.service.ChatAssistantService;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -36,4 +36,5 @@ public class ChatController {
         return ResponseEntity.ok(response);
     }
 }
+
 

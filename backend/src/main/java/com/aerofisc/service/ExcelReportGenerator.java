@@ -1,15 +1,15 @@
 /*
- * © 2026 VenkataSatyanarayana Duba
+ * Â© 2026 VenkataSatyanarayana Duba
  * aerofisc - Proprietary Software
  * Unauthorized copying or distribution prohibited.
 */
 
-package com.Aerofisc.service;
+package com.aerofisc.service;
 
-import com.Aerofisc.entity.Budget;
-import com.Aerofisc.entity.SavingsGoal;
-import com.Aerofisc.entity.Transaction;
-import com.Aerofisc.repository.CategoryRepository;
+import com.aerofisc.entity.Budget;
+import com.aerofisc.entity.SavingsGoal;
+import com.aerofisc.entity.Transaction;
+import com.aerofisc.repository.CategoryRepository;
 import org.apache.poi.ss.usermodel.*;
 
 import org.apache.poi.xssf.usermodel.*;
@@ -242,7 +242,7 @@ public class ExcelReportGenerator {
     private CellStyle createCurrencyStyle(Workbook workbook) {
         CellStyle style = workbook.createCellStyle();
         DataFormat format = workbook.createDataFormat();
-        style.setDataFormat(format.getFormat("₹#,##0.00"));
+        style.setDataFormat(format.getFormat("â‚¹#,##0.00"));
         return style;
     }
 
@@ -272,4 +272,5 @@ public class ExcelReportGenerator {
         return categoryRepository.findById(categoryId).map(c -> c.getName()).orElse("Uncategorized");
     }
 }
+
 

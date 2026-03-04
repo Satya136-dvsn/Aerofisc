@@ -1,18 +1,18 @@
 /*
- * © 2026 VenkataSatyanarayana Duba
+ * Â© 2026 VenkataSatyanarayana Duba
  * aerofisc - Proprietary Software
  * Unauthorized copying or distribution prohibited.
 */
 
-package com.Aerofisc.service;
+package com.aerofisc.service;
 
-import com.Aerofisc.annotation.Auditable;
-import com.Aerofisc.dto.*;
-import com.Aerofisc.entity.RefreshToken;
-import com.Aerofisc.entity.User;
-import com.Aerofisc.repository.UserRepository;
-import com.Aerofisc.security.JwtTokenProvider;
-import com.Aerofisc.security.UserPrincipal;
+import com.aerofisc.annotation.Auditable;
+import com.aerofisc.dto.*;
+import com.aerofisc.entity.RefreshToken;
+import com.aerofisc.entity.User;
+import com.aerofisc.repository.UserRepository;
+import com.aerofisc.security.JwtTokenProvider;
+import com.aerofisc.security.UserPrincipal;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -58,7 +58,7 @@ public class AuthService {
         }
 
         // Validate password strength
-        com.Aerofisc.util.PasswordValidator.ValidationResult validationResult = com.Aerofisc.util.PasswordValidator
+        com.aerofisc.util.PasswordValidator.ValidationResult validationResult = com.aerofisc.util.PasswordValidator
                 .validate(request.getPassword());
         if (!validationResult.isValid()) {
             throw new RuntimeException(validationResult.getErrorMessage());
@@ -115,7 +115,7 @@ public class AuthService {
 
         // Generate tokens
         String accessToken = tokenProvider.generateAccessToken(authentication);
-        com.Aerofisc.entity.RefreshToken refreshToken = refreshTokenService.createRefreshToken(savedUser.getId());
+        com.aerofisc.entity.RefreshToken refreshToken = refreshTokenService.createRefreshToken(savedUser.getId());
 
         return new AuthResponse(accessToken, refreshToken.getToken(), tokenProvider.getJwtExpirationMs(),
                 UserDto.fromEntity(savedUser));
@@ -142,7 +142,7 @@ public class AuthService {
         }
 
         // Create or update refresh token (upsert logic in service)
-        com.Aerofisc.entity.RefreshToken refreshToken = refreshTokenService.createRefreshToken(user.getId());
+        com.aerofisc.entity.RefreshToken refreshToken = refreshTokenService.createRefreshToken(user.getId());
 
         return new AuthResponse(accessToken, refreshToken.getToken(), tokenProvider.getJwtExpirationMs(),
                 UserDto.fromEntity(user));
@@ -175,7 +175,7 @@ public class AuthService {
         String newAccessToken = tokenProvider.generateAccessToken(authentication);
 
         // Create or update refresh token (upsert logic in service)
-        com.Aerofisc.entity.RefreshToken newRefreshToken = refreshTokenService.createRefreshToken(user.getId());
+        com.aerofisc.entity.RefreshToken newRefreshToken = refreshTokenService.createRefreshToken(user.getId());
 
         return new AuthResponse(newAccessToken, newRefreshToken.getToken(), tokenProvider.getJwtExpirationMs(),
                 UserDto.fromEntity(user));
@@ -202,4 +202,5 @@ public class AuthService {
                 .orElseThrow(() -> new RuntimeException("Refresh token is not in database!"));
     }
 }
+
 

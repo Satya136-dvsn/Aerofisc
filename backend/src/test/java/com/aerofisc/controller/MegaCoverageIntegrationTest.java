@@ -1,8 +1,8 @@
-package com.Aerofisc.controller;
+package com.aerofisc.controller;
 
-import com.Aerofisc.dto.AuthResponse;
-import com.Aerofisc.dto.LoginRequest;
-import com.Aerofisc.dto.RegisterRequest;
+import com.aerofisc.dto.AuthResponse;
+import com.aerofisc.dto.LoginRequest;
+import com.aerofisc.dto.RegisterRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -113,3 +113,4 @@ public class MegaCoverageIntegrationTest {
         }
     }
 }
+

@@ -1,12 +1,12 @@
 /*
- * © 2026 VenkataSatyanarayana Duba
+ * Â© 2026 VenkataSatyanarayana Duba
  * aerofisc - Proprietary Software
  * Unauthorized copying or distribution prohibited.
 */
 
-package com.Aerofisc.dto;
+package com.aerofisc.dto;
 
-import com.Aerofisc.entity.Investment;
+import com.aerofisc.entity.Investment;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -297,4 +297,5 @@ public class InvestmentDto {
         }
     }
 }
+
 

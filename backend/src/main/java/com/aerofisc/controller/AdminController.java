@@ -1,16 +1,16 @@
 /*
- * © 2026 VenkataSatyanarayana Duba
+ * Â© 2026 VenkataSatyanarayana Duba
  * aerofisc - Proprietary Software
  * Unauthorized copying or distribution prohibited.
 */
 
-package com.Aerofisc.controller;
+package com.aerofisc.controller;
 
-import com.Aerofisc.dto.AdminStatsDto;
-import com.Aerofisc.entity.AuditLog;
-import com.Aerofisc.entity.User;
-import com.Aerofisc.security.UserPrincipal;
-import com.Aerofisc.service.AdminService;
+import com.aerofisc.dto.AdminStatsDto;
+import com.aerofisc.entity.AuditLog;
+import com.aerofisc.entity.User;
+import com.aerofisc.security.UserPrincipal;
+import com.aerofisc.service.AdminService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -129,4 +129,5 @@ public class AdminController {
                 return ResponseEntity.ok(profile);
         }
 }
+
 

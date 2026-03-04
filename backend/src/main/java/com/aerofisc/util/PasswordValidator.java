@@ -1,10 +1,10 @@
 /*
- * © 2026 VenkataSatyanarayana Duba
+ * Â© 2026 VenkataSatyanarayana Duba
  * aerofisc - Proprietary Software
  * Unauthorized copying or distribution prohibited.
 */
 
-package com.Aerofisc.util;
+package com.aerofisc.util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,4 +71,5 @@ public class PasswordValidator {
         }
     }
 }
+
 

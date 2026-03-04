@@ -1,12 +1,12 @@
 /*
- * © 2026 VenkataSatyanarayana Duba
+ * Â© 2026 VenkataSatyanarayana Duba
  * aerofisc - Proprietary Software
  * Unauthorized copying or distribution prohibited.
 */
 
-package com.Aerofisc.dto;
+package com.aerofisc.dto;
 
-import com.Aerofisc.entity.User;
+import com.aerofisc.entity.User;
 
 public class UserDto {
     
@@ -65,4 +65,5 @@ public class UserDto {
         this.role = role;
     }
 }
+
 

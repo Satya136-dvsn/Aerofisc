@@ -1,18 +1,18 @@
 /*
- * © 2026 VenkataSatyanarayana Duba
+ * Â© 2026 VenkataSatyanarayana Duba
  * aerofisc - Proprietary Software
  * Unauthorized copying or distribution prohibited.
 */
 
-package com.Aerofisc.service;
+package com.aerofisc.service;
 
-import com.Aerofisc.dto.BudgetDto;
-import com.Aerofisc.entity.Budget;
-import com.Aerofisc.entity.Category;
-import com.Aerofisc.exception.ResourceNotFoundException;
-import com.Aerofisc.repository.BudgetRepository;
-import com.Aerofisc.repository.CategoryRepository;
-import com.Aerofisc.repository.TransactionRepository;
+import com.aerofisc.dto.BudgetDto;
+import com.aerofisc.entity.Budget;
+import com.aerofisc.entity.Category;
+import com.aerofisc.exception.ResourceNotFoundException;
+import com.aerofisc.repository.BudgetRepository;
+import com.aerofisc.repository.CategoryRepository;
+import com.aerofisc.repository.TransactionRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -135,19 +135,19 @@ public class BudgetService {
     }
 
     @Transactional
-    public BudgetDto addContribution(Long id, com.Aerofisc.dto.ContributionRequest request, Long userId) {
+    public BudgetDto addContribution(Long id, com.aerofisc.dto.ContributionRequest request, Long userId) {
         Budget budget = budgetRepository.findByIdAndUserId(id, userId)
                 .orElseThrow(() -> new ResourceNotFoundException("Budget not found"));
 
         // Create expense transaction for the contribution
-        com.Aerofisc.dto.TransactionDto transactionDto = new com.Aerofisc.dto.TransactionDto();
+        com.aerofisc.dto.TransactionDto transactionDto = new com.aerofisc.dto.TransactionDto();
         transactionDto.setAmount(request.getAmount());
         transactionDto.setCategoryId(budget.getCategoryId());
         transactionDto
                 .setDescription(request.getDescription() != null ? request.getDescription() : "Budget Contribution");
         transactionDto.setTransactionDate(
                 request.getTransactionDate() != null ? request.getTransactionDate() : LocalDate.now());
-        transactionDto.setType(com.Aerofisc.entity.Transaction.TransactionType.EXPENSE);
+        transactionDto.setType(com.aerofisc.entity.Transaction.TransactionType.EXPENSE);
 
         // We need to use a circular dependency safe way or just save it directly if
         // service is not available
@@ -162,9 +162,9 @@ public class BudgetService {
         // in transactions".
         // So we should create a transaction.
 
-        com.Aerofisc.entity.Transaction transaction = new com.Aerofisc.entity.Transaction();
+        com.aerofisc.entity.Transaction transaction = new com.aerofisc.entity.Transaction();
         transaction.setUserId(userId);
-        transaction.setType(com.Aerofisc.entity.Transaction.TransactionType.EXPENSE);
+        transaction.setType(com.aerofisc.entity.Transaction.TransactionType.EXPENSE);
         transaction.setAmount(request.getAmount());
         transaction.setCategoryId(budget.getCategoryId());
         transaction.setDescription(request.getDescription() != null ? request.getDescription() : "Budget Contribution");
@@ -249,4 +249,5 @@ public class BudgetService {
         return dto;
     }
 }
+
 

@@ -1,10 +1,10 @@
 /*
- * © 2026 VenkataSatyanarayana Duba
+ * Â© 2026 VenkataSatyanarayana Duba
  * aerofisc - Proprietary Software
  * Unauthorized copying or distribution prohibited.
 */
 
-package com.Aerofisc.exception;
+package com.aerofisc.exception;
 
 import java.time.LocalDateTime;
 
@@ -55,4 +55,5 @@ public class ErrorResponse {
         this.message = message;
     }
 }
+
 

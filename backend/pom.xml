@@ -12,7 +12,7 @@
         <relativePath/>
     </parent>
     
-    <groupId>com.Aerofisc</groupId>
+    <groupId>com.aerofisc</groupId>
     <artifactId>Aerofisc-backend</artifactId>
     <version>1.0.0</version>
     <name>Aerofisc Backend</name>
@@ -298,4 +298,5 @@
         </plugins>
     </build>
 </project>
+
 

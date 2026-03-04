@@ -1,15 +1,15 @@
 /*
- * © 2026 VenkataSatyanarayana Duba
+ * Â© 2026 VenkataSatyanarayana Duba
  * aerofisc - Proprietary Software
  * Unauthorized copying or distribution prohibited.
 */
 
-package com.Aerofisc.controller;
+package com.aerofisc.controller;
 
-import com.Aerofisc.dto.AuthResponse;
-import com.Aerofisc.dto.RegisterRequest;
-import com.Aerofisc.dto.TransactionDto;
-import com.Aerofisc.entity.Transaction;
+import com.aerofisc.dto.AuthResponse;
+import com.aerofisc.dto.RegisterRequest;
+import com.aerofisc.dto.TransactionDto;
+import com.aerofisc.entity.Transaction;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -105,4 +105,5 @@ public class TransactionControllerIntegrationTest {
                 .andExpect(jsonPath("$.content[0].description").value("Groceries"));
     }
 }
+
 

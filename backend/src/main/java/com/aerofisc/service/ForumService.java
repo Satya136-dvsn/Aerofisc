@@ -1,19 +1,19 @@
 /*
- * © 2026 VenkataSatyanarayana Duba
+ * Â© 2026 VenkataSatyanarayana Duba
  * aerofisc - Proprietary Software
  * Unauthorized copying or distribution prohibited.
 */
 
-package com.Aerofisc.service;
+package com.aerofisc.service;
 
-import com.Aerofisc.dto.CommentDto;
-import com.Aerofisc.dto.PostDto;
-import com.Aerofisc.entity.Comment;
-import com.Aerofisc.entity.Like;
-import com.Aerofisc.entity.Post;
-import com.Aerofisc.repository.CommentRepository;
-import com.Aerofisc.repository.LikeRepository;
-import com.Aerofisc.repository.PostRepository;
+import com.aerofisc.dto.CommentDto;
+import com.aerofisc.dto.PostDto;
+import com.aerofisc.entity.Comment;
+import com.aerofisc.entity.Like;
+import com.aerofisc.entity.Post;
+import com.aerofisc.repository.CommentRepository;
+import com.aerofisc.repository.LikeRepository;
+import com.aerofisc.repository.PostRepository;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -143,4 +143,5 @@ public class ForumService {
                 .build();
     }
 }
+
 

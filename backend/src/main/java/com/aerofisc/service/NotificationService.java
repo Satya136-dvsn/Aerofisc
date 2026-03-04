@@ -1,13 +1,13 @@
 /*
- * © 2026 VenkataSatyanarayana Duba
+ * Â© 2026 VenkataSatyanarayana Duba
  * aerofisc - Proprietary Software
  * Unauthorized copying or distribution prohibited.
 */
 
-package com.Aerofisc.service;
+package com.aerofisc.service;
 
-import com.Aerofisc.entity.Notification;
-import com.Aerofisc.repository.NotificationRepository;
+import com.aerofisc.entity.Notification;
+import com.aerofisc.repository.NotificationRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -74,4 +74,5 @@ public class NotificationService {
         notificationRepository.delete(notification);
     }
 }
+
 

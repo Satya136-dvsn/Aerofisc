@@ -1,15 +1,15 @@
 /*
- * © 2026 VenkataSatyanarayana Duba
+ * Â© 2026 VenkataSatyanarayana Duba
  * aerofisc - Proprietary Software
  * Unauthorized copying or distribution prohibited.
 */
 
-package com.Aerofisc.controller;
+package com.aerofisc.controller;
 
-import com.Aerofisc.dto.ContributionRequest;
-import com.Aerofisc.dto.SavingsGoalDto;
-import com.Aerofisc.security.UserPrincipal;
-import com.Aerofisc.service.SavingsGoalService;
+import com.aerofisc.dto.ContributionRequest;
+import com.aerofisc.dto.SavingsGoalDto;
+import com.aerofisc.security.UserPrincipal;
+import com.aerofisc.service.SavingsGoalService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -88,4 +88,5 @@ public class SavingsGoalController {
         return ResponseEntity.noContent().build();
     }
 }
+
 

@@ -1,14 +1,14 @@
 /*
- * © 2026 VenkataSatyanarayana Duba
+ * Â© 2026 VenkataSatyanarayana Duba
  * aerofisc - Proprietary Software
  * Unauthorized copying or distribution prohibited.
 */
 
-package com.Aerofisc.aspect;
+package com.aerofisc.aspect;
 
-import com.Aerofisc.annotation.Auditable;
-import com.Aerofisc.security.UserPrincipal;
-import com.Aerofisc.service.AuditLogService;
+import com.aerofisc.annotation.Auditable;
+import com.aerofisc.security.UserPrincipal;
+import com.aerofisc.service.AuditLogService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
@@ -32,7 +32,7 @@ public class AuditAspect {
         this.auditLogService = auditLogService;
     }
 
-    @AfterReturning(pointcut = "@annotation(com.Aerofisc.annotation.Auditable)")
+    @AfterReturning(pointcut = "@annotation(com.aerofisc.annotation.Auditable)")
     public void logAudit(JoinPoint joinPoint) {
         try {
             MethodSignature signature = (MethodSignature) joinPoint.getSignature();
@@ -70,4 +70,5 @@ public class AuditAspect {
         }
     }
 }
+
 

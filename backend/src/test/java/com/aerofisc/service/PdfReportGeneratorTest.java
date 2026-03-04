@@ -1,18 +1,18 @@
 /*
- * © 2026 VenkataSatyanarayana Duba
+ * Â© 2026 VenkataSatyanarayana Duba
  * aerofisc - Proprietary Software
  * Unauthorized copying or distribution prohibited.
 */
 
-package com.Aerofisc.service;
+package com.aerofisc.service;
 
-import com.Aerofisc.dto.CategoryBreakdownDto;
-import com.Aerofisc.dto.MonthlyTrendDto;
-import com.Aerofisc.dto.PredictionDto;
-import com.Aerofisc.entity.Budget;
-import com.Aerofisc.entity.SavingsGoal;
-import com.Aerofisc.entity.Transaction;
-import com.Aerofisc.repository.CategoryRepository;
+import com.aerofisc.dto.CategoryBreakdownDto;
+import com.aerofisc.dto.MonthlyTrendDto;
+import com.aerofisc.dto.PredictionDto;
+import com.aerofisc.entity.Budget;
+import com.aerofisc.entity.SavingsGoal;
+import com.aerofisc.entity.Transaction;
+import com.aerofisc.repository.CategoryRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -132,4 +132,5 @@ public class PdfReportGeneratorTest {
         assertTrue(pdfBytes.length > 0);
     }
 }
+
 

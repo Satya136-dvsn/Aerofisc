@@ -1,18 +1,18 @@
 /*
- * © 2026 VenkataSatyanarayana Duba
+ * Â© 2026 VenkataSatyanarayana Duba
  * aerofisc - Proprietary Software
  * Unauthorized copying or distribution prohibited.
 */
 
-package com.Aerofisc.controller;
+package com.aerofisc.controller;
 
-import com.Aerofisc.entity.BankAccount;
-import com.Aerofisc.service.BankingService;
-import com.Aerofisc.service.UserService;
+import com.aerofisc.entity.BankAccount;
+import com.aerofisc.service.BankingService;
+import com.aerofisc.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import com.Aerofisc.security.UserPrincipal;
+import com.aerofisc.security.UserPrincipal;
 
 import java.util.List;
 import java.util.Map;
@@ -57,4 +57,5 @@ public class BankingController {
         return ResponseEntity.ok().build();
     }
 }
+
 

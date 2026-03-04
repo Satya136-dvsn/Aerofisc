@@ -1,14 +1,14 @@
 /*
- * © 2026 VenkataSatyanarayana Duba
+ * Â© 2026 VenkataSatyanarayana Duba
  * aerofisc - Proprietary Software
  * Unauthorized copying or distribution prohibited.
 */
 
-package com.Aerofisc.controller;
+package com.aerofisc.controller;
 
-import com.Aerofisc.dto.ProfileDto;
-import com.Aerofisc.security.UserPrincipal;
-import com.Aerofisc.service.ProfileService;
+import com.aerofisc.dto.ProfileDto;
+import com.aerofisc.security.UserPrincipal;
+import com.aerofisc.service.ProfileService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -63,4 +63,5 @@ public class ProfileController {
         return ResponseEntity.ok("Profile endpoint is working!");
     }
 }
+
 

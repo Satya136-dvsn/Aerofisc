@@ -1,13 +1,13 @@
 /*
- * © 2026 VenkataSatyanarayana Duba
+ * Â© 2026 VenkataSatyanarayana Duba
  * aerofisc - Proprietary Software
  * Unauthorized copying or distribution prohibited.
 */
 
-package com.Aerofisc.service;
+package com.aerofisc.service;
 
-import com.Aerofisc.entity.AuditLog;
-import com.Aerofisc.repository.AuditLogRepository;
+import com.aerofisc.entity.AuditLog;
+import com.aerofisc.repository.AuditLogRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,4 +45,5 @@ public class AuditLogService {
         return auditLogRepository.findAll();
     }
 }
+
 

@@ -1,19 +1,19 @@
 /*
- * © 2026 VenkataSatyanarayana Duba
+ * Â© 2026 VenkataSatyanarayana Duba
  * aerofisc - Proprietary Software
  * Unauthorized copying or distribution prohibited.
 */
 
-package com.Aerofisc.service;
+package com.aerofisc.service;
 
-import com.Aerofisc.dto.RecurringTransactionDto;
-import com.Aerofisc.entity.Category;
-import com.Aerofisc.entity.RecurringTransaction;
-import com.Aerofisc.entity.Transaction;
-import com.Aerofisc.exception.ResourceNotFoundException;
-import com.Aerofisc.repository.CategoryRepository;
-import com.Aerofisc.repository.RecurringTransactionRepository;
-import com.Aerofisc.repository.TransactionRepository;
+import com.aerofisc.dto.RecurringTransactionDto;
+import com.aerofisc.entity.Category;
+import com.aerofisc.entity.RecurringTransaction;
+import com.aerofisc.entity.Transaction;
+import com.aerofisc.exception.ResourceNotFoundException;
+import com.aerofisc.repository.CategoryRepository;
+import com.aerofisc.repository.RecurringTransactionRepository;
+import com.aerofisc.repository.TransactionRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
@@ -228,10 +228,10 @@ public class RecurringTransactionService {
             log.info("Immediate processing for recurring transaction {}", rt.getId());
             try {
                 // Create Transaction DTO
-                com.Aerofisc.dto.TransactionDto transactionDto = new com.Aerofisc.dto.TransactionDto();
+                com.aerofisc.dto.TransactionDto transactionDto = new com.aerofisc.dto.TransactionDto();
                 transactionDto.setType(rt.getType() == RecurringTransaction.TransactionType.INCOME
-                        ? com.Aerofisc.entity.Transaction.TransactionType.INCOME
-                        : com.Aerofisc.entity.Transaction.TransactionType.EXPENSE);
+                        ? com.aerofisc.entity.Transaction.TransactionType.INCOME
+                        : com.aerofisc.entity.Transaction.TransactionType.EXPENSE);
                 transactionDto.setAmount(rt.getAmount());
                 transactionDto.setCategoryId(rt.getCategoryId());
                 transactionDto.setDescription(rt.getDescription() != null
@@ -276,4 +276,5 @@ public class RecurringTransactionService {
         return dto;
     }
 }
+
 

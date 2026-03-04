@@ -1,13 +1,13 @@
 /*
- * © 2026 VenkataSatyanarayana Duba
+ * Â© 2026 VenkataSatyanarayana Duba
  * aerofisc - Proprietary Software
  * Unauthorized copying or distribution prohibited.
 */
 
-package com.Aerofisc.service;
+package com.aerofisc.service;
 
-import com.Aerofisc.entity.BankAccount;
-import com.Aerofisc.repository.BankAccountRepository;
+import com.aerofisc.entity.BankAccount;
+import com.aerofisc.repository.BankAccountRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -78,4 +78,5 @@ public class BankingService {
         bankAccountRepository.save(account);
     }
 }
+
 

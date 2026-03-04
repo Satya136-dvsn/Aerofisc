@@ -1,14 +1,14 @@
 /*
- * © 2026 VenkataSatyanarayana Duba
+ * Â© 2026 VenkataSatyanarayana Duba
  * aerofisc - Proprietary Software
  * Unauthorized copying or distribution prohibited.
 */
 
-package com.Aerofisc.controller;
+package com.aerofisc.controller;
 
-import com.Aerofisc.dto.BudgetDto;
-import com.Aerofisc.security.UserPrincipal;
-import com.Aerofisc.service.BudgetService;
+import com.aerofisc.dto.BudgetDto;
+import com.aerofisc.security.UserPrincipal;
+import com.aerofisc.service.BudgetService;
 import jakarta.validation.Valid;
 
 import org.springframework.http.HttpStatus;
@@ -65,7 +65,7 @@ public class BudgetController {
     @PostMapping("/{id}/contribute")
     public ResponseEntity<BudgetDto> addContribution(
             @PathVariable Long id,
-            @Valid @RequestBody com.Aerofisc.dto.ContributionRequest request,
+            @Valid @RequestBody com.aerofisc.dto.ContributionRequest request,
             @AuthenticationPrincipal UserPrincipal userPrincipal) {
         BudgetDto updated = budgetService.addContribution(id, request, userPrincipal.getId());
         return ResponseEntity.ok(updated);
@@ -92,4 +92,5 @@ public class BudgetController {
         return ResponseEntity.ok(alerts);
     }
 }
+
 

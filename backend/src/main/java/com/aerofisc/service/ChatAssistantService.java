@@ -1,16 +1,16 @@
 /*
- * © 2026 VenkataSatyanarayana Duba
+ * Â© 2026 VenkataSatyanarayana Duba
  * aerofisc - Proprietary Software
  * Unauthorized copying or distribution prohibited.
 */
 
-package com.Aerofisc.service;
+package com.aerofisc.service;
 
-import com.Aerofisc.dto.ChatResponseDto;
-import com.Aerofisc.entity.Transaction;
-import com.Aerofisc.entity.UserProfile;
-import com.Aerofisc.repository.TransactionRepository;
-import com.Aerofisc.repository.UserProfileRepository;
+import com.aerofisc.dto.ChatResponseDto;
+import com.aerofisc.entity.Transaction;
+import com.aerofisc.entity.UserProfile;
+import com.aerofisc.repository.TransactionRepository;
+import com.aerofisc.repository.UserProfileRepository;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -99,4 +99,5 @@ public class ChatAssistantService {
         return context.toString();
     }
 }
+
 

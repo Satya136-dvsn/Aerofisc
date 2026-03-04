@@ -1,7 +1,7 @@
-package com.Aerofisc.service;
+package com.aerofisc.service;
 
-import com.Aerofisc.entity.User;
-import com.Aerofisc.repository.UserRepository;
+import com.aerofisc.entity.User;
+import com.aerofisc.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -119,3 +119,4 @@ public class MegaServiceCoverageTest {
 
     }
 }
+

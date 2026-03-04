@@ -1,12 +1,12 @@
 /*
- * © 2026 VenkataSatyanarayana Duba
+ * Â© 2026 VenkataSatyanarayana Duba
  * aerofisc - Proprietary Software
  * Unauthorized copying or distribution prohibited.
 */
 
-package com.Aerofisc.service;
+package com.aerofisc.service;
 
-import com.Aerofisc.dto.ScenarioDto;
+import com.aerofisc.dto.ScenarioDto;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -58,4 +58,5 @@ public class ScenarioService {
         return recommendations;
     }
 }
+
 

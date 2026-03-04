@@ -1,12 +1,12 @@
 /*
- * © 2026 VenkataSatyanarayana Duba
+ * Â© 2026 VenkataSatyanarayana Duba
  * aerofisc - Proprietary Software
  * Unauthorized copying or distribution prohibited.
 */
 
-package com.Aerofisc.repository;
+package com.aerofisc.repository;
 
-import com.Aerofisc.entity.Investment;
+import com.aerofisc.entity.Investment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -24,4 +24,5 @@ public interface InvestmentRepository extends JpaRepository<Investment, Long> {
 
     Optional<Investment> findByIdAndUserId(Long id, Long userId);
 }
+
 

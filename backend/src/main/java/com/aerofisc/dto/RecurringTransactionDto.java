@@ -1,12 +1,12 @@
 /*
- * © 2026 VenkataSatyanarayana Duba
+ * Â© 2026 VenkataSatyanarayana Duba
  * aerofisc - Proprietary Software
  * Unauthorized copying or distribution prohibited.
 */
 
-package com.Aerofisc.dto;
+package com.aerofisc.dto;
 
-import com.Aerofisc.entity.RecurringTransaction;
+import com.aerofisc.entity.RecurringTransaction;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -84,4 +84,5 @@ public class RecurringTransactionDto {
                 .build();
     }
 }
+
 

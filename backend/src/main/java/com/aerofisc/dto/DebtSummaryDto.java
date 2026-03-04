@@ -1,10 +1,10 @@
 /*
- * © 2026 VenkataSatyanarayana Duba
+ * Â© 2026 VenkataSatyanarayana Duba
  * aerofisc - Proprietary Software
  * Unauthorized copying or distribution prohibited.
 */
 
-package com.Aerofisc.dto;
+package com.aerofisc.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,4 +28,5 @@ public class DebtSummaryDto {
     private BigDecimal totalInterestProjected;
     private List<DebtDto> debts;
 }
+
 

@@ -1,10 +1,10 @@
 /*
- * © 2026 VenkataSatyanarayana Duba
+ * Â© 2026 VenkataSatyanarayana Duba
  * aerofisc - Proprietary Software
  * Unauthorized copying or distribution prohibited.
 */
 
-package com.Aerofisc.config;
+package com.aerofisc.config;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,4 +62,5 @@ public class CategoryTypesFixer {
                 }
         }
 }
+
 

@@ -1,14 +1,14 @@
 /*
- * © 2026 VenkataSatyanarayana Duba
+ * Â© 2026 VenkataSatyanarayana Duba
  * aerofisc - Proprietary Software
  * Unauthorized copying or distribution prohibited.
 */
 
-package com.Aerofisc.controller;
+package com.aerofisc.controller;
 
-import com.Aerofisc.entity.AuditLog;
-import com.Aerofisc.security.UserPrincipal;
-import com.Aerofisc.service.AuditLogService;
+import com.aerofisc.entity.AuditLog;
+import com.aerofisc.security.UserPrincipal;
+import com.aerofisc.service.AuditLogService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,4 +38,5 @@ public class AuditController {
         return ResponseEntity.ok(auditLogService.getAllLogs());
     }
 }
+
 

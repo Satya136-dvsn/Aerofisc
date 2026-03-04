@@ -1,17 +1,17 @@
 /*
- * © 2026 VenkataSatyanarayana Duba
+ * Â© 2026 VenkataSatyanarayana Duba
  * aerofisc - Proprietary Software
  * Unauthorized copying or distribution prohibited.
 */
 
-package com.Aerofisc.controller;
+package com.aerofisc.controller;
 
-import com.Aerofisc.dto.MfaSetupResponse;
-import com.Aerofisc.dto.MfaVerificationRequest;
-import com.Aerofisc.entity.User;
-import com.Aerofisc.repository.UserRepository;
-import com.Aerofisc.security.UserPrincipal;
-import com.Aerofisc.service.MfaService;
+import com.aerofisc.dto.MfaSetupResponse;
+import com.aerofisc.dto.MfaVerificationRequest;
+import com.aerofisc.entity.User;
+import com.aerofisc.repository.UserRepository;
+import com.aerofisc.security.UserPrincipal;
+import com.aerofisc.service.MfaService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -71,4 +71,5 @@ public class MfaController {
         return ResponseEntity.ok().build();
     }
 }
+
 

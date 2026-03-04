@@ -1,17 +1,17 @@
 /*
- * © 2026 VenkataSatyanarayana Duba
+ * Â© 2026 VenkataSatyanarayana Duba
  * aerofisc - Proprietary Software
  * Unauthorized copying or distribution prohibited.
 */
 
-package com.Aerofisc.service;
+package com.aerofisc.service;
 
-import com.Aerofisc.dto.ProfileDto;
-import com.Aerofisc.entity.User;
-import com.Aerofisc.entity.UserProfile;
-import com.Aerofisc.repository.UserProfileRepository;
-import com.Aerofisc.repository.UserRepository;
-import com.Aerofisc.annotation.Auditable;
+import com.aerofisc.dto.ProfileDto;
+import com.aerofisc.entity.User;
+import com.aerofisc.entity.UserProfile;
+import com.aerofisc.repository.UserProfileRepository;
+import com.aerofisc.repository.UserRepository;
+import com.aerofisc.annotation.Auditable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -207,4 +207,5 @@ public class ProfileService {
         return dto;
     }
 }
+
 

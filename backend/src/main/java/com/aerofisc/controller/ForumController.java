@@ -1,15 +1,15 @@
 /*
- * © 2026 VenkataSatyanarayana Duba
+ * Â© 2026 VenkataSatyanarayana Duba
  * aerofisc - Proprietary Software
  * Unauthorized copying or distribution prohibited.
 */
 
-package com.Aerofisc.controller;
+package com.aerofisc.controller;
 
-import com.Aerofisc.dto.CommentDto;
-import com.Aerofisc.dto.PostDto;
-import com.Aerofisc.security.UserPrincipal;
-import com.Aerofisc.service.ForumService;
+import com.aerofisc.dto.CommentDto;
+import com.aerofisc.dto.PostDto;
+import com.aerofisc.security.UserPrincipal;
+import com.aerofisc.service.ForumService;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -92,4 +92,5 @@ public class ForumController {
         return ResponseEntity.ok(comments);
     }
 }
+
 

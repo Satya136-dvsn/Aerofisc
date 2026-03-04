@@ -1,14 +1,14 @@
 /*
- * © 2026 VenkataSatyanarayana Duba
+ * Â© 2026 VenkataSatyanarayana Duba
  * aerofisc - Proprietary Software
  * Unauthorized copying or distribution prohibited.
 */
 
-package com.Aerofisc.controller;
+package com.aerofisc.controller;
 
-import com.Aerofisc.entity.Category;
-import com.Aerofisc.repository.CategoryRepository;
-import com.Aerofisc.service.GeminiService;
+import com.aerofisc.entity.Category;
+import com.aerofisc.repository.CategoryRepository;
+import com.aerofisc.service.GeminiService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -51,4 +51,5 @@ public class TestAIController {
         return "Deleted " + badCategories.size() + " bad categories.";
     }
 }
+
 

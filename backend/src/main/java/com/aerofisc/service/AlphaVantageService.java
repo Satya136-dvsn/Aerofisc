@@ -1,12 +1,12 @@
 /*
- * © 2026 VenkataSatyanarayana Duba
+ * Â© 2026 VenkataSatyanarayana Duba
  * aerofisc - Proprietary Software
  * Unauthorized copying or distribution prohibited.
 */
 
-package com.Aerofisc.service;
+package com.aerofisc.service;
 
-import com.Aerofisc.config.ExternalApiConfig;
+import com.aerofisc.config.ExternalApiConfig;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
@@ -115,4 +115,5 @@ public class AlphaVantageService {
         return BigDecimal.ZERO;
     }
 }
+
 

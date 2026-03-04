@@ -1,16 +1,16 @@
 /*
- * © 2026 VenkataSatyanarayana Duba
+ * Â© 2026 VenkataSatyanarayana Duba
  * aerofisc - Proprietary Software
  * Unauthorized copying or distribution prohibited.
 */
 
-package com.Aerofisc.service;
+package com.aerofisc.service;
 
-import com.Aerofisc.dto.ContributionRequest;
-import com.Aerofisc.dto.SavingsGoalDto;
-import com.Aerofisc.entity.SavingsGoal;
-import com.Aerofisc.exception.ResourceNotFoundException;
-import com.Aerofisc.repository.SavingsGoalRepository;
+import com.aerofisc.dto.ContributionRequest;
+import com.aerofisc.dto.SavingsGoalDto;
+import com.aerofisc.entity.SavingsGoal;
+import com.aerofisc.exception.ResourceNotFoundException;
+import com.aerofisc.repository.SavingsGoalRepository;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,10 +26,10 @@ import java.util.stream.Collectors;
 public class SavingsGoalService {
 
     private final SavingsGoalRepository savingsGoalRepository;
-    private final com.Aerofisc.repository.TransactionRepository transactionRepository;
+    private final com.aerofisc.repository.TransactionRepository transactionRepository;
 
     public SavingsGoalService(SavingsGoalRepository savingsGoalRepository,
-            com.Aerofisc.repository.TransactionRepository transactionRepository) {
+            com.aerofisc.repository.TransactionRepository transactionRepository) {
         this.savingsGoalRepository = savingsGoalRepository;
         this.transactionRepository = transactionRepository;
     }
@@ -118,9 +118,9 @@ public class SavingsGoalService {
         SavingsGoal updated = savingsGoalRepository.save(goal);
 
         // Create transaction for the contribution
-        com.Aerofisc.entity.Transaction transaction = new com.Aerofisc.entity.Transaction();
+        com.aerofisc.entity.Transaction transaction = new com.aerofisc.entity.Transaction();
         transaction.setUserId(userId);
-        transaction.setType(com.Aerofisc.entity.Transaction.TransactionType.EXPENSE);
+        transaction.setType(com.aerofisc.entity.Transaction.TransactionType.EXPENSE);
         transaction.setAmount(request.getAmount());
         transaction.setCategoryId(null);
         transaction.setDescription("Savings Goal Contribution: " + goal.getName());
@@ -153,9 +153,9 @@ public class SavingsGoalService {
         SavingsGoal updated = savingsGoalRepository.save(goal);
 
         // Create transaction for the withdrawal (INCOME as money comes back to user)
-        com.Aerofisc.entity.Transaction transaction = new com.Aerofisc.entity.Transaction();
+        com.aerofisc.entity.Transaction transaction = new com.aerofisc.entity.Transaction();
         transaction.setUserId(userId);
-        transaction.setType(com.Aerofisc.entity.Transaction.TransactionType.INCOME);
+        transaction.setType(com.aerofisc.entity.Transaction.TransactionType.INCOME);
         transaction.setAmount(request.getAmount());
         transaction.setCategoryId(null);
         transaction.setDescription("Withdrawal from Savings Goal: " + goal.getName());
@@ -176,14 +176,14 @@ public class SavingsGoalService {
         // Find all transactions related to this goal and convert them to INCOME
         // This returns the money to the user's available balance
         String goalContributionPattern = "Savings Goal Contribution: " + goal.getName();
-        java.util.List<com.Aerofisc.entity.Transaction> relatedTransactions = transactionRepository
+        java.util.List<com.aerofisc.entity.Transaction> relatedTransactions = transactionRepository
                 .findByUserIdOrderByCreatedAtDesc(userId).stream()
                 .filter(t -> t.getDescription() != null && t.getDescription().equals(goalContributionPattern))
                 .collect(java.util.stream.Collectors.toList());
 
-        for (com.Aerofisc.entity.Transaction transaction : relatedTransactions) {
+        for (com.aerofisc.entity.Transaction transaction : relatedTransactions) {
             // Convert EXPENSE to INCOME (money returned)
-            transaction.setType(com.Aerofisc.entity.Transaction.TransactionType.INCOME);
+            transaction.setType(com.aerofisc.entity.Transaction.TransactionType.INCOME);
             transaction.setDescription("Savings Goal Deleted: " + goal.getName() + " (Returned)");
             transactionRepository.save(transaction);
         }
@@ -250,4 +250,5 @@ public class SavingsGoalService {
         return dto;
     }
 }
+
 

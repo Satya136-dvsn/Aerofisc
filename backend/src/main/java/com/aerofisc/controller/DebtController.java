@@ -1,16 +1,16 @@
 /*
- * © 2026 VenkataSatyanarayana Duba
+ * Â© 2026 VenkataSatyanarayana Duba
  * aerofisc - Proprietary Software
  * Unauthorized copying or distribution prohibited.
 */
 
-package com.Aerofisc.controller;
+package com.aerofisc.controller;
 
-import com.Aerofisc.dto.DebtDto;
-import com.Aerofisc.dto.DebtPayoffPlanDto;
-import com.Aerofisc.dto.DebtSummaryDto;
-import com.Aerofisc.security.UserPrincipal;
-import com.Aerofisc.service.DebtService;
+import com.aerofisc.dto.DebtDto;
+import com.aerofisc.dto.DebtPayoffPlanDto;
+import com.aerofisc.dto.DebtSummaryDto;
+import com.aerofisc.security.UserPrincipal;
+import com.aerofisc.service.DebtService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -89,4 +89,5 @@ public class DebtController {
         return ResponseEntity.ok(plan);
     }
 }
+
 

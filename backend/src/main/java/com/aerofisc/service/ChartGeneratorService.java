@@ -1,13 +1,13 @@
 /*
- * © 2026 VenkataSatyanarayana Duba
+ * Â© 2026 VenkataSatyanarayana Duba
  * aerofisc - Proprietary Software
  * Unauthorized copying or distribution prohibited.
 */
 
-package com.Aerofisc.service;
+package com.aerofisc.service;
 
-import com.Aerofisc.dto.CategoryBreakdownDto;
-import com.Aerofisc.dto.MonthlyTrendDto;
+import com.aerofisc.dto.CategoryBreakdownDto;
+import com.aerofisc.dto.MonthlyTrendDto;
 import org.knowm.xchart.*;
 import org.knowm.xchart.style.PieStyler;
 import org.knowm.xchart.style.Styler;
@@ -58,7 +58,7 @@ public class ChartGeneratorService {
                 .height(height)
                 .title("Income vs Expenses Trend")
                 .xAxisTitle("Month")
-                .yAxisTitle("Amount (₹)")
+                .yAxisTitle("Amount (â‚¹)")
                 .build();
 
         // Customize style for dark theme
@@ -150,4 +150,5 @@ public class ChartGeneratorService {
         return xValues;
     }
 }
+
 

@@ -1,17 +1,17 @@
 /*
- * © 2026 VenkataSatyanarayana Duba
+ * Â© 2026 VenkataSatyanarayana Duba
  * aerofisc - Proprietary Software
  * Unauthorized copying or distribution prohibited.
 */
 
-package com.Aerofisc.service;
+package com.aerofisc.service;
 
-import com.Aerofisc.entity.Budget;
-import com.Aerofisc.entity.SavingsGoal;
-import com.Aerofisc.entity.Transaction;
-import com.Aerofisc.repository.BudgetRepository;
-import com.Aerofisc.repository.SavingsGoalRepository;
-import com.Aerofisc.repository.TransactionRepository;
+import com.aerofisc.entity.Budget;
+import com.aerofisc.entity.SavingsGoal;
+import com.aerofisc.entity.Transaction;
+import com.aerofisc.repository.BudgetRepository;
+import com.aerofisc.repository.SavingsGoalRepository;
+import com.aerofisc.repository.TransactionRepository;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -73,7 +73,7 @@ public class ExportService {
                 endDate);
 
         // Fetch AI predictions
-        List<com.Aerofisc.dto.PredictionDto> predictions = predictionService.predictNextMonthExpenses(userId);
+        List<com.aerofisc.dto.PredictionDto> predictions = predictionService.predictNextMonthExpenses(userId);
 
         return pdfReportGenerator.generateAnalyticsPdf(userId, transactions, timeRange, predictions);
     }
@@ -177,4 +177,5 @@ public class ExportService {
         return endDate.minusMonths(6); // Default
     }
 }
+
 

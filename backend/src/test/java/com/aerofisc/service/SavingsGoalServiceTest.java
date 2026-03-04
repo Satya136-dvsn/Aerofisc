@@ -1,18 +1,18 @@
 /*
- * © 2026 VenkataSatyanarayana Duba
+ * Â© 2026 VenkataSatyanarayana Duba
  * aerofisc - Proprietary Software
  * Unauthorized copying or distribution prohibited.
 */
 
-package com.Aerofisc.service;
+package com.aerofisc.service;
 
-import com.Aerofisc.dto.ContributionRequest;
-import com.Aerofisc.dto.SavingsGoalDto;
-import com.Aerofisc.entity.SavingsGoal;
-import com.Aerofisc.entity.Transaction;
-import com.Aerofisc.exception.ResourceNotFoundException;
-import com.Aerofisc.repository.SavingsGoalRepository;
-import com.Aerofisc.repository.TransactionRepository;
+import com.aerofisc.dto.ContributionRequest;
+import com.aerofisc.dto.SavingsGoalDto;
+import com.aerofisc.entity.SavingsGoal;
+import com.aerofisc.entity.Transaction;
+import com.aerofisc.exception.ResourceNotFoundException;
+import com.aerofisc.repository.SavingsGoalRepository;
+import com.aerofisc.repository.TransactionRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -124,4 +124,5 @@ class SavingsGoalServiceTest {
         verify(savingsGoalRepository).delete(goal);
     }
 }
+
 

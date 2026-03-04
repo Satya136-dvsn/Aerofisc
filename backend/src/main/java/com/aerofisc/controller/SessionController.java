@@ -1,15 +1,15 @@
 /*
- * © 2026 VenkataSatyanarayana Duba
+ * Â© 2026 VenkataSatyanarayana Duba
  * aerofisc - Proprietary Software
  * Unauthorized copying or distribution prohibited.
 */
 
-package com.Aerofisc.controller;
+package com.aerofisc.controller;
 
-import com.Aerofisc.dto.SessionDto;
-import com.Aerofisc.entity.RefreshToken;
-import com.Aerofisc.security.UserPrincipal;
-import com.Aerofisc.service.RefreshTokenService;
+import com.aerofisc.dto.SessionDto;
+import com.aerofisc.entity.RefreshToken;
+import com.aerofisc.security.UserPrincipal;
+import com.aerofisc.service.RefreshTokenService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -60,4 +60,5 @@ public class SessionController {
         return ResponseEntity.ok().build();
     }
 }
+
 

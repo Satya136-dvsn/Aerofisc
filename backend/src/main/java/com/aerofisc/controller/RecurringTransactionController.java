@@ -1,14 +1,14 @@
 /*
- * © 2026 VenkataSatyanarayana Duba
+ * Â© 2026 VenkataSatyanarayana Duba
  * aerofisc - Proprietary Software
  * Unauthorized copying or distribution prohibited.
 */
 
-package com.Aerofisc.controller;
+package com.aerofisc.controller;
 
-import com.Aerofisc.dto.RecurringTransactionDto;
-import com.Aerofisc.security.UserPrincipal;
-import com.Aerofisc.service.RecurringTransactionService;
+import com.aerofisc.dto.RecurringTransactionDto;
+import com.aerofisc.security.UserPrincipal;
+import com.aerofisc.service.RecurringTransactionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -114,4 +114,5 @@ public class RecurringTransactionController {
                 "count", processed));
     }
 }
+
 

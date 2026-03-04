@@ -1,13 +1,13 @@
 /*
- * © 2026 VenkataSatyanarayana Duba
+ * Â© 2026 VenkataSatyanarayana Duba
  * aerofisc - Proprietary Software
  * Unauthorized copying or distribution prohibited.
 */
 
-package com.Aerofisc.controller;
+package com.aerofisc.controller;
 
-import com.Aerofisc.entity.Category;
-import com.Aerofisc.repository.CategoryRepository;
+import com.aerofisc.entity.Category;
+import com.aerofisc.repository.CategoryRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,4 +42,5 @@ public class CleanupController {
         return ResponseEntity.ok("Successfully deleted " + count + " error categories.");
     }
 }
+
 
