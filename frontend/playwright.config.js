@@ -1,5 +1,9 @@
 import { defineConfig, devices } from '@playwright/test';
 
+const isWin = process.platform === "win32";
+const mvnCmd = isWin ? "mvn.cmd" : "mvn";
+const npmCmd = isWin ? "npm.cmd" : "npm";
+
 export default defineConfig({
     testDir: './e2e',
     fullyParallel: true,
@@ -19,14 +23,16 @@ export default defineConfig({
     ],
     webServer: [
         {
-            command: 'mvn.cmd spring-boot:run -Dspring-boot.run.profiles=dev',
+            command: `${mvnCmd} spring-boot:run "-Dspring-boot.run.profiles=dev"`,
             cwd: '../backend',
             url: 'http://127.0.0.1:8080/api/health',
             timeout: 120 * 1000,
             reuseExistingServer: !process.env.CI,
+            stdout: 'pipe',
+            stderr: 'pipe',
         },
         {
-            command: 'npm.cmd run dev',
+            command: `${npmCmd} run dev`,
             cwd: '.',
             url: 'http://localhost:3000',
             timeout: 120 * 1000,

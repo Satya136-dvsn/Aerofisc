@@ -4,7 +4,7 @@
  * Unauthorized copying or distribution prohibited.
 */
 
-package com.Aerofisc;
+package com.aerofisc;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
