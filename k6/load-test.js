@@ -15,42 +15,65 @@ export const options = {
 
 const BASE_URL = 'http://127.0.0.1:8080/api';
 
-export default function () {
-    // We assume there's an existing user or we hit a public health endpoint for load
-    // Hitting the dashboard summary requires a token, so we'll simulate a login if needed,
-    // or we'll hit an unsecured/fake secured route if k6 doesn't have valid DB credentials
-    const loginPayload = JSON.stringify({
-        email: 'test@example.com',
-        password: 'Password123@'
+// The setup hook runs once before the load test iterations begin.
+// We use this to register a single user and generate a JWT token to share among all VUs.
+export function setup() {
+    const uniqueUser = `loadtest_${Date.now()}@example.com`;
+    const password = 'Password123@';
+    const timestamp = Date.now();
+
+    // 1. Register
+    const registerPayload = JSON.stringify({
+        firstName: 'Load',
+        lastName: 'Tester',
+        username: `tester_${timestamp}`,
+        email: uniqueUser,
+        password: password,
+        role: 'USER',
+        monthlyIncome: 5000,
+        savingsTarget: 1000
     });
 
-    const headers = { 'Content-Type': 'application/json' };
-
-    // 1. Authenticate
-    const loginRes = http.post(`${BASE_URL}/auth/login`, loginPayload, { headers });
-
-    // Check if login is successful (we might get 401 if user isn't seeded, but we still measure API response time)
-    check(loginRes, {
-        'login responded quickly': (r) => r.timings.duration < 1000,
+    http.post(`${BASE_URL}/auth/register`, registerPayload, {
+        headers: { 'Content-Type': 'application/json' }
     });
 
-    // Extract token if successful
+    // 2. Login to acquire a valid JWT token
+    const loginPayload = JSON.stringify({ email: uniqueUser, password: password });
+    const loginRes = http.post(`${BASE_URL}/auth/login`, loginPayload, {
+        headers: { 'Content-Type': 'application/json' }
+    });
+
     let token = '';
-    if (loginRes.status === 200) {
-        try {
-            token = loginRes.json('token');
-        } catch (e) { }
+    try {
+        token = loginRes.json('token');
+    } catch (e) {
+        console.error("Setup login failed to yield JWT token");
     }
 
-    // 2. Fetch Dashboard with or without token (testing rate limits/rejection speeds)
+    // This returned object is passed into the default function as `data`
+    return { token: token };
+}
+
+// Default function runs per Virtual User
+export default function (data) {
+    // If setup failed somehow, we can't test authenticated routes reliably
+    if (!data.token) {
+        sleep(1);
+        return;
+    }
+
     const authHeaders = {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
+        'Authorization': `Bearer ${data.token}`
     };
 
+    // Hit the dashboard summary API which interacts with the DB and services
     const dashRes = http.get(`${BASE_URL}/dashboard/summary`, { headers: authHeaders });
+
     check(dashRes, {
         'dashboard responded quickly': (r) => r.timings.duration < 2000,
+        'dashboard success status': (r) => r.status === 200,
     });
 
     sleep(1); // Think time between iterations

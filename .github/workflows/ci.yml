@@ -94,7 +94,11 @@ jobs:
         run: |
           cd backend
           mvn spring-boot:run -Dspring-boot.run.profiles=dev &
-          sleep 30
+          echo "Waiting for Spring Boot to become available on port 8080..."
+          for i in {1..24}; do
+            curl -s http://127.0.0.1:8080/health && break
+            sleep 5
+          done
         env:
           DEV_MODE: "true"
           USE_REAL_DB: "false"
