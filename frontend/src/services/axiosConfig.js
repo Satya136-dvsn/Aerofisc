@@ -7,12 +7,14 @@
 import axios from 'axios';
 
 // Create axios instance with base URL
+const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api';
+
 const apiClient = axios.create({
-    baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api',
+    baseURL: BASE_URL,
     headers: {
         'Content-Type': 'application/json',
     },
-    timeout: 10000, // 10 seconds
+    timeout: 60000, // 60 seconds — Render free tier cold starts take 30-60s
 });
 
 // Request interceptor - Add JWT token to all requests
@@ -44,7 +46,7 @@ apiClient.interceptors.response.use(
             try {
                 const refreshToken = localStorage.getItem('refreshToken');
                 if (refreshToken) {
-                    const response = await axios.post('http://localhost:8080/api/auth/refresh', {
+                    const response = await axios.post(`${BASE_URL}/auth/refresh`, {
                         refreshToken,
                     });
 
