@@ -55,7 +55,6 @@ public class UserProfile {
     @Column(name = "notification_push", nullable = false)
     private Boolean notificationPush = true;
 
-    @Lob
     @Column(name = "avatar", columnDefinition = "TEXT")
     private String avatar;
 
