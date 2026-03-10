@@ -11,6 +11,7 @@ import { useForm, Controller } from 'react-hook-form'
 import { ProfessionalCard, ProfessionalInput, ProfessionalButton } from '../components/ui'
 import { Person, Email, Lock, Business, AttachMoney, Work, ArrowBack } from '@mui/icons-material'
 import { useAuth } from '../context/AuthContext'
+import SEO from '../components/SEO'
 
 const steps = ['Basic Info', 'Account Setup', 'Financial Profile']
 
@@ -319,8 +320,13 @@ const SignUp = () => {
   }
 
   return (
-    <Container component="main" maxWidth="sm" sx={{ minHeight: '100vh', display: 'flex', alignItems: 'center' }}>
-      <Box sx={{ width: '100%', py: 4 }}>
+    <>
+      <SEO 
+        title="Register" 
+        description="Create your Aerofisc account to start managing your finances and achieving your savings goals."
+      />
+      <Container component="main" maxWidth="sm" sx={{ minHeight: '100vh', display: 'flex', alignItems: 'center' }}>
+        <Box sx={{ width: '100%', py: 4 }}>
         <ProfessionalCard
           title="Create Your Account"
           subheader="Join Aerofisc to manage your finances smarter"
@@ -397,6 +403,7 @@ const SignUp = () => {
         </Box>
       </Box>
     </Container>
+    </>
   )
 }
 

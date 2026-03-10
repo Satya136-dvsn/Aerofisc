@@ -11,6 +11,7 @@ import { useForm } from 'react-hook-form'
 import { ProfessionalCard, ProfessionalInput, ProfessionalButton } from '../components/ui'
 import { Email, Lock, ArrowBack } from '@mui/icons-material'
 import { useAuth } from '../context/AuthContext'
+import SEO from '../components/SEO'
 
 const SignIn = () => {
   const navigate = useNavigate()
@@ -44,8 +45,13 @@ const SignIn = () => {
   }
 
   return (
-    <Container component="main" maxWidth="sm" sx={{ minHeight: '100vh', display: 'flex', alignItems: 'center' }}>
-      <Box sx={{ width: '100%', py: 4 }}>
+    <>
+      <SEO 
+        title="Sign In" 
+        description="Sign in to your Aerofisc account to access your financial dashboard and AI insights."
+      />
+      <Container component="main" maxWidth="sm" sx={{ minHeight: '100vh', display: 'flex', alignItems: 'center' }}>
+        <Box sx={{ width: '100%', py: 4 }}>
         <ProfessionalCard
           title="Welcome Back"
           subheader="Sign in to your Aerofisc account"
@@ -155,6 +161,7 @@ const SignIn = () => {
         </Box>
       </Box>
     </Container>
+    </>
   )
 }
 

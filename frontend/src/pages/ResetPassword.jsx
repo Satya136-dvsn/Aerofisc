@@ -10,6 +10,7 @@ import {
 } from '@mui/material';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import api from '../services/api';
+import SEO from '../components/SEO';
 
 // Helper to get query params
 const useQuery = () => {
@@ -62,6 +63,11 @@ const ResetPassword = () => {
     };
 
     return (
+        <>
+        <SEO 
+            title="Create New Password" 
+            description="Create a new, secure password for your Aerofisc account."
+        />
         <Box sx={{
             display: 'flex',
             flexDirection: 'column',
@@ -132,6 +138,7 @@ const ResetPassword = () => {
                 </Box>
             </Paper>
         </Box>
+        </>
     );
 };
 

@@ -10,6 +10,7 @@ import {
 } from '@mui/material';
 import { Link } from 'react-router-dom';
 import api from '../services/api';
+import SEO from '../components/SEO';
 
 const ForgotPassword = () => {
     const [email, setEmail] = useState('');
@@ -41,6 +42,11 @@ const ForgotPassword = () => {
     };
 
     return (
+        <>
+        <SEO 
+            title="Forgot Password" 
+            description="Reset your Aerofisc account password to regain access to your financial dashboard."
+        />
         <Box sx={{
             display: 'flex',
             flexDirection: 'column',
@@ -119,6 +125,7 @@ const ForgotPassword = () => {
                 </Box>
             </Paper>
         </Box>
+        </>
     );
 };
 
