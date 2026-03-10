@@ -34,6 +34,23 @@
 
 ---
 
+## 📊 Project Status & Supported Features
+
+Aerofisc is currently deployed in a production-ready state. The architecture supports **17 fully functional modules** wired end-to-end to the Spring Boot backend and PostgreSQL database, demonstrating robust enterprise-grade capabilities.
+
+| Feature Area | Status | Description |
+| :--- | :--- | :--- |
+| **Authentication** | 🟢 Live | Secure JWT-based registration, login, and token refresh logic. |
+| **Core Transactions** | 🟢 Live | Dashboard, Transactions, Recurring rules, Custom Categories, Budgets. |
+| **Advanced Planning** | 🟢 Live | Savings Goals, Debt Management, Investments, Retirement, Tax, Scenario Analysis. |
+| **AI Integration** | 🟢 Live | Google Gemini-powered AI Assistant and predictive spending insights. |
+| **Analytics & Reports**| 🟢 Live | Visual charts, flow metrics, and comprehensive PDF/Excel report generation. |
+| **Settings & Auth** | 🟢 Live | Profile updates, settings configurations, and clean session management. |
+| **Banking Integration** | 🟡 Mocked | Interface built; currently uses simulated data (architected for future Plaid integration). |
+| **Bills & Community** | 🟡 Mocked | UI fully built; uses robust mock services awaiting future controller bindings. |
+
+---
+
 ## 🏗 System Architecture
 
 ```mermaid
@@ -182,6 +199,28 @@ The easiest way to run the full stack is via Docker Compose.
 - **Backend**: Run `mvn test` for unit and integration tests (JUnit 5, Mockito).
 - **Frontend**: Run `npm test` for component testing.
 - **CI/CD**: Automated pipelines run on every push to `master`, executing build checks and tests.
+
+---
+
+## 📈 Scaling Strategy
+
+The Aerofisc architecture (Stateless Backend + Edge Frontend) was meticulously selected to handle heavy concurrency out-of-the-box while remaining cost-effective. Should the platform experience viral growth (e.g., 10,000+ simultaneous users), it is designed to scale seamlessly across three axes:
+
+### 1. Database Scaling (The Primary Bottleneck)
+
+- **Aggressive Caching**: Introduce **Redis** (via Spring Cache) to cache expensive, read-heavy endpoints such as the Dashboard analytics, Financial Health scores, and Category aggregations. This drastically reduces the hit rate on the primary database.
+- **Connection Optimization**: We utilize **pgBouncer** for advanced connection pooling to prevent pool exhaustion during massive traffic spikes.
+- **Read Replicas**: Transition Supabase/PostgreSQL to a dedicated instance cluster, routing write operations (`POST`, `PUT`, `DELETE`) to the primary DB, while distributing complex read queries (`GET`) across multiple synchronized read replicas.
+
+### 2. Backend Compute Scaling
+
+- **Horizontal Scaling via Statelessness**: Since the Spring Boot application handles authentication via JWTs (JSON Web Tokens), it stores **zero local session state**. This means we can dynamically spin up 50+ backend instances behind a Load Balancer (e.g., on Render or Kubernetes) without sticky-session issues.
+- **Microservices Decoupling**: Currently acting as a modular monolith, resource-intensive domains—like the **AI Chat/Gemini integration** and the **Scenario Analysis engine**—can be easily sliced out into independent, autoscaling microservices (potentially in Go or Python) to protect core transactional throughput.
+
+### 3. Frontend & Network Delivery
+
+- **Global Edge Network**: The React frontend is deployed via **Vercel**, inherently placing static assets and application bundles on a global Content Delivery Network (CDN) for infinite scalable delivery.
+- **Optimistic UI & Client Caching**: Employ **React Query (TanStack)** for intelligent local data caching and revalidation. This ensures that users navigating between complex views (like Analytics and Budgets) instantly see locally cached data, preventing redundant backend API calls entirely.
 
 ---
 
