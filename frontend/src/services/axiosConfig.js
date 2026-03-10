@@ -77,8 +77,12 @@ apiClient.interceptors.response.use(
             });
         }
 
-        // Handle other errors
-        const errorMessage = error.response?.data?.message || error.message || 'An error occurred';
+        // Handle other errors — sanitize any leaked DB/JDBC text
+        const rawMessage = error.response?.data?.message || error.message || 'An error occurred';
+        const dbErrorPatterns = /prepared statement|JDBC|transaction is aborted|relation.*does not exist|current transaction|SQLSTATE/i;
+        const errorMessage = dbErrorPatterns.test(rawMessage)
+            ? 'A server error occurred. Please try again.'
+            : rawMessage;
         return Promise.reject({
             message: errorMessage,
             status: error.response?.status,

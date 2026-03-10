@@ -6,6 +6,7 @@
 
 package com.aerofisc.exception;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,7 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
+@Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -76,20 +78,20 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(DataAccessException.class)
     public ResponseEntity<ErrorResponse> handleDatabaseException(DataAccessException ex) {
-        // Drill down to the root cause for useful diagnostics
+        // Drill down to the root cause for server-side diagnostics
         Throwable rootCause = ex;
         while (rootCause.getCause() != null) {
             rootCause = rootCause.getCause();
         }
-        String detailedMessage = "Database error: " + rootCause.getMessage();
-        System.err.println("[AEROFISC DB ERROR] " + detailedMessage);
-        ex.printStackTrace();
+        // Full detail in server logs ONLY
+        log.error("[DB ERROR] {}", rootCause.getMessage(), ex);
 
+        // Generic message to client — never leak raw JDBC/SQL text
         ErrorResponse errorResponse = new ErrorResponse(
                 LocalDateTime.now(),
                 HttpStatus.INTERNAL_SERVER_ERROR.value(),
-                "Database Error",
-                detailedMessage);
+                "Service Error",
+                "A temporary server error occurred. Please try again.");
 
         return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
