@@ -56,6 +56,24 @@ public class AuthController {
     public ResponseEntity<String> test() {
         return ResponseEntity.ok("Auth endpoint is working!");
     }
+
+    @PostMapping("/forgot-password")
+    public ResponseEntity<?> forgotPassword(@Valid @RequestBody ForgotPasswordRequest request) {
+        // Generates token and returns it in the response (simulate email sending)
+        String resetToken = authService.requestPasswordReset(request.getEmail());
+
+        // IMPORTANT: In a real app, do NOT return the token. Email it via an SMTP
+        // service.
+        // We are returning it in a demo JSON object so the UI flow can be tested.
+        return ResponseEntity.ok(java.util.Map.of(
+                "message", "Password reset email sent (check response for token)",
+                "demoToken", resetToken));
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<?> resetPassword(@Valid @RequestBody PasswordResetRequest request) {
+        authService.resetPassword(request.getToken(), request.getNewPassword());
+        return ResponseEntity.ok(java.util.Map.of(
+                "message", "Password reconstructed successfully. You may now log in."));
+    }
 }
-
-

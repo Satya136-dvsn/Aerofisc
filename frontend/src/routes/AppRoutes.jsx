@@ -15,6 +15,8 @@ import ErrorBoundary from '../components/ErrorBoundary';
 const HomePage = lazy(() => import('../pages/HomePage'));
 const SignIn = lazy(() => import('../pages/SignIn'));
 const SignUp = lazy(() => import('../pages/SignUp'));
+const ForgotPassword = lazy(() => import('../pages/ForgotPassword'));
+const ResetPassword = lazy(() => import('../pages/ResetPassword'));
 const Dashboard = lazy(() => import('../pages/Dashboard'));
 const Transactions = lazy(() => import('../pages/Transactions'));
 const Categories = lazy(() => import('../pages/Categories'));
@@ -53,6 +55,8 @@ function AppRoutes() {
                     <Route path="/" element={<HomePage />} />
                     <Route path="/login" element={<SignIn />} />
                     <Route path="/register" element={<SignUp />} />
+                    <Route path="/forgot-password" element={<ForgotPassword />} />
+                    <Route path="/reset-password" element={<ResetPassword />} />
                     <Route path="/design-demo" element={<DesignSystemDemo />} />
                     <Route
                         element={

@@ -8,8 +8,10 @@ package com.aerofisc.service;
 
 import com.aerofisc.annotation.Auditable;
 import com.aerofisc.dto.*;
+import com.aerofisc.entity.PasswordResetToken;
 import com.aerofisc.entity.RefreshToken;
 import com.aerofisc.entity.User;
+import com.aerofisc.repository.PasswordResetTokenRepository;
 import com.aerofisc.repository.UserRepository;
 import com.aerofisc.security.JwtTokenProvider;
 import com.aerofisc.security.UserPrincipal;
@@ -32,11 +34,12 @@ public class AuthService {
     private final NotificationService notificationService;
     private final RefreshTokenService refreshTokenService;
     private final MfaService mfaService;
+    private final PasswordResetTokenRepository passwordResetTokenRepository;
 
     public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder,
             AuthenticationManager authenticationManager, JwtTokenProvider tokenProvider,
             ProfileService profileService, NotificationService notificationService, MfaService mfaService,
-            RefreshTokenService refreshTokenService) {
+            RefreshTokenService refreshTokenService, PasswordResetTokenRepository passwordResetTokenRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
@@ -45,6 +48,7 @@ public class AuthService {
         this.notificationService = notificationService;
         this.mfaService = mfaService;
         this.refreshTokenService = refreshTokenService;
+        this.passwordResetTokenRepository = passwordResetTokenRepository;
     }
 
     @Transactional
@@ -201,5 +205,51 @@ public class AuthService {
                             UserDto.fromEntity(user));
                 })
                 .orElseThrow(() -> new RuntimeException("Refresh token is not in database!"));
+    }
+
+    @Transactional
+    public String requestPasswordReset(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("No account found with that email address."));
+
+        // Delete any existing reset token for this user
+        passwordResetTokenRepository.findByUser(user).ifPresent(passwordResetTokenRepository::delete);
+
+        // Generate a random 64-character hex token
+        String token = java.util.UUID.randomUUID().toString() + java.util.UUID.randomUUID().toString();
+        token = token.replace("-", "");
+
+        // Token expires in 1 hour
+        java.time.LocalDateTime expiryDate = java.time.LocalDateTime.now().plusHours(1);
+
+        PasswordResetToken resetToken = new PasswordResetToken(token, user, expiryDate);
+        passwordResetTokenRepository.save(resetToken);
+
+        return token;
+    }
+
+    @Transactional
+    public void resetPassword(String token, String newPassword) {
+        PasswordResetToken resetToken = passwordResetTokenRepository.findByToken(token)
+                .orElseThrow(() -> new RuntimeException("Invalid or expired password reset token."));
+
+        if (resetToken.getExpiryDate().isBefore(java.time.LocalDateTime.now())) {
+            passwordResetTokenRepository.delete(resetToken);
+            throw new RuntimeException("Password reset token has expired.");
+        }
+
+        // Validate password strength
+        com.aerofisc.util.PasswordValidator.ValidationResult validationResult = com.aerofisc.util.PasswordValidator
+                .validate(newPassword);
+        if (!validationResult.isValid()) {
+            throw new RuntimeException(validationResult.getErrorMessage());
+        }
+
+        User user = resetToken.getUser();
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
+
+        // Delete token so it can't be used again
+        passwordResetTokenRepository.delete(resetToken);
     }
 }
