@@ -1,9 +1,9 @@
 // Aerofisc Service Worker
-// Version: 1.0.1 (Dev Fix)
+// Version: 1.0.2 (Network-First HTML Fix)
 
-const CACHE_NAME = 'aerofisc-v1';
-const STATIC_CACHE_NAME = 'aerofisc-static-v1';
-const DYNAMIC_CACHE_NAME = 'aerofisc-dynamic-v1';
+const CACHE_NAME = 'aerofisc-v3';
+const STATIC_CACHE_NAME = 'aerofisc-static-v3';
+const DYNAMIC_CACHE_NAME = 'aerofisc-dynamic-v3';
 
 // Static assets to cache on install
 const STATIC_ASSETS = [
@@ -101,7 +101,25 @@ self.addEventListener('fetch', (event) => {
         return;
     }
 
-    // 5. Static Assets: Cache-first (Stale-while-revalidate)
+    // 5. Navigation & HTML: Network-first (CRITICAL for SPAs on Vercel)
+    if (request.mode === 'navigate' || request.destination === 'document' || url.pathname === '/') {
+        event.respondWith(
+            fetch(request)
+                .then((response) => {
+                    const responseClone = response.clone();
+                    caches.open(DYNAMIC_CACHE_NAME).then((cache) => cache.put(request, responseClone));
+                    return response;
+                })
+                .catch(() => {
+                    return caches.match(request).then((cachedResponse) => {
+                        return cachedResponse || caches.match('/offline.html');
+                    });
+                })
+        );
+        return;
+    }
+
+    // 6. Static Assets: Cache-first (Stale-while-revalidate)
     event.respondWith(
         caches.match(request)
             .then((cachedResponse) => {
