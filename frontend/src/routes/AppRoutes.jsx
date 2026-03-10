@@ -9,6 +9,7 @@ import { Routes, Route } from 'react-router-dom';
 import { CircularProgress, Box } from '@mui/material';
 import ProtectedRoute from '../components/ProtectedRoute';
 import DashboardLayout from '../components/layout/DashboardLayout';
+import ErrorBoundary from '../components/ErrorBoundary';
 
 // Lazy load pages
 const HomePage = lazy(() => import('../pages/HomePage'));
@@ -46,44 +47,46 @@ const LoadingFallback = () => (
 
 function AppRoutes() {
     return (
-        <Suspense fallback={<LoadingFallback />}>
-            <Routes>
-                <Route path="/" element={<HomePage />} />
-                <Route path="/login" element={<SignIn />} />
-                <Route path="/register" element={<SignUp />} />
-                <Route path="/design-demo" element={<DesignSystemDemo />} />
-                <Route
-                    element={
-                        <ProtectedRoute>
-                            <DashboardLayout />
-                        </ProtectedRoute>
-                    }
-                >
-                    <Route path="/dashboard" element={<Dashboard />} />
-                    <Route path="/transactions" element={<Transactions />} />
-                    <Route path="/categories" element={<Categories />} />
-                    <Route path="/budgets" element={<Budgets />} />
-                    <Route path="/goals" element={<SavingsGoals />} />
-                    <Route path="/analytics" element={<Analytics />} />
-                    <Route path="/reports" element={<Reports />} />
-                    <Route path="/settings" element={<Settings />} />
-                    <Route path="/community" element={<Community />} />
-                    <Route path="/community/:id" element={<DiscussionDetail />} />
-                    <Route path="/admin" element={<AdminDashboard />} />
-                    <Route path="/banking" element={<BankingPage />} />
-                    <Route path="/bills" element={<BillsPage />} />
-                    <Route path="/investments" element={<InvestmentsPage />} />
-                    <Route path="/ai-chat" element={<AIChat />} />
-                    <Route path="/notifications" element={<Notifications />} />
-                    <Route path="/debt-management" element={<DebtManagementPage />} />
-                    <Route path="/financial-health" element={<FinancialHealthPage />} />
-                    <Route path="/retirement" element={<RetirementPage />} />
-                    <Route path="/tax-planning" element={<TaxPlanningPage />} />
-                    <Route path="/scenario-analysis" element={<ScenarioAnalysisPage />} />
-                    <Route path="/recurring" element={<RecurringTransactionsPage />} />
-                </Route>
-            </Routes>
-        </Suspense>
+        <ErrorBoundary>
+            <Suspense fallback={<LoadingFallback />}>
+                <Routes>
+                    <Route path="/" element={<HomePage />} />
+                    <Route path="/login" element={<SignIn />} />
+                    <Route path="/register" element={<SignUp />} />
+                    <Route path="/design-demo" element={<DesignSystemDemo />} />
+                    <Route
+                        element={
+                            <ProtectedRoute>
+                                <DashboardLayout />
+                            </ProtectedRoute>
+                        }
+                    >
+                        <Route path="/dashboard" element={<Dashboard />} />
+                        <Route path="/transactions" element={<Transactions />} />
+                        <Route path="/categories" element={<Categories />} />
+                        <Route path="/budgets" element={<Budgets />} />
+                        <Route path="/goals" element={<SavingsGoals />} />
+                        <Route path="/analytics" element={<Analytics />} />
+                        <Route path="/reports" element={<Reports />} />
+                        <Route path="/settings" element={<Settings />} />
+                        <Route path="/community" element={<Community />} />
+                        <Route path="/community/:id" element={<DiscussionDetail />} />
+                        <Route path="/admin" element={<AdminDashboard />} />
+                        <Route path="/banking" element={<BankingPage />} />
+                        <Route path="/bills" element={<BillsPage />} />
+                        <Route path="/investments" element={<InvestmentsPage />} />
+                        <Route path="/ai-chat" element={<AIChat />} />
+                        <Route path="/notifications" element={<Notifications />} />
+                        <Route path="/debt-management" element={<DebtManagementPage />} />
+                        <Route path="/financial-health" element={<FinancialHealthPage />} />
+                        <Route path="/retirement" element={<RetirementPage />} />
+                        <Route path="/tax-planning" element={<TaxPlanningPage />} />
+                        <Route path="/scenario-analysis" element={<ScenarioAnalysisPage />} />
+                        <Route path="/recurring" element={<RecurringTransactionsPage />} />
+                    </Route>
+                </Routes>
+            </Suspense>
+        </ErrorBoundary>
     )
 }
 
