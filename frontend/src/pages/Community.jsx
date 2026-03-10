@@ -26,7 +26,7 @@ const Community = () => {
         try {
             setLoading(true);
             const response = await forumService.getPosts();
-            setPosts(response.data);
+            setPosts(response.data?.content || response.data || response || []);
         } catch (error) {
             console.error('Failed to fetch posts:', error);
             setSnackbar({ open: true, message: 'Failed to load posts', severity: 'error' });

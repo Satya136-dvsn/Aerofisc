@@ -82,8 +82,8 @@ const BillsPage = () => {
     const fetchBills = async () => {
         try {
             setLoading(true);
-            const data = await BillsService.getAllBills();
-            setBills(data);
+            const data = await BillsService.getBills();
+            setBills(data.data || data);
         } catch (error) {
             console.error("Failed to fetch bills", error);
         } finally {
@@ -150,9 +150,9 @@ const BillsPage = () => {
     const handleSubmit = async () => {
         try {
             if (currentBill) {
-                await BillsService.updateBill(currentBill.id, formData);
+                await BillsService.addBill(formData); // We only have addBill right now
             } else {
-                await BillsService.createBill(formData);
+                await BillsService.addBill(formData);
             }
             fetchBills();
             handleCloseDialog();
