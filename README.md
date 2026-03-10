@@ -40,14 +40,15 @@ Aerofisc is currently deployed in a production-ready state. The architecture sup
 
 | Feature Area | Status | Description |
 | :--- | :--- | :--- |
-| **Authentication** | 🟢 Live | Secure JWT-based registration, login, and token refresh logic. |
+| **Authentication** | 🟢 Live | Secure JWT-based registration, login, token refresh, and complete forgot-password flow. |
 | **Core Transactions** | 🟢 Live | Dashboard, Transactions, Recurring rules, Custom Categories, Budgets. |
 | **Advanced Planning** | 🟢 Live | Savings Goals, Debt Management, Investments, Retirement, Tax, Scenario Analysis. |
 | **AI Integration** | 🟢 Live | Google Gemini-powered AI Assistant and predictive spending insights. |
-| **Analytics & Reports**| 🟢 Live | Visual charts, flow metrics, and comprehensive PDF/Excel report generation. |
+| **Analytics & Reports** | 🟢 Live | Visual charts, flow metrics, and comprehensive PDF/Excel report generation. |
 | **Settings & Auth** | 🟢 Live | Profile updates, settings configurations, and clean session management. |
+| **Bills Management** | 🟢 Live | Recurring bill tracking, upcoming deadllines dashboard integrations, payment persistence. |
+| **Community Forum** | 🟢 Live | Real-time discussion boards, category filtering, immediate post creation updates. |
 | **Banking Integration** | 🟡 Mocked | Interface built; currently uses simulated data (architected for future Plaid integration). |
-| **Bills & Community** | 🟡 Mocked | UI fully built; uses robust mock services awaiting future controller bindings. |
 
 ---
 
@@ -239,4 +240,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-**Developed by Satya136-dvsn**
+### Developed by Satya136-dvsn
