@@ -20,6 +20,9 @@ const SEO = ({
     const defaultImage = `${siteUrl}/logo.png`;
     const socialImage = image ? `${siteUrl}${image}` : defaultImage;
 
+    const currentPath = typeof window !== 'undefined' ? window.location.pathname : '';
+    const canonicalUrl = `${siteUrl}${currentPath}`;
+
     // Schema.org structured data for SoftwareApplication + Rich Snippets
     const structuredData = {
         "@context": "https://schema.org",
@@ -29,7 +32,7 @@ const SEO = ({
         "operatingSystem": "Web, iOS, Android",
         "description": description,
         "image": defaultImage,
-        "url": siteUrl,
+        "url": canonicalUrl,
         "author": {
             "@type": "Organization",
             "name": "Aerofisc Team"
@@ -51,6 +54,7 @@ const SEO = ({
             "AI Expense Categorization",
             "Recurring Bill Tracking",
             "Visual Budget Analytics",
+            "Community Forum",
             "Export to PDF/Excel"
         ]
     };
@@ -61,7 +65,7 @@ const SEO = ({
             <title>{title} | Aerofisc</title>
             <meta name='description' content={description} />
             <meta name='keywords' content={keywords} />
-            <link rel="canonical" href={siteUrl} />
+            <link rel="canonical" href={canonicalUrl} />
 
             {/* End standard metadata tags */}
 
@@ -75,7 +79,7 @@ const SEO = ({
             </script>
 
             {/* Facebook Open Graph tags */}
-            <meta property="og:url" content={siteUrl} />
+            <meta property="og:url" content={canonicalUrl} />
             <meta property="og:type" content={type} />
             <meta property="og:title" content={title} />
             <meta property="og:description" content={description} />
