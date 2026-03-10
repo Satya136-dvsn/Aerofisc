@@ -53,7 +53,7 @@ const Budgets = () => {
     const loadCategories = async () => {
         try {
             const response = await categoryService.getAll();
-            setCategories(response.data);
+            setCategories(Array.isArray(response.data) ? response.data : []);
         } catch (err) {
             console.error('Failed to load categories', err);
         }
@@ -63,7 +63,7 @@ const Budgets = () => {
         try {
             setLoading(true);
             const response = await budgetService.getAll();
-            setBudgets(response.data);
+            setBudgets(Array.isArray(response.data) ? response.data : []);
             setError('');
         } catch (err) {
             console.error('Budget load error:', err);

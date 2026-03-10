@@ -39,7 +39,7 @@ const Categories = () => {
     try {
       setLoading(true);
       const response = await categoryService.getAll();
-      setCategories(response.data);
+      setCategories(Array.isArray(response.data) ? response.data : []);
       setError('');
     } catch (err) {
       console.error('Category load error:', err);
@@ -71,9 +71,9 @@ const Categories = () => {
       setError('Cannot delete system categories');
       return;
     }
-    
+
     if (!window.confirm('Delete this category?')) return;
-    
+
     try {
       await categoryService.delete(id);
       loadCategories();

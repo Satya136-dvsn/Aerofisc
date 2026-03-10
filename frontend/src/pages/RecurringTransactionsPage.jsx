@@ -63,8 +63,8 @@ const RecurringTransactionsPage = () => {
                 recurringService.getAll(!showInactive),
                 categoryService.getAll()
             ]);
-            setTransactions(transactionsData);
-            setCategories(categoriesData);
+            setTransactions(Array.isArray(transactionsData) ? transactionsData : []);
+            setCategories(Array.isArray(categoriesData?.data) ? categoriesData.data : []);
             setError(null);
         } catch (err) {
             setError('Failed to load recurring transactions');
