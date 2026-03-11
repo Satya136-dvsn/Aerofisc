@@ -23,6 +23,7 @@ import {
 import { Add as AddIcon, Edit as EditIcon, Delete as DeleteIcon } from '@mui/icons-material';
 import categoryService from '../services/categoryService';
 import CategoryDialog from '../components/CategoryDialog';
+import CategoryIcon from '../components/CategoryIcon';
 
 const Categories = () => {
   const [categories, setCategories] = useState([]);
@@ -123,7 +124,7 @@ const Categories = () => {
             <Card>
               <CardContent>
                 <Box display="flex" alignItems="center" gap={1} mb={1}>
-                  <Typography variant="h4">{category.icon}</Typography>
+                  <CategoryIcon categoryName={category.name} sx={{ fontSize: 40 }} />
                   <Typography variant="h6">{category.name}</Typography>
                 </Box>
                 <Typography variant="body2" color="text.secondary">
@@ -154,7 +155,7 @@ const Categories = () => {
               <Card>
                 <CardContent>
                   <Box display="flex" alignItems="center" gap={1} mb={1}>
-                    <Typography variant="h4">{category.icon}</Typography>
+                    <CategoryIcon categoryName={category.name} sx={{ fontSize: 40 }} />
                     <Typography variant="h6">{category.name}</Typography>
                   </Box>
                   <Typography variant="body2" color="text.secondary">

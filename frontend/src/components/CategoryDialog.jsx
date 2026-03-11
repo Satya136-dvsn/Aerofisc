@@ -18,11 +18,6 @@ import {
 } from '@mui/material';
 import categoryService from '../services/categoryService';
 
-const EMOJI_OPTIONS = [
-  '🍔', '🏠', '🚗', '💼', '🎮', '🎬', '🏥', '📚',
-  '✈️', '🛒', '💰', '🎁', '☕', '🏋️', '📱', '🎵',
-];
-
 const CategoryDialog = ({ open, category, onClose }) => {
   const [formData, setFormData] = useState({
     name: '',
@@ -37,13 +32,13 @@ const CategoryDialog = ({ open, category, onClose }) => {
       if (category) {
         setFormData({
           name: category.name,
-          icon: category.icon,
+          icon: category.icon || 'icon',
           type: category.type,
         });
       } else {
         setFormData({
           name: '',
-          icon: '💰',
+          icon: 'icon',
           type: 'EXPENSE',
         });
       }
@@ -95,24 +90,7 @@ const CategoryDialog = ({ open, category, onClose }) => {
                 required
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                fullWidth
-                select
-                label="Icon"
-                name="icon"
-                value={formData.icon}
-                onChange={handleChange}
-                required
-              >
-                {EMOJI_OPTIONS.map((emoji) => (
-                  <MenuItem key={emoji} value={emoji}>
-                    {emoji} {emoji}
-                  </MenuItem>
-                ))}
-              </TextField>
-            </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12}>
               <TextField
                 fullWidth
                 select
