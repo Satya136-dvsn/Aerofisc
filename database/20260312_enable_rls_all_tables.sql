@@ -1,15 +1,11 @@
--- SECURITY HARDENING: Enforce Row Level Security (RLS) on all public tables
--- Auto-generated: March 12, 2026
--- 
--- PURPOSE:
--- Secures the database by closing the 22 vulnerabilities reported by Supabase Security Advisor.
--- Enabling RLS without writing explicit policies ("deny-all") blocks all REST/GraphQL API access 
--- from the public internet (anon/authenticated roles) while still allowing the backend Spring Boot 
--- application to read and write freely via the privileged `postgres` service role.
--- 
--- USAGE:
--- Copy the entirety of this script and paste it into the Supabase SQL Editor, then click Run.
+-- FIXED RLS SCRIPT FOR SUPABASE CONNECTION POOLERS
+-- When connecting to Supabase via the IPv4 connection pooler (port 6543) or PgBouncer, 
+-- explicit `authenticated` or `service_role` session states are sometimes lost, or the pooler 
+-- forces the connection into an unprivileged state that cannot bypass RLS.
+-- This script safely enables RLS while explicitly creating a universal bypass policy 
+-- ONLY for the internal `postgres` backend user.
 
+-- 1. Enable RLS (Locks out the public REST API)
 ALTER TABLE public.app_audit_logs ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.bank_accounts ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.bills ENABLE ROW LEVEL SECURITY;
@@ -31,7 +27,27 @@ ALTER TABLE public.user_profiles ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.users ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.password_reset_tokens ENABLE ROW LEVEL SECURITY;
 
--- Note: 
--- "user_profiles" and "refresh_tokens_v2" were caught as well.
--- "bank_accounts", "users", "refresh_tokens_v2", and "password_reset_tokens" 
--- resolves the "Sensitive Columns Exposed" warnings since the tables themselves are now locked down.
+-- 2. Grant explicit full-access policies to the `postgres` role
+-- Since the `postgres` user is what Spring Boot uses to connect, this guarantees
+-- the backend will NEVER be locked out, even when routed through PgBouncer.
+
+CREATE POLICY "backend_bypass_app_audit_logs" ON public.app_audit_logs FOR ALL TO postgres USING (true) WITH CHECK (true);
+CREATE POLICY "backend_bypass_bank_accounts" ON public.bank_accounts FOR ALL TO postgres USING (true) WITH CHECK (true);
+CREATE POLICY "backend_bypass_bills" ON public.bills FOR ALL TO postgres USING (true) WITH CHECK (true);
+CREATE POLICY "backend_bypass_budgets" ON public.budgets FOR ALL TO postgres USING (true) WITH CHECK (true);
+CREATE POLICY "backend_bypass_categories" ON public.categories FOR ALL TO postgres USING (true) WITH CHECK (true);
+CREATE POLICY "backend_bypass_comments" ON public.comments FOR ALL TO postgres USING (true) WITH CHECK (true);
+CREATE POLICY "backend_bypass_debts" ON public.debts FOR ALL TO postgres USING (true) WITH CHECK (true);
+CREATE POLICY "backend_bypass_investments" ON public.investments FOR ALL TO postgres USING (true) WITH CHECK (true);
+CREATE POLICY "backend_bypass_likes" ON public.likes FOR ALL TO postgres USING (true) WITH CHECK (true);
+CREATE POLICY "backend_bypass_notifications" ON public.notifications FOR ALL TO postgres USING (true) WITH CHECK (true);
+CREATE POLICY "backend_bypass_posts" ON public.posts FOR ALL TO postgres USING (true) WITH CHECK (true);
+CREATE POLICY "backend_bypass_recurring_transactions" ON public.recurring_transactions FOR ALL TO postgres USING (true) WITH CHECK (true);
+CREATE POLICY "backend_bypass_refresh_tokens_v2" ON public.refresh_tokens_v2 FOR ALL TO postgres USING (true) WITH CHECK (true);
+CREATE POLICY "backend_bypass_retirement_accounts" ON public.retirement_accounts FOR ALL TO postgres USING (true) WITH CHECK (true);
+CREATE POLICY "backend_bypass_savings_goals" ON public.savings_goals FOR ALL TO postgres USING (true) WITH CHECK (true);
+CREATE POLICY "backend_bypass_scheduled_reports" ON public.scheduled_reports FOR ALL TO postgres USING (true) WITH CHECK (true);
+CREATE POLICY "backend_bypass_transactions" ON public.transactions FOR ALL TO postgres USING (true) WITH CHECK (true);
+CREATE POLICY "backend_bypass_user_profiles" ON public.user_profiles FOR ALL TO postgres USING (true) WITH CHECK (true);
+CREATE POLICY "backend_bypass_users" ON public.users FOR ALL TO postgres USING (true) WITH CHECK (true);
+CREATE POLICY "backend_bypass_password_reset_tokens" ON public.password_reset_tokens FOR ALL TO postgres USING (true) WITH CHECK (true);
