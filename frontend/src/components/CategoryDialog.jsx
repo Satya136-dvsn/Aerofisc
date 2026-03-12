@@ -21,7 +21,7 @@ import categoryService from '../services/categoryService';
 const CategoryDialog = ({ open, category, onClose }) => {
   const [formData, setFormData] = useState({
     name: '',
-    icon: '💰',
+    icon: 'icon',
     type: 'EXPENSE',
   });
   const [error, setError] = useState('');

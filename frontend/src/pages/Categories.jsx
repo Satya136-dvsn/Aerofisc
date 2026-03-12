@@ -145,7 +145,7 @@ const Categories = () => {
           <Grid item xs={12}>
             <Paper sx={{ p: 3, textAlign: 'center' }}>
               <Typography color="text.secondary">
-                No custom categories yet. Click "Add Category" to create one.
+                No custom categories yet. Click &quot;Add Category&quot; to create one.
               </Typography>
             </Paper>
           </Grid>
