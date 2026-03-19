@@ -113,8 +113,8 @@ public class ExportController {
             @AuthenticationPrincipal UserPrincipal userPrincipal,
             @RequestParam(defaultValue = "excel") String format) {
 
-        System.out.println("ExportController: Received dashboard export request. Format: " + format + ", User: "
-                + (userPrincipal != null ? userPrincipal.getUsername() : "null"));
+        logger.debug("ExportController: Received dashboard export request. Format: {}, User: {}", format,
+                (userPrincipal != null ? userPrincipal.getUsername() : "null"));
 
         try {
             byte[] data;
@@ -129,10 +129,9 @@ public class ExportController {
                             .parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
                     break;
                 case "pdf":
-                    System.out.println("ExportController: Starting PDF generation...");
+                    logger.debug("ExportController: Starting PDF generation...");
                     data = exportService.exportDashboardPDF(userPrincipal.getId());
-                    System.out.println(
-                            "ExportController: PDF generation successful. Size: " + (data != null ? data.length : 0));
+                    logger.debug("ExportController: PDF generation successful. Size: {}", data != null ? data.length : 0);
                     filename = "dashboard.pdf";
                     mediaType = MediaType.APPLICATION_PDF;
                     break;

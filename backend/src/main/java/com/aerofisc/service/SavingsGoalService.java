@@ -11,6 +11,8 @@ import com.aerofisc.dto.SavingsGoalDto;
 import com.aerofisc.entity.SavingsGoal;
 import com.aerofisc.exception.ResourceNotFoundException;
 import com.aerofisc.repository.SavingsGoalRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +26,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class SavingsGoalService {
+
+    private static final Logger logger = LoggerFactory.getLogger(SavingsGoalService.class);
 
     private final SavingsGoalRepository savingsGoalRepository;
     private final com.aerofisc.repository.TransactionRepository transactionRepository;
@@ -236,8 +240,7 @@ public class SavingsGoalService {
             }
         } catch (Exception e) {
             // Log error but don't fail the entire response
-            System.err
-                    .println("Error calculating savings goal metrics for goal " + goal.getId() + ": " + e.getMessage());
+            logger.warn("Error calculating savings goal metrics for goal {}: {}", goal.getId(), e.getMessage(), e);
             // Set safe defaults
             if (dto.getProgressPercentage() == null) {
                 dto.setProgressPercentage(BigDecimal.ZERO);

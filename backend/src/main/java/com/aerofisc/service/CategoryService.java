@@ -11,6 +11,8 @@ import com.aerofisc.entity.Category;
 import com.aerofisc.entity.User;
 import com.aerofisc.repository.CategoryRepository;
 import com.aerofisc.repository.UserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.cache.annotation.CacheEvict;
@@ -23,6 +25,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class CategoryService {
+
+    private static final Logger logger = LoggerFactory.getLogger(CategoryService.class);
 
     private final CategoryRepository categoryRepository;
     private final UserRepository userRepository;
@@ -74,7 +78,7 @@ public class CategoryService {
             createSystemCategory("Refunds", Category.CategoryType.INCOME, "â†©ï¸", "#74B9FF");
             createSystemCategory("Other Income", Category.CategoryType.INCOME, "ðŸ’µ", "#55EFC4");
 
-            System.out.println("âœ… System categories seeded successfully!");
+            logger.info("System categories seeded successfully!");
         }
     }
 

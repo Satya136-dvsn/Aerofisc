@@ -1,23 +1,27 @@
 /*
- * Â© 2026 VenkataSatyanarayana Duba
+ * © 2026 VenkataSatyanarayana Duba
  * aerofisc - Proprietary Software
  * Unauthorized copying or distribution prohibited.
 */
 
 package com.aerofisc;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class AerofiscApplication {
 
+    private static final Logger logger = LoggerFactory.getLogger(AerofiscApplication.class);
+
     public static void main(String[] args) {
-        System.out.println("==================================================");
-        System.out.println("   AEROFISC - Proprietary Personal Finance Engine");
-        System.out.println("   Copyright (c) 2026 VenkataSatyanarayana Duba");
-        System.out.println("   All Rights Reserved");
-        System.out.println("==================================================");
+        logger.info("==================================================");
+        logger.info("   AEROFISC - Proprietary Personal Finance Engine");
+        logger.info("   Copyright (c) 2026 VenkataSatyanarayana Duba");
+        logger.info("   All Rights Reserved");
+        logger.info("==================================================");
 
         SpringApplication app = new SpringApplication(AerofiscApplication.class);
 
@@ -26,12 +30,10 @@ public class AerofiscApplication {
         String useRealDb = System.getenv("USE_REAL_DB");
 
         if ("true".equalsIgnoreCase(devMode) && !"true".equalsIgnoreCase(useRealDb)) {
-            System.out.println(
-                    "âš ï¸ STRICT TESTING DEV_MODE ENABLED âš ï¸ - Bypassing PostgreSQL, initializing H2 Database mock layer.");
+            logger.warn("STRICT TESTING DEV_MODE ENABLED - Bypassing PostgreSQL, initializing H2 Database mock layer.");
             app.setAdditionalProfiles("dev");
         }
 
         app.run(args);
     }
 }
-
