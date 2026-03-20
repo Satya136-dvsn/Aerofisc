@@ -9,6 +9,8 @@ package com.aerofisc.controller;
 import com.aerofisc.security.UserPrincipal;
 import com.aerofisc.service.ExportService;
 import com.aerofisc.service.GoogleDriveService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -23,11 +25,13 @@ import java.util.Map;
 @RequestMapping("/api/backup")
 public class BackupController {
 
+    private static final Logger logger = LoggerFactory.getLogger(BackupController.class);
+
     private final ExportService exportService;
     private final GoogleDriveService googleDriveService;
 
     public BackupController(ExportService exportService, GoogleDriveService googleDriveService) {
-        System.out.println("DEBUG: BackupController Initializing...");
+        logger.debug("BackupController Initializing...");
         this.exportService = exportService;
         this.googleDriveService = googleDriveService;
     }

@@ -12,12 +12,16 @@ import com.aerofisc.repository.CategoryRepository;
 import com.aerofisc.repository.TransactionRepository;
 import com.aerofisc.repository.UserRepository;
 import com.aerofisc.entity.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 
 @Service
 public class CategorizationService {
+
+    private static final Logger logger = LoggerFactory.getLogger(CategorizationService.class);
 
     private final CategoryRepository categoryRepository;
     private final UserRepository userRepository;
@@ -88,7 +92,7 @@ public class CategorizationService {
         try {
             return suggestWithAI(description, categories, userId);
         } catch (Exception e) {
-            System.err.println("AI Categorization failed: " + e.getMessage());
+            logger.warn("AI Categorization failed: {}", e.getMessage(), e);
         }
 
         // Fallback if AI fails or returns invalid category
@@ -128,7 +132,7 @@ public class CategorizationService {
         // 2. If no match, CREATE a new category
         if (suggestedCategoryName.toLowerCase().contains("error")
                 || suggestedCategoryName.toLowerCase().contains("unavailable")) {
-            System.err.println("AI returned an error, skipping category creation: " + suggestedCategoryName);
+            logger.warn("AI returned an error, skipping category creation: {}", suggestedCategoryName);
             return getDefaultSuggestion(categories);
         }
         return createNewCategory(suggestedCategoryName, userId);
@@ -155,7 +159,7 @@ public class CategorizationService {
                     .reason("AI suggested and created new category: " + categoryName)
                     .build();
         } catch (Exception e) {
-            System.err.println("Failed to create new category: " + e.getMessage());
+            logger.error("Failed to create new category: {}", e.getMessage(), e);
             return null;
         }
     }

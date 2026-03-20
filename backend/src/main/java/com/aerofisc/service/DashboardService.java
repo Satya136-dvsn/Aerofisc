@@ -16,6 +16,8 @@ import com.aerofisc.repository.SavingsGoalRepository;
 import com.aerofisc.repository.TransactionRepository;
 import com.aerofisc.service.PredictionService;
 import com.aerofisc.dto.PredictionDto;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +33,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class DashboardService {
+
+        private static final Logger logger = LoggerFactory.getLogger(DashboardService.class);
 
         private final TransactionRepository transactionRepository;
         private final BudgetRepository budgetRepository;
@@ -153,9 +157,7 @@ public class DashboardService {
                                 }
                         }
                 } catch (Throwable e) {
-                        System.err.println(
-                                        "CRITICAL ERROR: Failed to get AI prediction for dashboard: " + e.getMessage());
-                        e.printStackTrace();
+                        logger.error("CRITICAL ERROR: Failed to get AI prediction for dashboard: {}", e.getMessage(), e);
                 }
 
                 return DashboardSummaryDto.builder()

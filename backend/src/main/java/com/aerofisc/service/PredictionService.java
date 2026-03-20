@@ -12,6 +12,8 @@ import com.aerofisc.entity.Category;
 import com.aerofisc.repository.TransactionRepository;
 import com.aerofisc.repository.CategoryRepository;
 import org.apache.commons.math3.stat.regression.SimpleRegression;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +27,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class PredictionService {
+
+    private static final Logger logger = LoggerFactory.getLogger(PredictionService.class);
 
     private final TransactionRepository transactionRepository;
     private final CategoryRepository categoryRepository;
@@ -69,7 +73,7 @@ public class PredictionService {
                     }
                 } catch (Exception e) {
                     // Skip this category if prediction fails
-                    System.err.println("Failed to predict for category " + categoryId + ": " + e.getMessage());
+                    logger.warn("Failed to predict for category {}: {}", categoryId, e.getMessage(), e);
                 }
             }
         });

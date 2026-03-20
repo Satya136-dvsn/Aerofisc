@@ -9,6 +9,8 @@ package com.aerofisc.service;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import okhttp3.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +19,8 @@ import java.util.concurrent.TimeUnit;
 
 @Service
 public class GeminiService {
+
+    private static final Logger logger = LoggerFactory.getLogger(GeminiService.class);
 
     @Value("${gemini.api.key}")
     private String apiKey;
@@ -73,7 +77,7 @@ public class GeminiService {
                 return textNode.asText();
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("Error communicating with AI service: {}", e.getMessage(), e);
             return "Error communicating with AI service.";
         }
     }

@@ -14,6 +14,8 @@ import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -25,6 +27,8 @@ import java.lang.reflect.Method;
 @Aspect
 @Component
 public class AuditAspect {
+
+    private static final Logger logger = LoggerFactory.getLogger(AuditAspect.class);
 
     private final AuditLogService auditLogService;
 
@@ -66,7 +70,7 @@ public class AuditAspect {
             }
         } catch (Exception e) {
             // Log error but don't fail the operation
-            System.err.println("Error logging audit: " + e.getMessage());
+            logger.error("Error logging audit: {}", e.getMessage(), e);
         }
     }
 }

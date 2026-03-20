@@ -23,6 +23,8 @@ import com.itextpdf.layout.properties.HorizontalAlignment;
 import com.itextpdf.layout.properties.TextAlignment;
 import com.itextpdf.layout.properties.UnitValue;
 import com.itextpdf.layout.properties.VerticalAlignment;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.awt.image.BufferedImage;
@@ -34,6 +36,8 @@ import java.util.List;
 
 @Service
 public class PdfReportGenerator {
+
+    private static final Logger logger = LoggerFactory.getLogger(PdfReportGenerator.class);
 
     private final ChartGeneratorService chartGenerator;
     private final DashboardService dashboardService;
@@ -69,7 +73,7 @@ public class PdfReportGenerator {
                     addChartImage(document, trendChart);
                 }
             } catch (Exception e) {
-                System.err.println("Error generating trend chart: " + e.getMessage());
+                logger.warn("Error generating trend chart: {}", e.getMessage(), e);
             }
 
             addSectionHeader(document, "Expense Breakdown");
@@ -80,7 +84,7 @@ public class PdfReportGenerator {
                     addChartImage(document, pieChart);
                 }
             } catch (Exception e) {
-                System.err.println("Error generating category chart: " + e.getMessage());
+                logger.warn("Error generating category chart: {}", e.getMessage(), e);
             }
 
             addSectionHeader(document, "Budget Performance");
@@ -96,8 +100,7 @@ public class PdfReportGenerator {
             document.close();
             return outputStream.toByteArray();
         } catch (Exception e) {
-            System.err.println("ERROR generating Dashboard PDF: " + e.getMessage());
-            e.printStackTrace();
+            logger.error("ERROR generating Dashboard PDF: {}", e.getMessage(), e);
             throw new RuntimeException("Failed to generate Dashboard PDF", e);
         }
     }
@@ -124,7 +127,7 @@ public class PdfReportGenerator {
                     addChartImage(document, trendChart);
                 }
             } catch (Exception e) {
-                System.err.println("Error generating trend chart: " + e.getMessage());
+                logger.warn("Error generating trend chart: {}", e.getMessage(), e);
             }
 
             addSectionHeader(document, "Category Breakdown");
@@ -135,7 +138,7 @@ public class PdfReportGenerator {
                     addChartImage(document, pieChart);
                 }
             } catch (Exception e) {
-                System.err.println("Error generating category chart: " + e.getMessage());
+                logger.warn("Error generating category chart: {}", e.getMessage(), e);
             }
 
             addSectionHeader(document, "AI Expense Predictions (Next Month)");
@@ -148,8 +151,7 @@ public class PdfReportGenerator {
             document.close();
             return outputStream.toByteArray();
         } catch (Exception e) {
-            System.err.println("ERROR generating Analytics PDF: " + e.getMessage());
-            e.printStackTrace();
+            logger.error("ERROR generating Analytics PDF: {}", e.getMessage(), e);
             throw new RuntimeException("Failed to generate Analytics PDF", e);
         }
     }
@@ -176,8 +178,7 @@ public class PdfReportGenerator {
             document.close();
             return outputStream.toByteArray();
         } catch (Exception e) {
-            System.err.println("ERROR generating Transactions PDF: " + e.getMessage());
-            e.printStackTrace();
+            logger.error("ERROR generating Transactions PDF: {}", e.getMessage(), e);
             throw new RuntimeException("Failed to generate Transactions PDF", e);
         }
     }
@@ -219,8 +220,7 @@ public class PdfReportGenerator {
             document.close();
             return outputStream.toByteArray();
         } catch (Exception e) {
-            System.err.println("ERROR generating Goals PDF: " + e.getMessage());
-            e.printStackTrace();
+            logger.error("ERROR generating Goals PDF: {}", e.getMessage(), e);
             throw new RuntimeException("Failed to generate Goals PDF", e);
         }
     }
@@ -427,8 +427,7 @@ public class PdfReportGenerator {
 
             document.add(pdfImage);
         } catch (Exception e) {
-            System.err.println("Error adding chart image: " + e.getMessage());
-            e.printStackTrace();
+            logger.warn("Error adding chart image: {}", e.getMessage(), e);
         }
     }
 

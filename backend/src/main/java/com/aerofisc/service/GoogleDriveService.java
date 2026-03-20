@@ -44,14 +44,13 @@ public class GoogleDriveService {
     private final NetHttpTransport httpTransport;
 
     public GoogleDriveService(ExternalApiConfig apiConfig) throws GeneralSecurityException, IOException {
-        System.out.println("DEBUG: GoogleDriveService Initializing...");
+        logger.debug("GoogleDriveService Initializing...");
         this.apiConfig = apiConfig;
         try {
             this.httpTransport = GoogleNetHttpTransport.newTrustedTransport();
-            System.out.println("DEBUG: GoogleDriveService httpTransport created.");
+            logger.debug("GoogleDriveService httpTransport created.");
         } catch (Exception e) {
-            System.out.println("DEBUG: GoogleDriveService FAILED to create httpTransport: " + e.getMessage());
-            e.printStackTrace();
+            logger.error("GoogleDriveService FAILED to create httpTransport: {}", e.getMessage(), e);
             throw e;
         }
     }
