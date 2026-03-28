@@ -39,15 +39,20 @@ public class GeminiService {
     }
 
     public String generateContent(String prompt) {
-        if (apiKey == null || apiKey.isEmpty()) {
+        if (apiKey == null || apiKey.isEmpty() || "placeholder-key".equals(apiKey)) {
             return "AI service is currently unavailable (API Key missing).";
         }
 
         try {
-            // Construct JSON body
-            String jsonBody = String.format(
-                    "{\"contents\": [{\"parts\": [{\"text\": \"%s\"}]}]}",
-                    escapeJson(prompt));
+            // Build request body safely using ObjectMapper to prevent JSON injection
+            var requestBody = objectMapper.createObjectNode();
+            var contentsArray = requestBody.putArray("contents");
+            var contentObj = contentsArray.addObject();
+            var partsArray = contentObj.putArray("parts");
+            var partObj = partsArray.addObject();
+            partObj.put("text", prompt);
+
+            String jsonBody = objectMapper.writeValueAsString(requestBody);
 
             RequestBody body = RequestBody.create(jsonBody, MediaType.parse("application/json"));
 
@@ -58,14 +63,13 @@ public class GeminiService {
 
             try (Response response = client.newCall(request).execute()) {
                 if (!response.isSuccessful()) {
-                    return "Error from AI service: " + response.code();
+                    logger.warn("AI service returned error code: {}", response.code());
+                    return "AI service is temporarily unavailable.";
                 }
 
                 String responseBody = response.body().string();
                 JsonNode rootNode = objectMapper.readTree(responseBody);
 
-                // Extract text from response
-                // Response structure: candidates[0].content.parts[0].text
                 JsonNode textNode = rootNode.path("candidates").get(0)
                         .path("content").path("parts").get(0)
                         .path("text");
@@ -80,15 +84,6 @@ public class GeminiService {
             logger.error("Error communicating with AI service: {}", e.getMessage(), e);
             return "Error communicating with AI service.";
         }
-    }
-
-    private String escapeJson(String input) {
-        if (input == null)
-            return "";
-        return input.replace("\"", "\\\"")
-                .replace("\n", "\\n")
-                .replace("\r", "\\r")
-                .replace("\t", "\\t");
     }
 }
 

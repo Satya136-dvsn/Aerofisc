@@ -4,7 +4,8 @@
  * Unauthorized copying or distribution prohibited.
 */
 
-import React, { useState, useRef } from 'react';
+import { useState, useRef } from 'react';
+
 import {
     Box,
     Button,
@@ -100,15 +101,15 @@ const ReceiptScanner = ({ onDataExtracted, onClose }) => {
 
         // Patterns for amount detection
         const amountPatterns = [
-            /(?:total|amount|grand total|subtotal|sum)[\s:]*[\$€£₹]?\s*([\d,]+\.?\d*)/i,
-            /[\$€£₹]\s*([\d,]+\.?\d*)/,
+            /(?:total|amount|grand total|subtotal|sum)[\s:]*[$€£₹]?\s*([\d,]+\.?\d*)/i,
+            /[$€£₹]\s*([\d,]+\.?\d*)/,
             /(\d{1,3}(?:,\d{3})*(?:\.\d{2})?)\s*(?:total|amount)?/i,
         ];
 
         // Patterns for date detection
         const datePatterns = [
-            /(\d{1,2}[\/\-\.]\d{1,2}[\/\-\.]\d{2,4})/,
-            /(\d{4}[\/\-\.]\d{1,2}[\/\-\.]\d{1,2})/,
+            /(\d{1,2}[/.-]\d{1,2}[/.-]\d{2,4})/,
+            /(\d{4}[/.-]\d{1,2}[/.-]\d{1,2})/,
             /((?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\s+\d{1,2},?\s+\d{4})/i,
         ];
 
@@ -144,7 +145,6 @@ const ReceiptScanner = ({ onDataExtracted, onClose }) => {
         }
 
         // Get store/merchant name (usually first line or after known headers)
-        const storePatterns = [/^([A-Z][A-Za-z\s&']+)$/];
         for (const line of lines.slice(0, 3)) {
             if (line.length > 3 && line.length < 50 && !line.match(/\d{5,}/)) {
                 description = line;

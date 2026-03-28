@@ -58,14 +58,26 @@ apiClient.interceptors.response.use(
                     originalRequest.headers.Authorization = `Bearer ${accessToken}`;
                     return apiClient(originalRequest);
                 }
-            } catch (refreshError) {
+            } catch (_refreshError) {
                 // Refresh failed - logout user
                 localStorage.removeItem('token');
                 localStorage.removeItem('refreshToken');
                 localStorage.removeItem('user');
                 window.location.href = '/login';
-                return Promise.reject(refreshError);
+                return Promise.reject(_refreshError);
             }
+        }
+
+        // Handle 403 Forbidden - clear credentials (user suspended/disabled)
+        if (error.response?.status === 403) {
+            localStorage.removeItem('token');
+            localStorage.removeItem('refreshToken');
+            localStorage.removeItem('user');
+            window.location.href = '/login';
+            return Promise.reject({
+                message: 'Access denied. Your session has been terminated.',
+                status: 403,
+            });
         }
 
         // Handle network errors

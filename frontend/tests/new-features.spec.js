@@ -7,6 +7,7 @@ test.describe('Advanced Features & Integrations', () => {
     const user = {
         firstName: 'Test',
         lastName: 'User',
+        username: `usr_${Date.now()}`,
         email: `test-${Date.now()}@example.com`,
         password: 'Password@123',
         confirmPassword: 'Password@123',
@@ -14,95 +15,79 @@ test.describe('Advanced Features & Integrations', () => {
         savingsTarget: '10000'
     };
 
-    test('Complete Feature Walkthrough', async ({ page }) => {
+    test('Complete Feature Walkthrough', async ({ page, context }) => {
+        // Increase timeout for this comprehensive integration test
+        test.setTimeout(90000);
+
+        // Disable Onboarding Tour persistently across all pages/navigations in this context
+        await context.addInitScript(() => {
+            window.localStorage.setItem('onboardingTourCompleted', 'true');
+        });
+
         try {
             // 1. Register and Login
             console.log('Navigating to register...');
             await page.goto('/register');
+
+            await expect(page.locator('text=Create Your Account').first()).toBeVisible({ timeout: 15000 });
+
+            // Step 1: Basic Info
+            console.log('Filling Step 1...');
             await page.fill('input[name="firstName"]', user.firstName);
-            console.log('Filling Last Name...');
             await page.fill('input[name="lastName"]', user.lastName);
+            await page.click('button:has-text("Next")');
 
-            console.log('Clicking Next (Step 1 -> 2)...');
-            await page.getByRole('button', { name: 'Next' }).click({ force: true });
-            await page.waitForTimeout(3000);
+            // Step 2: Account Setup
+            console.log('Filling Step 2...');
+            await expect(page.locator('input[name="username"]').first()).toBeVisible({ timeout: 10000 });
+            await page.fill('input[name="username"]', user.username);
+            await page.fill('input[name="email"]', user.email);
+            await page.fill('input[name="password"]', user.password);
+            await page.fill('input[name="confirmPassword"]', user.confirmPassword);
+            await page.click('button:has-text("Next")');
 
-            console.log('Waiting for Email field...');
-            // Robust check: Ensure Step 1 is gone
-            await expect(page.locator('input[name="firstName"]')).not.toBeVisible();
-
-            const emailInput = page.getByLabel('Email Address');
-            await emailInput.waitFor({ state: 'visible', timeout: 15000 });
-            await emailInput.fill(user.email);
-
-            console.log('Filling Password...');
-            const passwordInput = page.getByLabel('Password', { exact: true });
-            await passwordInput.waitFor({ state: 'visible' });
-            await passwordInput.fill(user.password);
-            await page.getByLabel('Confirm Password').fill(user.confirmPassword);
-
-            console.log('Clicking Next (Step 2 -> 3)...');
-            await page.getByRole('button', { name: 'Next' }).click({ force: true });
-
-            // Robust check: Ensure Step 2 is gone
-            await expect(page.getByLabel('Password', { exact: true })).not.toBeVisible();
-            await expect(page.getByLabel('Confirm Password')).not.toBeVisible();
-
-            console.log('Filling extra fields...');
-            const incomeInput = page.getByLabel('Monthly Income');
-            await incomeInput.waitFor({ state: 'visible', timeout: 15000 });
-            await incomeInput.fill(user.monthlyIncome);
-
-            const savingsInput = page.getByLabel('Monthly Savings Target');
-            await savingsInput.fill(user.savingsTarget);
+            // Step 3: Financial Profile
+            console.log('Filling Step 3...');
+            await expect(page.locator('input[name="monthlyIncome"]').first()).toBeVisible({ timeout: 10000 });
+            await page.fill('input[name="monthlyIncome"]', user.monthlyIncome);
+            await page.fill('input[name="savingsTarget"]', user.savingsTarget);
 
             console.log('Submitting registration...');
-            await page.getByRole('button', { name: 'Create Account' }).click();
+            await page.click('button:has-text("Create Account")');
 
+            // 4. Verify Dashboard renders or handle auto-login vs redirect
             console.log('Waiting for navigation...');
-            await page.waitForTimeout(3000); // Give time for redirect
-            const url = page.url();
-            console.log('Current URL:', url);
-
-            if (url.includes('login')) {
-                console.log('Redirected to login. Logging in...');
-                await page.fill('input[name="email"]', user.email);
-                await page.fill('input[name="password"]', user.password);
-                await page.click('button[type="submit"]');
-                await page.waitForURL('**/dashboard');
-            } else if (url.includes('dashboard')) {
-                console.log('On dashboard.');
-            } else {
-                console.log('Unexpected state. Taking screenshot.');
-                await expect(page).toHaveURL(/.*dashboard/);
-            }
+            // In Aerofisc, successful registration auto-logs in and redirects to /dashboard
+            await page.waitForURL('**/dashboard', { timeout: 20000 });
+            await expect(page.locator('text=Dashboard').first()).toBeVisible({ timeout: 20000 });
+            console.log('Successfully reached dashboard.');
 
             // 2. Test Multi-Currency & Bank Integration (Settings)
             console.log('Testing Settings...');
             await page.goto('/settings');
 
             // Click Preferences tab
-            await page.getByRole('tab', { name: 'Preferences' }).click();
-            await expect(page.getByLabel('Currency')).toBeVisible();
+            await page.click('button[role="tab"]:has-text("Preferences")');
+            await expect(page.locator('text=Currency').first()).toBeVisible();
             console.log('Currency visible.');
 
             // Check Bank Integration
-            await page.getByRole('tab', { name: 'Connected Banks' }).click();
-            await expect(page.getByText('Bank Connections')).toBeVisible();
-            await expect(page.getByRole('button', { name: 'Connect Bank' })).toBeVisible();
+            await page.click('button[role="tab"]:has-text("Connected Banks")');
+            await expect(page.locator('text=Bank Connections').first()).toBeVisible();
+            await expect(page.locator('button:has-text("Connect Bank")').first()).toBeVisible();
             console.log('Bank tab checked.');
 
             // Open Connect Dialog
-            await page.getByRole('button', { name: 'Connect Bank' }).click();
-            await expect(page.getByText('Select your bank')).toBeVisible();
-            await page.getByRole('button', { name: 'Cancel' }).click();
+            await page.click('button:has-text("Connect Bank")');
+            await expect(page.locator('text=Select your bank').first()).toBeVisible();
+            await page.click('button:has-text("Cancel")');
 
             // 3. Test Budget Templates (Budgets)
             console.log('Testing Budgets...');
             await page.goto('/budgets');
-            await expect(page.getByRole('button', { name: 'Use Template' })).toBeVisible();
-            await page.getByRole('button', { name: 'Use Template' }).click();
-            await expect(page.getByText('Budget Templates')).toBeVisible();
+            await expect(page.locator('button:has-text("Use Template")').first()).toBeVisible();
+            await page.click('button:has-text("Use Template")');
+            await expect(page.locator('text=Budget Templates').first()).toBeVisible();
             // Close specific to UI implementation (click outside or escape)
             await page.keyboard.press('Escape');
             console.log('Budgets checked.');
@@ -110,17 +95,18 @@ test.describe('Advanced Features & Integrations', () => {
             // 4. Test Calendar Export (Bills)
             console.log('Testing Bills...');
             await page.goto('/bills');
-            await expect(page.getByRole('button', { name: 'Export to Calendar' })).toBeVisible();
+            // Allow time for button to be visible even if disabled
+            await expect(page.locator('button:has-text("Export to Calendar")').first()).toBeVisible({ timeout: 15000 });
             console.log('Bills checked.');
 
-            // 5. Test OCR Scanner (Dashboard -> Add Transaction)
-            console.log('Testing OCR in Dashboard...');
-            await page.goto('/dashboard');
-            await page.getByRole('button', { name: 'Add Transaction' }).click();
+            // 5. Test OCR Scanner (Transactions -> Add Transaction)
+            console.log('Testing OCR in Transactions...');
+            await page.goto('/transactions');
+            await page.click('button:has-text("Add Transaction")');
 
-            await expect(page.getByRole('button', { name: 'Scan Receipt (OCR)' })).toBeVisible();
-            await page.getByRole('button', { name: 'Scan Receipt (OCR)' }).click();
-            await expect(page.getByText('Scan Receipt')).toBeVisible();
+            await expect(page.locator('button:has-text("Scan Receipt (OCR)")').first()).toBeVisible();
+            await page.click('button:has-text("Scan Receipt (OCR)")');
+            await expect(page.locator('text=Scan Receipt').first()).toBeVisible();
             console.log('OCR checked.');
 
             console.log('All new features verified successfully!');

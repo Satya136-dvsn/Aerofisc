@@ -218,7 +218,7 @@ const BudgetTemplates = ({ onApplyTemplate, onClose }) => {
             {/* Confirmation Dialog */}
             <Dialog open={confirmOpen} onClose={() => setConfirmOpen(false)} maxWidth="sm" fullWidth>
                 <DialogTitle>
-                    Apply "{selectedTemplate && BUDGET_TEMPLATES[selectedTemplate]?.name}" Template?
+                    Apply &quot;{selectedTemplate && BUDGET_TEMPLATES[selectedTemplate]?.name}&quot; Template?
                 </DialogTitle>
                 <DialogContent>
                     {selectedTemplate && (

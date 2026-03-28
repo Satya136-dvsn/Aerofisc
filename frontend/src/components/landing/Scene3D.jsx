@@ -4,6 +4,8 @@
  * Unauthorized copying or distribution prohibited.
 */
 
+/* eslint-disable react/no-unknown-property */
+
 import React, { useRef } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls, Sphere, MeshDistortMaterial, Float, Stars, Text } from '@react-three/drei';

@@ -1,4 +1,6 @@
+/* eslint-env serviceworker */
 // Aerofisc Service Worker
+
 // Version: 1.0.2 (Network-First HTML Fix)
 
 const CACHE_NAME = 'aerofisc-v3';

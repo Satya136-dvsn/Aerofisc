@@ -252,7 +252,7 @@ const FinancialHealthPage = () => {
                     </Typography>
                     {healthData.recommendations.length === 0 ? (
                         <Alert severity="success">
-                            Great! You're doing well financially. Keep up the good work!
+                            Great! You&apos;re doing well financially. Keep up the good work!
                         </Alert>
                     ) : (
                         <List>

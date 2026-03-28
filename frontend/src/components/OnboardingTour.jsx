@@ -4,7 +4,8 @@
  * Unauthorized copying or distribution prohibited.
 */
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
+
 import Joyride, { STATUS } from 'react-joyride';
 import { useTheme } from '@mui/material/styles';
 
@@ -36,17 +37,13 @@ const OnboardingTour = () => {
             content: (
                 <div>
                     <h3>Welcome to Aerofisc! 🚀</h3>
-                    <p>Let's take a quick tour to help you get started with your financial journey.</p>
+                    <p>Let&apos;s take a quick tour to help you get started with your financial journey.</p>
                 </div>
             ),
             placement: 'center',
             disableBeacon: true,
         },
         {
-            target: '[aria-label="New Transaction"]', // We'll need to add this ID/Label to the add button if not present, or use a specific selector
-            // Actually, let's use a class or id selectors that we will add to the components.
-            // For now, I will assume we will add className="tour-add-transaction" to the add button in Transactions/Dashboard.
-            // Wait, the Dashboard layout has navigation items.
             content: 'Click here to access your Dashboard overview.',
             target: 'a[href="/dashboard"]', // Sidebar link
         },
@@ -60,7 +57,7 @@ const OnboardingTour = () => {
         },
         {
             target: 'a[href="/recurring"]',
-            content: 'Set up automated bills like Rent or Netflix here ("Set and Forget").',
+            content: 'Set up automated bills like Rent or Netflix here (&quot;Set and Forget&quot;).',
         },
         {
             target: 'a[href="/goals"]',

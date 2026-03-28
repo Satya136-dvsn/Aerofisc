@@ -27,7 +27,7 @@ import chatService from '../services/chatService';
 import { useAuth } from '../context/AuthContext';
 
 const AIChat = () => {
-    const { user } = useAuth();
+    const { user: _user } = useAuth();
     const [messages, setMessages] = useState([]);
     const [input, setInput] = useState('');
     const [loading, setLoading] = useState(false);
@@ -177,7 +177,7 @@ const AIChat = () => {
                             Start a conversation
                         </Typography>
                         <Typography variant="body2">
-                            I'm here to help you manage your finances better
+                            I&apos;m here to help you manage your finances better
                         </Typography>
                     </Box>
                 ) : (

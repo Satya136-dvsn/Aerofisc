@@ -155,7 +155,7 @@ const Notifications = () => {
                                     No notifications
                                 </Typography>
                                 <Typography variant="body2" color="text.secondary">
-                                    You're all caught up!
+                                    You&apos;re all caught up!
                                 </Typography>
                             </Box>
                         ) : (

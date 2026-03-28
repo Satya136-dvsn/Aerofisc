@@ -84,12 +84,8 @@ public class AuthService {
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
 
-        // Set role from request or default to USER
-        if (request.getRole() != null && request.getRole().equalsIgnoreCase("ADMIN")) {
-            user.setRole(User.Role.ADMIN);
-        } else {
-            user.setRole(User.Role.USER);
-        }
+        // All new users are assigned USER role — admin promotion is a backend-only operation
+        user.setRole(User.Role.USER);
 
         user.setIsActive(true);
 
