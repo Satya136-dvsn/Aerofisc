@@ -1,4 +1,4 @@
-﻿name: Aerofisc Strict Testing Pipeline
+name: Aerofisc Strict Testing Pipeline
 
 on:
   push:
@@ -48,30 +48,43 @@ jobs:
     needs: [backend-tests, frontend-tests]
     steps:
       - uses: actions/checkout@v4
+
+      - name: Set up JDK 21 (For Backend)
+        uses: actions/setup-java@v4
+        with:
+          java-version: "21"
+          distribution: "temurin"
+          cache: maven
+
+      - name: Pre-build backend (cache Maven deps & compile)
+        run: mvn -B package -DskipTests --file backend/pom.xml
+        env:
+          DEV_MODE: "true"
+          USE_REAL_DB: "false"
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: "lts/*"
           cache: "npm"
           cache-dependency-path: frontend/package-lock.json
+
       - name: Install Frontend Dependencies
         working-directory: ./frontend
         run: npm ci
-      - name: Install Playwright Browsers
+
+      - name: Install Playwright Browsers (Chromium only for CI)
         working-directory: ./frontend
         run: npx playwright install chromium --with-deps
-      - name: Set up JDK 21 (For Backend Dev Server)
-        uses: actions/setup-java@v4
-        with:
-          java-version: "21"
-          distribution: "temurin"
-          cache: maven
-      - name: Run Playwright tests
+
+      - name: Run Playwright E2E Tests (Chromium only)
         working-directory: ./frontend
-        run: npx playwright test
+        run: npx playwright test --project=chromium
         env:
+          CI: "true"
           DEV_MODE: "true"
           USE_REAL_DB: "false"
+
       - uses: actions/upload-artifact@v4
         if: always()
         with:
